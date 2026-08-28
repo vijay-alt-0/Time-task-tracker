@@ -1,7 +1,7 @@
 {
   "name": "Task Time Tracker (T3)",
   "short_name": "T3",
-  "description": "Track projects, daily habits, one-off tasks, future plans, and timers \u2014 all in one notebook-style task tracker.",
+  "description": "Track projects, daily habits, one-off tasks, future plans, and timers — all in one notebook-style task tracker.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -33,5 +33,6 @@
       "type": "image/png",
       "purpose": "maskable"
     }
-  ]
+  ],
+  "id": "./"
 }

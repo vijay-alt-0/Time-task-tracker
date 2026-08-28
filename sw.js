@@ -1,6 +1,6 @@
 // IMPORTANT: bump this version string every time you deploy changes.
 // T3 uses a versioned app-shell cache so installed users receive the current build.
-const CACHE_NAME = 't3-v2';
+const CACHE_NAME = 't3-v2.1';
 
 const ASSETS_TO_CACHE = [
   './',

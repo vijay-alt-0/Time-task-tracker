@@ -90,6 +90,8 @@
   }
   .install-btn-icon{ font-size:11px; }
   .install-btn:active{ transform:scale(0.94); }
+  .install-btn[aria-busy="true"]{opacity:.65;pointer-events:none;}
+  #installOverlay{z-index:1000;}
   header.top{
     padding-top:6px;
     margin-bottom:6px;
@@ -903,8 +905,8 @@ body.dark .card,body.dark .timer-card,body.dark .stat{border-color:rgba(240,238,
 <div class="margin-rule"></div>
 <div class="wrap">
   <div class="stamp" id="stamp">PAGE 01<br>DATE: --</div>
-  <button id="installBtn" class="install-btn" onclick="triggerInstall()" title="Install app" style="display:none;">
-    <span class="install-btn-icon">⬇</span><span class="install-btn-txt">IN</span>
+  <button id="installBtn" class="install-btn" onclick="triggerInstall()" title="Install T3" aria-label="Install T3" style="display:none;">
+    <span class="install-btn-icon" aria-hidden="true">⇩</span><span class="install-btn-txt">INSTALL</span>
   </button>
   <header class="top">
     <div class="brand-row">
@@ -1262,6 +1264,16 @@ body.dark .card,body.dark .timer-card,body.dark .stat{border-color:rgba(240,238,
 </div>
 
 <!-- Timer finished -> what to do with linked task -->
+<div class="modal-overlay" id="installOverlay" aria-hidden="true">
+  <div class="modal">
+    <h3 id="installTitle">Install T3</h3>
+    <p id="installMessage">T3 can be installed from your browser menu. If the Install option is missing, open this page in Chrome or another supported browser over HTTPS (or localhost).</p>
+    <div class="modal-btn-row">
+      <button class="modal-btn" onclick="closeInstallHelp()">Got it</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="timerDoneOverlay">
   <div class="modal">
     <h3 id="timerDoneTitle">Timer finished</h3>
@@ -3241,30 +3253,92 @@ if ('serviceWorker' in navigator) {
 }
 
 // ---------- PWA: install button ----------
-// The button stays hidden unless the browser actually offers an install prompt
-// (Chrome/Edge/Android fire 'beforeinstallprompt'; iOS Safari and already-installed
-// apps never do, so the button correctly disappears in those cases rather than
-// sitting there doing nothing).
+// Keep the native install prompt when the browser provides it. If the prompt is
+// unavailable (iOS, already installed, file://, insecure HTTP, unsupported browser),
+// the button now explains why instead of silently doing nothing.
 let deferredInstallPrompt = null;
+const installBtn = () => document.getElementById('installBtn');
+
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredInstallPrompt = e;
-  const btn = document.getElementById('installBtn');
-  if(btn) btn.style.display = 'flex';
+  const btn = installBtn();
+  if(btn){
+    btn.style.display = 'flex';
+    btn.removeAttribute('aria-busy');
+    btn.title = 'Install T3';
+    btn.setAttribute('aria-label','Install T3');
+  }
 });
-function triggerInstall(){
-  if(!deferredInstallPrompt) return;
-  deferredInstallPrompt.prompt();
-  deferredInstallPrompt.userChoice.finally(() => {
-    deferredInstallPrompt = null;
-    const btn = document.getElementById('installBtn');
-    if(btn) btn.style.display = 'none';
-  });
+
+function openInstallHelp(message){
+  const overlay = document.getElementById('installOverlay');
+  const msg = document.getElementById('installMessage');
+  if(msg && message) msg.textContent = message;
+  if(overlay){
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden','false');
+  }
 }
+function closeInstallHelp(){
+  const overlay = document.getElementById('installOverlay');
+  if(overlay){
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden','true');
+  }
+}
+
+async function triggerInstall(){
+  const btn = installBtn();
+  if(btn) btn.setAttribute('aria-busy','true');
+
+  // Native Android/Chromium install flow.
+  if(deferredInstallPrompt){
+    try{
+      await deferredInstallPrompt.prompt();
+      const choice = await deferredInstallPrompt.userChoice;
+      deferredInstallPrompt = null;
+      if(btn) btn.style.display = 'none';
+      if(choice && choice.outcome === 'dismissed' && btn) btn.removeAttribute('aria-busy');
+    }catch(err){
+      console.warn('T3 install prompt failed:', err);
+      deferredInstallPrompt = null;
+      if(btn) btn.removeAttribute('aria-busy');
+      openInstallHelp('The browser could not open the install prompt. Try the browser menu and choose “Install app” or “Add to Home screen”.');
+    }
+    return;
+  }
+
+  // If already running as an installed app, don't pretend another install is available.
+  const standalone = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches;
+  const iosStandalone = window.navigator.standalone === true;
+  if(standalone || iosStandalone){
+    if(btn) btn.style.display = 'none';
+    return;
+  }
+
+  if(btn) btn.removeAttribute('aria-busy');
+  const protocol = window.location.protocol;
+  if(protocol === 'file:'){
+    openInstallHelp('T3 must be opened from a web server to install. Upload it to HTTPS hosting, or run it on localhost; opening index.html directly from the ZIP cannot install a PWA.');
+  }else if(location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1'){
+    openInstallHelp('Your browser only allows PWA installation from a secure HTTPS connection (or localhost). Open the HTTPS version of T3, then use Install again.');
+  }else{
+    openInstallHelp('Your browser has not offered the automatic install prompt yet. Open the browser menu and choose “Install app” or “Add to Home screen”. If that option is unavailable, check that this page is being served from HTTPS and that T3 is not already installed.');
+  }
+}
+
 window.addEventListener('appinstalled', () => {
-  const btn = document.getElementById('installBtn');
+  const btn = installBtn();
   if(btn) btn.style.display = 'none';
   deferredInstallPrompt = null;
+});
+
+// If the page is already installed, never show an install control.
+window.addEventListener('load', () => {
+  const standalone = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches;
+  const iosStandalone = window.navigator.standalone === true;
+  if((standalone || iosStandalone) && installBtn()) installBtn().style.display = 'none';
 });
 </script>
 </body>

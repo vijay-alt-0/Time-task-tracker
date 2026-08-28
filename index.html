@@ -830,9 +830,34 @@ input::placeholder,textarea::placeholder{color:#AAA497;}
 .stat .num{font-size:21px;}
 .tabs{gap:6px;margin-bottom:16px;padding-bottom:10px;}
 .tab{padding:8px 12px;border-radius:10px;font-size:10.5px;}
-.cal-grid{gap:5px;}
-.cal-cell{border-radius:10px;min-height:42px;transition:transform .15s ease,background .18s ease;}
+.cal-grid{
+  width:100%;
+  min-width:0;
+  display:grid;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  grid-auto-flow:row;
+  grid-auto-rows:minmax(42px,auto);
+  gap:6px;
+}
+.cal-weekdays{
+  width:100%;
+  min-width:0;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+}
+.cal-weekdays span{min-width:0;overflow:hidden;text-align:center;}
+.cal-cell{
+  width:100%;
+  min-width:0;
+  min-height:42px;
+  height:clamp(42px,10vw,58px);
+  aspect-ratio:auto;
+  overflow:hidden;
+  border-radius:10px;
+  transition:transform .15s ease,background .18s ease;
+}
 .cal-cell:hover{transform:translateY(-1px);}
+.cal-cell .cal-daynum{line-height:1;}
+.cal-cell .cal-dots{max-width:100%;min-width:0;overflow:hidden;}
 .cal-nav{margin-bottom:14px;}
 .cal-nav-btn{width:36px;height:36px;border-radius:10px;}
 .cal-legend{gap:9px;margin-top:16px;padding-top:12px;}
@@ -895,6 +920,17 @@ body.dark .card,body.dark .timer-card,body.dark .stat{border-color:rgba(240,238,
   .daily-text{padding-top:3px;}
   footer.note{padding-left:42px;}
 }
+@media (max-width:520px){
+  .cal-grid{grid-auto-rows:44px;gap:5px;}
+  .cal-cell{height:44px;min-height:44px;padding:2px;}
+  .cal-cell .cal-daynum{font-size:11px;}
+}
+@media (max-width:390px){
+  .cal-grid{grid-auto-rows:40px;gap:4px;}
+  .cal-cell{height:40px;min-height:40px;border-radius:8px;}
+  .cal-cell .cal-dots{display:none;}
+}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;transition-duration:.001ms!important;}
 }
@@ -905,9 +941,7 @@ body.dark .card,body.dark .timer-card,body.dark .stat{border-color:rgba(240,238,
 <div class="margin-rule"></div>
 <div class="wrap">
   <div class="stamp" id="stamp">PAGE 01<br>DATE: --</div>
-  <button id="installBtn" class="install-btn" onclick="triggerInstall()" title="Install T3" aria-label="Install T3" style="display:none;">
-    <span class="install-btn-icon" aria-hidden="true">⇩</span><span class="install-btn-txt">INSTALL</span>
-  </button>
+  <button id="installBtn" class="install-btn" onclick="triggerInstall()" title="Install T3" aria-label="Install T3">IN</button>
   <header class="top">
     <div class="brand-row">
       <button id="themeToggle" class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Switch to dark mode" title="Switch to dark mode">
@@ -3253,22 +3287,31 @@ if ('serviceWorker' in navigator) {
 }
 
 // ---------- PWA: install button ----------
-// Keep the native install prompt when the browser provides it. If the prompt is
-// unavailable (iOS, already installed, file://, insecure HTTP, unsupported browser),
-// the button now explains why instead of silently doing nothing.
+// The IN button is intentionally always visible while T3 is running in a normal
+// browser. A native prompt is used when Chromium supplies beforeinstallprompt;
+// otherwise the button opens a clear fallback instead of silently doing nothing.
 let deferredInstallPrompt = null;
 const installBtn = () => document.getElementById('installBtn');
+
+function isStandaloneMode(){
+  return !!((window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true);
+}
+
+function syncInstallButton(){
+  const btn = installBtn();
+  if(!btn) return;
+  if(isStandaloneMode()){
+    btn.style.display='none';
+  }else{
+    btn.style.display='flex';
+    btn.removeAttribute('aria-busy');
+  }
+}
 
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredInstallPrompt = e;
-  const btn = installBtn();
-  if(btn){
-    btn.style.display = 'flex';
-    btn.removeAttribute('aria-busy');
-    btn.title = 'Install T3';
-    btn.setAttribute('aria-label','Install T3');
-  }
+  syncInstallButton();
 });
 
 function openInstallHelp(message){
@@ -3290,56 +3333,52 @@ function closeInstallHelp(){
 
 async function triggerInstall(){
   const btn = installBtn();
+  if(isStandaloneMode()){
+    syncInstallButton();
+    return;
+  }
   if(btn) btn.setAttribute('aria-busy','true');
 
-  // Native Android/Chromium install flow.
   if(deferredInstallPrompt){
     try{
       await deferredInstallPrompt.prompt();
       const choice = await deferredInstallPrompt.userChoice;
       deferredInstallPrompt = null;
-      if(btn) btn.style.display = 'none';
-      if(choice && choice.outcome === 'dismissed' && btn) btn.removeAttribute('aria-busy');
+      if(choice && choice.outcome === 'accepted'){
+        if(btn) btn.style.display='none';
+      }else if(btn){
+        btn.removeAttribute('aria-busy');
+      }
     }catch(err){
       console.warn('T3 install prompt failed:', err);
       deferredInstallPrompt = null;
       if(btn) btn.removeAttribute('aria-busy');
-      openInstallHelp('The browser could not open the install prompt. Try the browser menu and choose “Install app” or “Add to Home screen”.');
+      openInstallHelp('The automatic install prompt could not be opened. Use your browser menu and choose “Install app” or “Add to Home screen”.');
     }
-    return;
-  }
-
-  // If already running as an installed app, don't pretend another install is available.
-  const standalone = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches;
-  const iosStandalone = window.navigator.standalone === true;
-  if(standalone || iosStandalone){
-    if(btn) btn.style.display = 'none';
     return;
   }
 
   if(btn) btn.removeAttribute('aria-busy');
   const protocol = window.location.protocol;
+  const hostname = window.location.hostname;
   if(protocol === 'file:'){
-    openInstallHelp('T3 must be opened from a web server to install. Upload it to HTTPS hosting, or run it on localhost; opening index.html directly from the ZIP cannot install a PWA.');
-  }else if(location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1'){
-    openInstallHelp('Your browser only allows PWA installation from a secure HTTPS connection (or localhost). Open the HTTPS version of T3, then use Install again.');
+    openInstallHelp('T3 is being opened directly as a file. A PWA cannot install from a ZIP or file:// page. Serve T3 from HTTPS (or localhost), then tap IN again.');
+  }else if(protocol !== 'https:' && hostname !== 'localhost' && hostname !== '127.0.0.1'){
+    openInstallHelp('T3 needs a secure HTTPS connection for installation. Open the HTTPS version, then tap IN again.');
+  }else if(/iPhone|iPad|iPod/i.test(navigator.userAgent)){
+    openInstallHelp('On iPhone or iPad, use your browser’s Share menu and choose “Add to Home Screen”.');
   }else{
-    openInstallHelp('Your browser has not offered the automatic install prompt yet. Open the browser menu and choose “Install app” or “Add to Home screen”. If that option is unavailable, check that this page is being served from HTTPS and that T3 is not already installed.');
+    openInstallHelp('Your browser has not supplied the automatic install prompt yet. Open the browser menu and choose “Install app” or “Add to Home screen”. If that option is missing, make sure T3 is running over HTTPS and is not already installed.');
   }
 }
 
 window.addEventListener('appinstalled', () => {
-  const btn = installBtn();
-  if(btn) btn.style.display = 'none';
   deferredInstallPrompt = null;
+  syncInstallButton();
 });
 
-// If the page is already installed, never show an install control.
-window.addEventListener('load', () => {
-  const standalone = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches;
-  const iosStandalone = window.navigator.standalone === true;
-  if((standalone || iosStandalone) && installBtn()) installBtn().style.display = 'none';
-});
+window.addEventListener('load', syncInstallButton);
+
 </script>
 </body>
 </html>

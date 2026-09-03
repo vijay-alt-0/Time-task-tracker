@@ -7,7 +7,7 @@
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#B4443E">
+<meta name="theme-color" content="#B74C46">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -32,9 +32,9 @@
     --amber:#D9A441;
     --amber-bg:#F6E9D0;
     --card:#FBF8F1;
-    --shadow: 0 8px 24px rgba(34,40,59,0.06);
-    --input-bg:#FFFDF8;
-    --muted-bg:#F5F0E6;
+    --input-bg:#FFFFFF;
+    --input-border:rgba(34,40,59,0.18);
+    --shadow: 0 1px 0 rgba(34,40,59,0.06);
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -51,11 +51,10 @@
     min-height:100vh;
     padding-bottom:80px;
   }
-  .margin-rule{display:none;}
   .wrap{
     max-width:640px;
     margin:0 auto;
-    padding:24px 20px 20px;
+    padding:22px 20px 20px 56px;
     position:relative;
     z-index:1;
   }
@@ -72,20 +71,28 @@
     line-height:1.6;
   }
   .install-btn{
-    position:absolute; top:52px; right:16px;
-    display:flex; align-items:center; gap:2px;
+    position:absolute; top:52px; right:16px; z-index:40;
+    display:flex; align-items:center; justify-content:center;
+    width:34px; height:30px; box-sizing:border-box;
     font-family:'JetBrains Mono',monospace;
-    font-size:9px; font-weight:700;
+    font-size:9px; font-weight:800; letter-spacing:.04em;
     color:var(--rule-strong);
     border:1px solid var(--rule);
-    border-radius:12px;
-    padding:3px 8px 3px 6px;
+    border-radius:10px;
+    padding:0;
     background:var(--amber-bg);
     cursor:pointer;
     line-height:1;
+    touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent;
+    user-select:none;
   }
   .install-btn-icon{ font-size:11px; }
   .install-btn:active{ transform:scale(0.94); }
+  .install-btn:focus-visible{outline:2px solid var(--rule-strong);outline-offset:2px;}
+  .install-btn[aria-busy="true"]{cursor:wait;}
+  .install-btn[aria-busy="true"]{opacity:.65;pointer-events:none;}
+  #installOverlay{z-index:1000;}
   header.top{
     padding-top:6px;
     margin-bottom:6px;
@@ -106,13 +113,13 @@
     letter-spacing:-0.01em;
   }
   .section{
-    margin-top:34px;
+    margin-top:46px;
   }
   .section-head{
     display:flex;
     align-items:baseline;
     gap:10px;
-    margin-bottom:12px;
+    margin-bottom:16px;
   }
   .section-num{
     font-family:'JetBrains Mono',monospace;
@@ -132,11 +139,11 @@
     letter-spacing:.04em;
   }
   .subsection{
-    margin-top:22px;
-    padding-top:18px;
+    margin-top:30px;
+    padding-top:22px;
     border-top:1px dashed rgba(34,40,59,0.14);
   }
-  .subsection:first-of-type{ margin-top:8px; }
+  .subsection:first-of-type{ margin-top:12px; }
   .subsection-head{
     display:flex; align-items:center; gap:8px; margin-bottom:6px;
   }
@@ -156,8 +163,8 @@
     border:1px solid rgba(34,40,59,0.10);
     border-radius:8px;
     box-shadow:var(--shadow);
-    padding:14px 14px;
-    margin-bottom:12px;
+    padding:18px 18px;
+    margin-bottom:18px;
   }
 
   /* Section 1: projects */
@@ -182,7 +189,7 @@
     display:flex;
     align-items:center;
     gap:10px;
-    padding:9px 4px;
+    padding:13px 4px;
     border-top:1px dashed rgba(34,40,59,0.12);
   }
   .task-row:first-of-type{border-top:none;}
@@ -234,18 +241,20 @@
     border-color:var(--green);
     color:var(--green);
   }
+  .recurring-check{position:relative;z-index:3;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+  .recurring-check.not-due{opacity:.42;}
 
   .add-row{
     display:flex;
-    gap:8px;
-    margin-top:10px;
+    gap:10px;
+    margin-top:14px;
   }
   input[type=text], input[type=number]{
     font-family:'Inter',sans-serif;
     font-size:13.5px;
-    padding:8px 10px;
-    border:1px solid rgba(34,40,59,0.18);
-    border-radius:6px;
+    padding:10px 12px;
+    border:1px solid var(--input-border);
+    border-radius:7px;
     background:var(--input-bg);
     color:var(--ink);
     flex:1;
@@ -337,12 +346,17 @@
   /* Section 2: daily tasks */
   .daily-item{
     display:flex; flex-direction:column; gap:8px;
-    padding:10px 4px;
+    padding:14px 4px;
     border-top:1px dashed rgba(34,40,59,0.12);
   }
   .daily-item:first-of-type{border-top:none;}
-  .daily-item-row{ display:flex; align-items:center; gap:8px; }
-  .daily-text{flex:1; font-size:14px; font-weight:500;}
+  .daily-item-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .daily-text{flex:1; min-width:110px; font-size:14px; font-weight:500;}
+  .daily-item-meta{display:flex; align-items:center; justify-content:flex-end; gap:8px; flex-wrap:wrap; margin-left:auto;}
+  .daily-item-meta .lifespan-badge{margin-left:2px;}
+  @media (max-width:420px){
+    .daily-item-meta{width:100%; margin-left:36px; justify-content:flex-start; padding-left:0;}
+  }
   .daily-text.done{color:var(--green); text-decoration:line-through; text-decoration-color:rgba(76,122,94,0.5);}
   .color-dot{
     width:9px; height:9px; border-radius:50%; flex-shrink:0; cursor:pointer;
@@ -383,7 +397,7 @@
   /* Section: past task */
   .past-item{
     display:flex; align-items:center; gap:10px;
-    padding:9px 4px;
+    padding:13px 4px;
     border-top:1px dashed rgba(34,40,59,0.12);
   }
   .past-item:first-of-type{border-top:none;}
@@ -427,13 +441,13 @@
   /* Section 3: today special */
   .special-item{
     display:flex; align-items:center; gap:10px;
-    padding:10px 4px;
+    padding:14px 4px;
     border-top:1px dashed rgba(34,40,59,0.12);
   }
   .special-item:first-of-type{border-top:none;}
 
   /* Section 4: future */
-  .future-group{margin-bottom:16px;}
+  .future-group{margin-bottom:20px;}
   .future-group-label{
     font-family:'JetBrains Mono',monospace;
     font-size:11px; color:var(--rule-strong); font-weight:700;
@@ -442,13 +456,13 @@
   }
   .future-item{
     display:flex; align-items:center; gap:10px;
-    padding:8px 4px;
+    padding:12px 4px;
     border-top:1px dashed rgba(34,40,59,0.12);
     font-size:13.5px;
   }
   .future-item:first-of-type{border-top:none;}
   .future-offset-row{
-    display:flex; gap:6px; margin-top:10px; flex-wrap:wrap;
+    display:flex; gap:8px; margin-top:14px; flex-wrap:wrap;
   }
   .chip{
     font-family:'JetBrains Mono',monospace;
@@ -472,13 +486,13 @@
   }
 
   footer.note{
-    max-width:640px; margin:40px auto 0; padding:0 20px;
+    max-width:640px; margin:40px auto 0; padding:0 20px 0 56px;
     font-size:11.5px; color:var(--pencil); line-height:1.6;
   }
 
   @media (max-width:420px){
-    .wrap{padding-left:18px; padding-right:18px;}
-    footer.note{padding-left:18px; padding-right:18px;}
+    .wrap{padding-left:44px;}
+    footer.note{padding-left:44px;}
     h1{font-size:23px;}
   }
 
@@ -629,110 +643,351 @@
     text-decoration:none; display:inline-block;
   }
 
-  /* ===== T3 V4 visual system ===== */
-  :root{
-    --accent:#9F3D38;
-    --accent-soft:#F3D8D4;
-    --surface:#FFFDF8;
-    --surface-2:#F7F1E6;
-    --line:rgba(34,40,59,.10);
-    --radius:12px;
+  /* ---- T3 theme toggle ---- */
+  .theme-toggle{
+    position:static;
+    width:32px; height:32px;
+    display:flex; align-items:center; justify-content:center;
+    padding:0; border:1px solid var(--rule); border-radius:50%;
+    background:var(--card); color:var(--ink-soft);
+    font-size:15px; line-height:1; cursor:pointer;
+    box-shadow:var(--shadow);
+    z-index:3;
+    transition:transform .12s ease, background .15s ease, color .15s ease;
   }
-  body{background:var(--paper);}
+  .theme-toggle:active{transform:scale(.92);}
+  .theme-toggle:focus-visible{outline:2px solid var(--rule-strong); outline-offset:2px;}
+  .brand-row{display:flex; align-items:center; gap:10px; margin-bottom:2px;}
+
   body.dark{
-    --paper:#151B2A; --paper-2:#20283A; --ink:#F2EEE5; --ink-soft:#C7C9D1;
-    --rule:#59647C; --rule-strong:#E0A39D; --pencil:#9BA3B5;
-    --green:#82B394; --green-bg:#24382B; --amber:#E0B35C; --amber-bg:#3A3020;
-    --card:#1D2535; --shadow:0 10px 28px rgba(0,0,0,.18); --input-bg:#222B3C; --muted-bg:#252E40;
-    --accent:#E0A39D; --accent-soft:#392A2B; --surface:#1D2535; --surface-2:#222B3C; --line:rgba(242,238,229,.10);
+    --paper:#17191F;
+    --paper-2:#20232B;
+    --ink:#F1F0EA;
+    --ink-soft:#C4C7D0;
+    --rule:#75636A;
+    --rule-strong:#D66A63;
+    --pencil:#A7A39A;
+    --green:#78A889;
+    --green-bg:#24352C;
+    --amber:#D9A441;
+    --amber-bg:#3A3020;
+    --card:#202229;
+    --input-bg:#292C34;
+    --input-border:rgba(241,240,234,0.20);
+    --shadow:0 1px 0 rgba(0,0,0,0.30), 0 4px 14px rgba(0,0,0,0.10);
   }
-  body{transition:background-color .35s ease,color .35s ease;}
-  .wrap{max-width:700px;}
-  .top{position:relative;}
-  .kicker{letter-spacing:.20em; opacity:.8;}
-  h1{font-size:32px; letter-spacing:-.04em; margin-bottom:20px;}
-  .page-tabs{gap:4px; margin:8px 0 26px; padding:0 4px; border-bottom:1px solid var(--line);}
-  .page-tab{padding:10px 10px; border-radius:9px 9px 0 0;}
-  .page-tab.active{background:var(--card);}
-  .section{margin-top:42px;}
-  .section-head{margin-bottom:14px;}
-  .section-num{border-radius:7px; padding:3px 8px;}
-  .section-title{font-size:15px;}
-  .section-sub{line-height:1.55; max-width:58ch;}
-  .card{border-radius:var(--radius); padding:16px; margin-bottom:14px; border-color:var(--line);}
-  .task-row,.daily-item,.special-item,.past-item,.future-item{padding:12px 5px; gap:11px;}
-  .task-row{min-height:48px;}
-  .task-name,.daily-text{font-size:14px;}
-  .edit-btn,.rm-x,.reschedule-btn{min-width:30px; min-height:30px; display:flex; align-items:center; justify-content:center; border-radius:7px;}
-  .edit-btn:hover,.rm-x:hover,.reschedule-btn:hover{background:var(--muted-bg);}
-  .check-btn{width:25px;height:25px;border-radius:7px;}
-  .stamp{top:10px; right:10px; cursor:pointer; transition:transform .2s ease, box-shadow .2s ease; user-select:none;}
-  .stamp:hover{transform:translateY(-1px); box-shadow:0 4px 14px rgba(34,40,59,.10);}
-  .install-btn{top:66px; right:10px; z-index:4;}
-  .theme-toggle{position:fixed;left:14px;bottom:18px;width:48px;height:48px;border-radius:15px;border:1px solid var(--rule);background:#EFE7D8;color:#1C2638;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:30;box-shadow:0 8px 24px rgba(34,40,59,.12);font-family:'JetBrains Mono',monospace;font-weight:800;font-size:14px;overflow:hidden;}
-  body.dark .theme-toggle{background:#202B43;color:#F1ECE1;}
-  .theme-toggle .t3-mark{display:block;transform:rotate(0deg);transition:transform .6s cubic-bezier(.2,.8,.2,1);}
-  .theme-toggle.spin .t3-mark{transform:rotate(360deg);}
-  .floating-add{position:fixed;right:16px;bottom:18px;width:48px;height:48px;border-radius:15px;border:1px solid var(--rule-strong);background:var(--rule-strong);color:#fff;font-size:24px;line-height:1;cursor:pointer;z-index:30;box-shadow:0 8px 24px rgba(34,40,59,.16);}
-  .floating-add:active{transform:scale(.95);}
-  .drawer-overlay{position:fixed;inset:0;background:rgba(10,14,23,.42);z-index:60;display:none;align-items:flex-end;justify-content:center;padding:0;}
-  .drawer-overlay.open{display:flex;}
-  .drawer{width:min(700px,100%);max-height:82vh;overflow:auto;background:var(--card);border:1px solid var(--line);border-bottom:none;border-radius:20px 20px 0 0;padding:18px 18px 28px;box-shadow:0 -14px 40px rgba(0,0,0,.18);animation:drawerIn .25s ease-out;}
-  @keyframes drawerIn{from{transform:translateY(20px);opacity:.7}to{transform:none;opacity:1}}
-  .drawer-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;}
-  .drawer-title{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:15px;}
-  .drawer-close{border:0;background:var(--muted-bg);color:var(--ink);border-radius:9px;width:32px;height:32px;cursor:pointer;}
-  .history-filter{display:flex;gap:6px;margin:0 0 16px;}
-  .history-filter button{flex:1;border:1px solid var(--rule);background:transparent;color:var(--rule-strong);padding:8px 6px;border-radius:9px;font:700 11px 'JetBrains Mono',monospace;cursor:pointer;}
-  .history-filter button.active{background:var(--rule-strong);color:#fff;}
-  .history-month{margin-top:18px;}
-  .history-month-head{font:800 13px 'JetBrains Mono',monospace;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
-  .history-bar{height:12px;border-radius:8px;overflow:hidden;background:var(--muted-bg);display:flex;border:1px solid var(--line);margin:7px 0 10px;}
-  .history-bar .done{background:var(--green);height:100%;}
-  .history-bar .undone{background:var(--amber);height:100%;}
-  .history-meta{font:10.5px 'JetBrains Mono',monospace;color:var(--pencil);display:flex;justify-content:space-between;}
-  .history-list{border-top:1px dashed var(--line);margin-top:10px;}
-  .history-entry{display:flex;gap:9px;align-items:center;padding:10px 3px;border-bottom:1px dashed var(--line);font-size:13px;}
-  .history-entry .entry-name{flex:1;min-width:0;}
-  .history-entry .entry-date{font:10px 'JetBrains Mono',monospace;color:var(--pencil);}
-  .danger-zone{margin-top:22px;padding-top:14px;border-top:1px solid var(--line);text-align:right;}
-  .danger-btn{font:700 9.5px 'JetBrains Mono',monospace;padding:5px 8px;border:1px solid rgba(180,68,62,.45);background:transparent;color:var(--rule-strong);border-radius:7px;cursor:pointer;}
-  .details-grid{display:grid;gap:12px;}
-  .detail-label{font:700 10px 'JetBrains Mono',monospace;color:var(--pencil);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;}
-  .detail-value{font-size:14px;line-height:1.5;}
-  .subtask-section{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);}
-  .subtask-item{padding:10px 0;border-bottom:1px dashed var(--line);}
-  .subtask-head{display:flex;align-items:center;gap:9px;}
-  .subtask-head .subtask-name{flex:1;font-size:13.5px;}
-  .mini-list{margin:7px 0 0 34px;display:grid;gap:6px;}
-  .mini-item{font-size:12.5px;display:flex;gap:7px;align-items:center;}
-  .mini-item input{margin:0;}
-  .subtask-more{margin:7px 0 0 34px;border:0;background:transparent;color:var(--rule-strong);font:700 10.5px 'JetBrains Mono',monospace;cursor:pointer;padding:3px 0;}
-  .add-subtask-form{display:none;margin-top:10px;padding:10px;background:var(--muted-bg);border-radius:9px;}
-  .add-subtask-form.open{display:block;}
-  .history-open-btn{border:0;background:transparent;color:inherit;padding:0;cursor:pointer;}
-  @media (max-width:420px){.wrap{padding-left:14px;padding-right:14px}.theme-toggle{left:10px}.floating-add{right:10px}.stamp{right:4px}.install-btn{right:4px}}
+  body.dark .theme-toggle{background:var(--paper-2); color:#F1D27A;}
+  body.dark input, body.dark select, body.dark textarea{color-scheme:dark;}
+  body.dark .daily-bar-seg, body.dark .daily-bar-gradient{background:#343740;}
+
+/* ================================================================
+   T3 V2 — VISUAL IDENTITY / MOBILE-FIRST REDESIGN
+   ================================================================ */
+:root{
+  --paper:#EEE9DE;
+  --paper-2:#E3DCCF;
+  --ink:#202638;
+  --ink-soft:#4A5063;
+  --rule:#C8A7A0;
+  --rule-strong:#B74C46;
+  --pencil:#817D73;
+  --green:#4F7E62;
+  --green-bg:#DFE9E1;
+  --amber:#C99634;
+  --amber-bg:#F4E8CF;
+  --card:#FAF7F0;
+  --card-strong:#FFFDF8;
+  --input-bg:#FFFDF9;
+  --input-border:rgba(32,38,56,.16);
+  --shadow:0 8px 24px rgba(45,42,35,.055),0 1px 1px rgba(45,42,35,.08);
+  --shadow-hover:0 12px 30px rgba(45,42,35,.09),0 2px 2px rgba(45,42,35,.08);
+  --radius:16px;
+}
+html{scroll-behavior:smooth;}
+body{
+  background:
+    radial-gradient(circle at 90% 0%, rgba(183,76,70,.055), transparent 30%),
+    repeating-linear-gradient(to bottom,transparent 0,transparent 39px,rgba(183,76,70,.065) 39px,rgba(183,76,70,.065) 40px),
+    var(--paper);
+  line-height:1.45;
+  padding-bottom:96px;
+  transition:background-color .25s ease,color .25s ease;
+}
+body::before{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background:linear-gradient(115deg,rgba(255,255,255,.18),transparent 36%);
+  opacity:.7;
+}
+.wrap{max-width:760px;width:min(100%,760px);margin:0 auto;padding:24px 22px 30px;}
+header.top{padding:4px 0 18px;margin-bottom:6px;position:relative;}
+.header-tools{position:absolute;top:0;right:0;display:flex;align-items:flex-start;gap:8px;z-index:30;}
+.brand-row{display:flex;align-items:center;gap:12px;margin-bottom:4px;}
+.brand-lockup{display:flex;flex-direction:column;gap:2px;min-width:0;}
+.kicker{font-size:10px;letter-spacing:.18em;color:var(--rule-strong);font-weight:800;}
+.brand-caption{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.09em;color:var(--pencil);}
+.brand-title{font-size:34px;line-height:1;margin:8px 0 0;letter-spacing:-.04em;color:var(--ink);}
+.stamp{top:8px;right:4px;border:1px solid var(--rule);border-radius:12px;padding:8px 11px;background:rgba(250,247,240,.72);font-size:9px;backdrop-filter:blur(8px);}
+.install-btn{position:static;width:36px;height:32px;padding:0;border-radius:10px;background:var(--amber-bg);font-size:9px;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.theme-toggle{
+  position:relative; width:42px;height:42px;border-radius:13px;padding:6px;
+  border:1px solid rgba(183,76,70,.34);background:var(--card-strong);color:var(--ink);
+  box-shadow:0 4px 14px rgba(45,42,35,.08);overflow:hidden;
+  transition:transform .18s ease,box-shadow .18s ease,background .25s ease,border-color .25s ease;
+}
+.theme-toggle:hover{transform:translateY(-1px);box-shadow:0 7px 18px rgba(45,42,35,.11);}
+.theme-toggle:active{transform:scale(.94);}
+.theme-logo{width:100%;height:100%;display:block;object-fit:contain;transition:filter .25s ease,transform .3s ease;}
+body.dark .theme-logo{filter:invert(1) brightness(1.55) saturate(.7);transform:rotate(180deg);}
+
+.page-tabs{
+  position:sticky;top:8px;z-index:20;display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;
+  padding:6px;background:rgba(238,233,222,.86);backdrop-filter:blur(14px);
+  border:1px solid rgba(32,38,56,.08);border-radius:15px;margin:4px 0 30px;
+  box-shadow:0 6px 18px rgba(45,42,35,.06);
+}
+.page-tabs::-webkit-scrollbar{display:none;}
+.page-tab{
+  flex:0 0 auto;border:0;border-radius:10px;margin:0;padding:9px 12px;
+  font-size:11px;letter-spacing:.015em;color:var(--pencil);transition:all .18s ease;
+}
+.page-tab.active{color:var(--card-strong);background:var(--rule-strong);box-shadow:0 3px 10px rgba(183,76,70,.22);}
+.page-tab:active{transform:scale(.97);}
+
+.section{margin-top:52px;scroll-margin-top:76px;animation:t3Rise .45s ease both;}
+.section:first-child{margin-top:0;}
+.section-head{gap:10px;margin-bottom:8px;align-items:center;}
+.section-num{font-size:10px;border-radius:8px;padding:4px 7px;background:var(--amber-bg);box-shadow:inset 0 0 0 1px rgba(183,76,70,.08);}
+.section-title{font-size:15px;letter-spacing:.065em;line-height:1.2;}
+.section-sub{font-size:12px;line-height:1.55;color:var(--pencil);margin:0 0 16px;max-width:58ch;}
+.subsection{margin-top:36px;padding-top:26px;border-top:1px dashed rgba(32,38,56,.13);}
+.subsection:first-of-type{margin-top:20px;}
+.subsection-head{margin-bottom:8px;}
+.subsection-title{font-size:12px;letter-spacing:.075em;}
+
+.card,.timer-card,.stat{
+  background:var(--card);border:1px solid rgba(32,38,56,.09);border-radius:var(--radius);
+  box-shadow:var(--shadow);transition:box-shadow .2s ease,transform .2s ease,background .25s ease,border-color .25s ease;
+}
+.card{padding:18px 18px;margin-bottom:16px;}
+.card:hover{box-shadow:var(--shadow-hover);}
+.project{padding:6px 14px 10px;margin-bottom:14px;}
+.project-head{padding:8px 2px 10px;margin-bottom:0;}
+.project-name{font-size:13px;letter-spacing:.02em;}
+.project-actions button{font-size:10px;}
+.task-row{gap:11px;padding:14px 2px;border-top:1px dashed rgba(32,38,56,.11);min-height:54px;}
+.task-name{font-size:13.5px;line-height:1.4;}
+.check-btn{width:30px;height:30px;border-radius:9px;}
+.counter-btn{width:32px;height:32px;border-radius:9px;}
+.tally{font-size:11px;min-width:52px;}
+.add-row{gap:9px;margin-top:14px;}
+input[type=text],input[type=number],select,input[type=date],textarea{
+  min-height:44px;padding:11px 13px;border-radius:11px;background:var(--input-bg);border:1px solid var(--input-border);
+  outline:none;transition:border-color .18s ease,box-shadow .18s ease,background .25s ease;
+}
+textarea{min-height:150px;}
+input:focus,select:focus,textarea:focus{border-color:rgba(183,76,70,.55);box-shadow:0 0 0 3px rgba(183,76,70,.10);}
+input::placeholder,textarea::placeholder{color:#AAA497;}
+.btn{min-height:42px;padding:9px 14px;border-radius:10px;font-size:11px;box-shadow:0 3px 8px rgba(183,76,70,.14);transition:transform .15s ease,box-shadow .15s ease,filter .15s ease;}
+.btn:hover{filter:brightness(1.02);box-shadow:0 5px 12px rgba(183,76,70,.18);}
+.btn:active,.chip:active,.show-all-toggle:active,.weekday-btn:active{transform:scale(.96);}
+.btn.ghost{box-shadow:none;}
+.btn.subtle{box-shadow:none;}
+.new-project-toggle{font-size:11px;padding:7px 0;letter-spacing:.02em;}
+.new-project-form{gap:10px;margin-top:12px;padding:14px;border-radius:12px;background:var(--paper-2);border-color:rgba(183,76,70,.24);}
+.subtask-list{gap:8px;}
+.subtask-input-row{gap:8px;}
+
+.daily-item{gap:10px;padding:17px 2px;}
+.daily-item-row{gap:9px;align-items:center;}
+.daily-text{font-size:13.5px;line-height:1.35;}
+.daily-item-meta{gap:7px;}
+.lifespan-badge,.timer-link-tag{padding:4px 8px;border-radius:9px;font-size:8.5px;}
+.daily-count-btn{width:28px;height:28px;border-radius:8px;}
+.daily-tally{min-width:36px;font-size:10.5px;}
+.daily-bar-segments,.daily-bar-gradient{margin-top:2px;}
+.daily-bar-seg,.daily-bar-gradient{height:7px;}
+.past-item,.special-item,.future-item{padding:15px 2px;min-height:54px;}
+.past-item{gap:9px;}
+.future-group{margin-bottom:22px;}
+.future-group-label{font-size:10px;margin-bottom:7px;letter-spacing:.09em;}
+.future-offset-row{gap:7px;margin-top:12px;}
+.chip{padding:8px 12px;border-radius:11px;font-size:10.5px;transition:transform .15s ease,background .18s ease;}
+.show-all-toggle{padding:6px 10px;border-radius:10px;font-size:9.5px;}
+.edit-btn,.rm-x{width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;border-radius:9px;transition:background .15s ease,color .15s ease,transform .15s ease;}
+.edit-btn:hover,.rm-x:hover{background:var(--paper-2);color:var(--ink);}
+.rm-x:hover{color:var(--rule-strong);}
+
+/* Make utility controls read as a single system. */
+.weekday-picker{gap:5px;}
+.weekday-btn{min-height:38px;border-radius:9px;padding:7px 2px;}
+.palette-grid{gap:8px;}
+
+/* Timer / calendar get the same visual language. */
+.timer-card{padding:18px;margin-bottom:14px;}
+.timer-display{font-size:38px;letter-spacing:.035em;margin:18px 0;}
+.timer-controls{gap:9px;}
+.timer-controls button{min-height:42px;border-radius:10px;transition:transform .15s ease;}
+.summary-row{gap:9px;margin-bottom:16px;}
+.stat{padding:15px;border-radius:14px;}
+.stat .num{font-size:21px;}
+.tabs{gap:6px;margin-bottom:16px;padding-bottom:10px;}
+.tab{padding:8px 12px;border-radius:10px;font-size:10.5px;}
+.cal-grid{
+  width:100%;
+  min-width:0;
+  display:grid;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  grid-auto-flow:row;
+  grid-auto-rows:minmax(42px,auto);
+  gap:6px;
+}
+.cal-weekdays{
+  width:100%;
+  min-width:0;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+}
+.cal-weekdays span{min-width:0;overflow:hidden;text-align:center;}
+.cal-cell{
+  width:100%;
+  min-width:0;
+  min-height:42px;
+  height:clamp(42px,10vw,58px);
+  aspect-ratio:auto;
+  overflow:hidden;
+  border-radius:10px;
+  transition:transform .15s ease,background .18s ease;
+}
+.cal-cell:hover{transform:translateY(-1px);}
+.cal-cell .cal-daynum{line-height:1;}
+.cal-cell .cal-dots{max-width:100%;min-width:0;overflow:hidden;}
+.cal-nav{margin-bottom:14px;}
+.cal-nav-btn{width:36px;height:36px;border-radius:10px;}
+.cal-legend{gap:9px;margin-top:16px;padding-top:12px;}
+ .cal-grid, .cal-weekdays{box-sizing:border-box;overflow:hidden;}
+.cal-grid{grid-template-columns:repeat(7,minmax(0,1fr));grid-auto-rows:1fr;}
+.cal-cell{box-sizing:border-box;min-width:0;max-width:100%;width:100%;height:auto;min-height:0;aspect-ratio:1 / 1;padding:3px;overflow:hidden;}
+.cal-cell .cal-daynum{min-width:0;max-width:100%;overflow:hidden;}
+.cal-cell .cal-dots{width:100%;max-width:100%;min-width:0;overflow:hidden;}
+
+/* Modal hierarchy */
+.modal-overlay{background:rgba(22,25,34,.48);backdrop-filter:blur(5px);}
+.modal{max-width:360px;border-radius:18px;padding:22px;box-shadow:0 22px 60px rgba(0,0,0,.22);animation:t3Modal .2s ease both;}
+.modal h3{font-size:14px;}
+.modal p{line-height:1.55;}
+.modal-btn{min-height:44px;border-radius:10px;}
+
+/* Footer becomes quiet secondary information. */
+footer.note{max-width:760px;margin:54px auto 0;padding:0 22px;font-size:10.5px;line-height:1.7;opacity:.78;}
+
+/* Dark theme: calm, ink-on-paper rather than pure black. */
+body.dark{
+  --paper:#15171D;--paper-2:#1D2027;--ink:#F0EEE7;--ink-soft:#C3C6D0;
+  --rule:#66565D;--rule-strong:#D86A62;--pencil:#A29E95;--green:#7BA98A;--green-bg:#24362D;
+  --amber:#D5A64A;--amber-bg:#342C20;--card:#1D2027;--card-strong:#242831;--input-bg:#262A32;
+  --input-border:rgba(240,238,231,.16);--shadow:0 10px 26px rgba(0,0,0,.22),0 1px 1px rgba(0,0,0,.25);--shadow-hover:0 14px 34px rgba(0,0,0,.28);
+}
+body.dark::before{background:linear-gradient(115deg,rgba(255,255,255,.025),transparent 36%);}
+body.dark .page-tabs{background:rgba(21,23,29,.84);border-color:rgba(240,238,231,.08);}
+body.dark .stamp{background:rgba(29,32,39,.78);}
+body.dark .theme-toggle{background:#292D36;border-color:rgba(216,106,98,.48);}
+body.dark .new-project-form{background:#20242B;}
+body.dark .card,body.dark .timer-card,body.dark .stat{border-color:rgba(240,238,231,.07);}
+
+@keyframes t3Rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes t3Modal{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+@media (max-width:520px){
+  .wrap{width:100%;padding:20px 15px 26px;}
+  .header-tools{right:0;gap:7px;}
+  .stamp{font-size:8px;padding:7px 9px;}
+  .install-btn{width:38px;height:34px;}
+  .brand-title{font-size:31px;}
+  .page-tabs{top:5px;margin-bottom:26px;}
+  .page-tab{padding:9px 11px;font-size:10.5px;}
+  .section{margin-top:46px;}
+  .card{padding:16px 14px;border-radius:15px;}
+  .task-row{gap:8px;padding:14px 0;}
+  .daily-item{padding:16px 0;}
+  .daily-item-meta{width:auto;margin-left:auto;}
+  .daily-text{min-width:100px;}
+  .future-offset-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));}
+  .future-offset-row .chip{width:100%;}
+  .add-row{align-items:stretch;}
+  .add-row .btn{flex:0 0 auto;}
+  footer.note{padding:0 15px;}
+}
+@media (max-width:390px){
+  .header-tools{right:0;gap:5px;}
+  .stamp{font-size:7.5px;padding:6px 8px;}
+  .install-btn{width:36px;height:32px;}
+  .theme-toggle{width:38px;height:38px;border-radius:11px;}
+  .brand-caption{font-size:7.5px;}
+  .brand-title{font-size:28px;}
+  .section-title{font-size:14px;}
+  .daily-item-row{align-items:flex-start;}
+  .daily-item-meta{width:100%;margin-left:0;justify-content:flex-start;}
+  .daily-text{padding-top:3px;}
+  footer.note{padding:0;}
+}
+@media (max-width:520px){
+  .cal-grid{grid-auto-rows:44px;gap:5px;}
+  .cal-cell{height:44px;min-height:44px;padding:2px;}
+  .cal-cell .cal-daynum{font-size:11px;}
+}
+@media (max-width:390px){
+  .cal-grid{grid-auto-rows:40px;gap:4px;}
+  .cal-cell{height:40px;min-height:40px;border-radius:8px;}
+  .cal-cell .cal-dots{display:none;}
+}
+
+ .error-indicator{position:fixed;right:16px;bottom:16px;z-index:2000;border:1px solid rgba(183,76,70,.65);background:var(--card);color:var(--rule-strong);border-radius:999px;padding:8px 10px;font:800 9px 'JetBrains Mono',monospace;letter-spacing:.08em;box-shadow:0 8px 22px rgba(0,0,0,.14);cursor:pointer;}
+.error-panel{position:fixed;inset:0;z-index:2100;display:none;align-items:flex-end;justify-content:center;background:rgba(22,25,34,.38);backdrop-filter:blur(4px);padding:18px;}
+.error-panel.open{display:flex;}
+.error-panel-inner{width:min(100%,560px);max-height:min(78vh,620px);overflow:auto;background:var(--card);border:1px solid rgba(183,76,70,.28);border-radius:18px;padding:18px;box-shadow:0 22px 60px rgba(0,0,0,.22);}
+.error-panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+.error-panel h3{margin:7px 0 0;font:800 16px 'JetBrains Mono',monospace;color:var(--ink);}
+.error-badge{display:inline-block;border:1px solid rgba(183,76,70,.4);border-radius:999px;padding:4px 7px;color:var(--rule-strong);font:800 8px 'JetBrains Mono',monospace;letter-spacing:.08em;}
+.error-close{border:0;background:transparent;color:var(--pencil);font-size:24px;line-height:1;cursor:pointer;padding:2px 5px;}
+.error-intro{font-size:12px;color:var(--pencil);line-height:1.5;margin:12px 0;}
+.error-list{display:flex;flex-direction:column;gap:9px;}
+.error-item{border:1px solid rgba(183,76,70,.2);border-radius:11px;padding:10px;background:var(--paper-2);font-size:11px;}
+.error-item strong{display:block;color:var(--rule-strong);font:700 10px 'JetBrains Mono',monospace;margin-bottom:4px;}
+.error-item code{display:block;white-space:pre-wrap;word-break:break-word;color:var(--ink);font:10px/1.5 'JetBrains Mono',monospace;}
+.error-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+body.dark .error-panel-inner{background:var(--card);}
+body.dark .error-item{background:var(--paper-2);}
+@media (max-width:520px){.error-panel{padding:12px;}.error-panel-inner{padding:15px;max-height:82vh;}.error-indicator{right:12px;bottom:12px;}}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;transition-duration:.001ms!important;}
+}
 
 </style>
 </head>
 <body>
-<div class="margin-rule"></div>
 <div class="wrap">
-  <button class="stamp" id="stamp" onclick="openHistoryDrawer()" aria-label="Open task history">PAGE 01<br>DATE: --</button>
-  <button id="installBtn" class="install-btn" onclick="triggerInstall()" title="Install app" style="display:none;">IN</button>
-  <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle light and dark mode"><span class="t3-mark">T3</span></button>
-  <button class="floating-add" onclick="openQuickAdd()" aria-label="Add task">+</button>
   <header class="top">
-    <div class="kicker">Core</div>
-    <h1>T3</h1>
+    <div class="header-tools" aria-label="App controls">
+      <div class="stamp" id="stamp">PAGE 01<br>DATE: --</div>
+      <button id="installBtn" class="install-btn" type="button" onclick="triggerInstall()" title="Install T3" aria-label="Install T3">IN</button>
+    </div>
+    <div class="brand-row">
+      <button id="themeToggle" class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Switch to dark mode" title="Switch to dark mode">
+        <img src="t3-logo.svg" alt="T3 theme toggle" class="theme-logo">
+      </button>
+      <div class="brand-lockup">
+        <div class="kicker">TASK TIME TRACKER</div>
+        <div class="brand-caption">T3 / PERSONAL WORKSPACE</div>
+      </div>
+    </div>
+    <h1 class="brand-title">T3</h1>
   </header>
 
-  <div class="page-tabs">
+  <nav class="page-tabs" aria-label="Main navigation">
     <button class="page-tab active" data-page="today" onclick="switchPage('today')">Today</button>
     <button class="page-tab" data-page="timer" onclick="switchPage('timer')">Timer</button>
     <button class="page-tab" data-page="calendar" onclick="switchPage('calendar')">Calendar</button>
     <button class="page-tab" data-page="progress" onclick="switchPage('progress')">Progress Tracker</button>
-  </div>
+  </nav>
 
   <div class="page active" id="page-today">
   <!-- SECTION 1 -->
@@ -934,7 +1189,7 @@
     <div class="card">
       <textarea id="manuscriptInput" placeholder="Nothing written yet — totally optional." rows="4"
         style="width:100%; font-family:'Inter',sans-serif; font-size:13.5px; line-height:1.5; padding:10px 12px;
-        border:1px solid rgba(34,40,59,0.18); border-radius:6px; background:var(--input-bg); color:var(--ink);
+        border:1px solid var(--input-border); border-radius:7px; background:var(--input-bg); color:var(--ink);
         resize:vertical; box-sizing:border-box;" oninput="onManuscriptInput()"></textarea>
       <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
         <span id="manuscriptStatus" style="font-family:'JetBrains Mono',monospace; font-size:10.5px; color:var(--pencil);"></span>
@@ -963,7 +1218,7 @@
       </div>
       <div style="margin-bottom:10px;">
         <label style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--pencil); display:block; margin-bottom:6px;">Link to a task (optional)</label>
-        <select id="timerLinkSelect" style="width:100%; font-family:'Inter',sans-serif; font-size:13.5px; padding:8px 10px; border:1px solid rgba(34,40,59,0.18); border-radius:6px; background:var(--input-bg); color:var(--ink);">
+        <select id="timerLinkSelect" style="width:100%; font-family:'Inter',sans-serif; font-size:13.5px; padding:8px 10px; border:1px solid var(--input-border); border-radius:7px; background:var(--input-bg); color:var(--ink);">
           <option value="">No linked task</option>
         </select>
       </div>
@@ -1008,8 +1263,6 @@
       </div>
     </div>
 
-    <div class="card" id="calendarHistorySummary"><div class="empty">Monthly history summary appears here after a month is archived.</div></div>
-
     <div class="card" id="calDayDetail">
       <div class="empty">Tap a day above to see its activity.</div>
     </div>
@@ -1040,60 +1293,13 @@
     <div class="tab-panel" id="tabpanel-ptab-future">
       <div id="futureHistoryList"></div>
     </div>
-  <div class="card" style="margin-top:20px;">
-    <div class="detail-label">Data safety</div>
-    <div style="font-size:12px;color:var(--pencil);line-height:1.5;margin-bottom:10px;">Export a complete T3 backup or restore one. Restoring existing data always asks whether to merge or replace.</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <button class="btn small ghost" onclick="exportT3Backup()">Backup T3</button>
-      <button class="btn small ghost" onclick="document.getElementById('restoreFile').click()">Restore T3</button>
-      <input id="restoreFile" type="file" accept="application/json" style="display:none" onchange="handleRestoreFile(event)">
-    </div>
-  </div>
   </div><!-- /page-progress -->
 </div>
 
 <footer class="note">
-  T3 stores data locally in this browser only — data won't sync across devices and clears if site data is cleared. Numeric-limit tasks ask "Full" or a specific number when you check them off. Reminders shown here are in-app only while this page is open (no OS push notifications from a browser prototype).
+  Stored locally in this browser only — data won't sync across devices and clears if site data is cleared. Numeric-limit tasks ask "Full" or a specific number when you check them off. Reminders shown here are in-app only while this page is open (no OS push notifications from a browser prototype).
 </footer>
 
-
-<!-- T3 V4: Waiting List quick capture drawer -->
-<div class="drawer-overlay" id="quickAddOverlay" onclick="if(event.target===this)closeQuickAdd()">
-  <div class="drawer" role="dialog" aria-modal="true" aria-labelledby="quickAddTitle">
-    <div class="drawer-head"><div class="drawer-title" id="quickAddTitle">Waiting List</div><button class="drawer-close" onclick="closeQuickAdd()">×</button></div>
-    <div class="section-sub">Capture it now. Schedule or move it later.</div>
-    <div id="waitingList"></div>
-    <div class="add-row" style="margin-top:12px;">
-      <input type="text" id="waitingInput" placeholder="What do you want to remember?" onkeydown="if(event.key==='Enter')addWaitingTask()">
-      <button class="btn" onclick="addWaitingTask()">Add</button>
-    </div>
-  </div>
-</div>
-
-<!-- T3 V4: History drawer -->
-<div class="drawer-overlay" id="historyOverlay" onclick="if(event.target===this)closeHistoryDrawer()">
-  <div class="drawer" role="dialog" aria-modal="true" aria-labelledby="historyTitle">
-    <div class="drawer-head"><div class="drawer-title" id="historyTitle">Task History</div><button class="drawer-close" onclick="closeHistoryDrawer()">×</button></div>
-    <div class="history-filter" id="historyFilter">
-      <button class="active" data-filter="all" onclick="setHistoryFilter('all')">All</button>
-      <button data-filter="completed" onclick="setHistoryFilter('completed')">Completed</button>
-      <button data-filter="uncompleted" onclick="setHistoryFilter('uncompleted')">Uncompleted</button>
-    </div>
-    <div id="historyDrawerContent"></div>
-  </div>
-</div>
-
-<!-- T3 V4: task details -->
-<div class="drawer-overlay" id="detailsOverlay" onclick="if(event.target===this)closeTaskDetails()">
-  <div class="drawer" role="dialog" aria-modal="true" aria-labelledby="detailsTitle">
-    <div class="drawer-head"><div class="drawer-title" id="detailsTitle">Task Details</div><button class="drawer-close" onclick="closeTaskDetails()">×</button></div>
-    <div id="detailsContent"></div>
-  </div>
-</div>
-
-<div id="undoToast" style="position:fixed;left:50%;bottom:82px;transform:translateX(-50%) translateY(14px);z-index:90;display:none;align-items:center;gap:12px;background:var(--ink);color:var(--paper);padding:9px 12px 9px 14px;border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,.18);font:11px 'JetBrains Mono',monospace;opacity:0;transition:opacity .18s ease,transform .18s ease;max-width:calc(100vw - 32px);">
-  <span id="undoText">Action completed</span><button id="undoBtn" onclick="performUndo()" style="border:0;background:var(--rule-strong);color:#fff;border-radius:7px;padding:6px 9px;font:700 10px 'JetBrains Mono',monospace;cursor:pointer;">Undo</button>
-</div>
 <!-- Modal: how much completed -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
@@ -1119,6 +1325,16 @@
 </div>
 
 <!-- Timer finished -> what to do with linked task -->
+<div class="modal-overlay" id="installOverlay" aria-hidden="true">
+  <div class="modal">
+    <h3 id="installTitle">Install T3</h3>
+    <p id="installMessage">T3 can be installed from your browser menu. If the Install option is missing, open this page in Chrome or another supported browser over HTTPS (or localhost).</p>
+    <div class="modal-btn-row">
+      <button class="modal-btn" onclick="closeInstallHelp()">Got it</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="timerDoneOverlay">
   <div class="modal">
     <h3 id="timerDoneTitle">Timer finished</h3>
@@ -1127,7 +1343,73 @@
   </div>
 </div>
 
+<!-- Runtime error monitor: hidden until T3 detects a real JavaScript/runtime error. -->
+<div id="errorIndicator" class="error-indicator" hidden>ERR</div>
+<div class="error-panel" id="errorPanel" aria-hidden="true">
+  <div class="error-panel-inner">
+    <div class="error-panel-head">
+      <div><span class="error-badge">T3 ERROR</span><h3>Something went wrong</h3></div>
+      <button type="button" class="error-close" id="errorCloseBtn" aria-label="Close error details">×</button>
+    </div>
+    <p class="error-intro">T3 caught an error so you can report the exact problem instead of getting a silent failure.</p>
+    <div class="error-list" id="errorList"></div>
+    <div class="error-actions">
+      <button type="button" class="btn small" id="errorCopyBtn">Copy error details</button>
+      <button type="button" class="btn subtle small" id="errorClearBtn">Clear log</button>
+    </div>
+  </div>
+</div>
+
 <script>
+// ---------- Runtime error monitor ----------
+// Errors are surfaced visibly instead of failing silently. This is intentionally
+// lightweight and only appears when a runtime error actually occurs.
+const T3_ERROR_KEY = 't3_error_log_v1';
+function getT3ErrorLog(){
+  try { return JSON.parse(localStorage.getItem(T3_ERROR_KEY) || '[]'); } catch(e){ return []; }
+}
+function saveT3ErrorLog(log){
+  try { localStorage.setItem(T3_ERROR_KEY, JSON.stringify(log.slice(-12))); } catch(e){}
+}
+function formatT3Error(error){
+  if(error instanceof Error) return error.stack || `${error.name}: ${error.message}`;
+  return String(error);
+}
+function reportT3Error(source, error, extra=''){
+  const entry={time:new Date().toLocaleString(),source,message:formatT3Error(error),extra};
+  const log=getT3ErrorLog(); log.push(entry); saveT3ErrorLog(log);
+  console.error(`[T3 ${source}]`, error, extra);
+  const indicator=document.getElementById('errorIndicator');
+  if(indicator){ indicator.hidden=false; indicator.textContent=`ERR ${log.length}`; indicator.onclick=openT3ErrorPanel; }
+  renderT3ErrorLog();
+}
+function renderT3ErrorLog(){
+  const box=document.getElementById('errorList'); if(!box) return;
+  const log=getT3ErrorLog();
+  box.innerHTML=log.length ? log.slice().reverse().map((e,i)=>`<div class="error-item"><strong>${escapeHtml(e.time)} · ${escapeHtml(e.source)}</strong><code>${escapeHtml(e.message)}${e.extra?'\n'+escapeHtml(e.extra):''}</code></div>`).join('') : '<div class="error-item"><code>No errors recorded.</code></div>';
+}
+function openT3ErrorPanel(){
+  renderT3ErrorLog();
+  const panel=document.getElementById('errorPanel'); if(panel){panel.classList.add('open');panel.setAttribute('aria-hidden','false');}
+}
+function closeT3ErrorPanel(){
+  const panel=document.getElementById('errorPanel'); if(panel){panel.classList.remove('open');panel.setAttribute('aria-hidden','true');}
+}
+window.addEventListener('error',(event)=>{
+  reportT3Error('window.error', event.error || event.message, `${event.filename||''}:${event.lineno||''}:${event.colno||''}`);
+});
+window.addEventListener('unhandledrejection',(event)=>{ reportT3Error('unhandledrejection', event.reason); });
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('errorIndicator')?.addEventListener('click',openT3ErrorPanel);
+  document.getElementById('errorCloseBtn')?.addEventListener('click',closeT3ErrorPanel);
+  document.getElementById('errorClearBtn')?.addEventListener('click',()=>{localStorage.removeItem(T3_ERROR_KEY);renderT3ErrorLog();document.getElementById('errorIndicator').hidden=true;});
+  document.getElementById('errorCopyBtn')?.addEventListener('click',async()=>{
+    const text=getT3ErrorLog().map(e=>`[${e.time}] ${e.source}\n${e.message}\n${e.extra||''}`).join('\n\n');
+    try{ await navigator.clipboard.writeText(text || 'No T3 errors recorded.'); }catch(e){ reportT3Error('error-copy',e); }
+  });
+  const log=getT3ErrorLog(); if(log.length){const i=document.getElementById('errorIndicator');i.hidden=false;i.textContent=`ERR ${log.length}`;}
+});
+
 // ---------- State ----------
 let state = JSON.parse(JSON.stringify({
   projects: [],
@@ -1141,21 +1423,18 @@ let state = JSON.parse(JSON.stringify({
   notes: {},          // dayKey -> free text note for that day (optional, one per day)
   pastTasks: [],        // unfinished Today Special items carried over from a prior day: {id, text, originalDay}
   weekly: [],          // Weekly Routine tasks: {id, text, target, progress, done, colorIndex, weekdays:[0-6], lifespan}
-  dated: [],            // Recurring Dates tasks
-  waiting: [],          // V4 unscheduled capture list
-  taskHistory: [],      // V4 event history: {id,text,status,historyDate,source}
-  monthlySummaries: {}  // V4 monthKey -> {completed,uncompleted,total}
+  dated: []            // Recurring Dates tasks: {id, text, recurrence:'monthly'|'yearly', dates:[{month,day}], lifespan, lastPromotedKey}
 }));
 
 function load(){
   try{
-    const raw = localStorage.getItem('t3_state_v4') || localStorage.getItem('ledger_state_v1');
+    const raw = localStorage.getItem('t3_state_v1') || localStorage.getItem('ledger_state_v1');
     if(raw){
       const saved = JSON.parse(raw);
       // Merge onto defaults so older saved data (from before history tracking existed)
       // doesn't wipe out fields it never had, like history/lastSeenDay.
       state = Object.assign({
-        projects: [], daily: [], special: [], future: [], history: {}, lastSeenDay: null, timers: [], timerLog: [], notes: {}, pastTasks: [], weekly: [], dated: [], waiting: [], taskHistory: [], monthlySummaries: {}
+        projects: [], daily: [], special: [], future: [], history: {}, lastSeenDay: null, timers: [], timerLog: [], notes: {}, pastTasks: [], weekly: [], dated: []
       }, saved);
       if(!state.history || typeof state.history !== 'object') state.history = {};
       if(!state.notes || typeof state.notes !== 'object') state.notes = {};
@@ -1168,10 +1447,6 @@ function load(){
       if(!Array.isArray(state.pastTasks)) state.pastTasks = [];
       if(!Array.isArray(state.weekly)) state.weekly = [];
       if(!Array.isArray(state.dated)) state.dated = [];
-      if(!Array.isArray(state.waiting)) state.waiting = [];
-      if(!Array.isArray(state.taskHistory)) state.taskHistory = [];
-      if(!state.monthlySummaries || typeof state.monthlySummaries !== 'object') state.monthlySummaries = {};
-      state.waiting.forEach(w=>{ if(!Array.isArray(w.subtasks)) w.subtasks=[]; });
       // Older saved daily-habit entries predate the lifespan field -- default them to
       // Forever so they keep behaving exactly as they did before this update.
       state.daily.forEach(d => { if(!d.lifespan) d.lifespan = {type:'forever'}; });
@@ -1179,32 +1454,11 @@ function load(){
       // so any timer that was running gets paused on load rather than silently losing time.
       state.timers.forEach(t => { t.running = false; });
     }
-  }catch(e){ console.warn('load failed', e); }
+  }catch(e){ reportT3Error('load', e); }
 }
-let v4UndoSnapshot=null, v4UndoTimer=null, v4UndoSuppress=false, v4SkipNextUndo=false;
 function save(){
-  try{
-    if(!v4UndoSuppress && !v4SkipNextUndo){
-      const raw=localStorage.getItem('t3_state_v4');
-      if(raw){ v4UndoSnapshot=JSON.parse(raw); showUndoToast('Action changed'); }
-    }
-    v4SkipNextUndo=false;
-    localStorage.setItem('t3_state_v4', JSON.stringify(state));
-  } catch(e){ console.warn('save failed', e); }
-}
-function saveNoUndo(){ v4SkipNextUndo=true; save(); }
-function showUndoToast(label){
-  const toast=document.getElementById('undoToast'); if(!toast)return;
-  document.getElementById('undoText').textContent=label+' · 10s';
-  toast.style.display='flex'; requestAnimationFrame(()=>{toast.style.opacity='1';toast.style.transform='translateX(-50%) translateY(0)';});
-  clearTimeout(v4UndoTimer); v4UndoTimer=setTimeout(()=>{v4UndoSnapshot=null;toast.style.opacity='0';toast.style.transform='translateX(-50%) translateY(14px)';setTimeout(()=>{if(!v4UndoSnapshot)toast.style.display='none';},180);},10000);
-}
-function performUndo(){
-  if(!v4UndoSnapshot)return;
-  const snapshot=v4UndoSnapshot; v4UndoSnapshot=null; clearTimeout(v4UndoTimer);
-  v4UndoSuppress=true; state=snapshot; localStorage.setItem('t3_state_v4',JSON.stringify(state)); v4UndoSuppress=false;
-  renderProjects();renderDaily();renderWeekly();renderDated();renderSpecial();renderFuture();renderPastTasks();renderWaitingList();renderProgressPage();renderCalendar();
-  const toast=document.getElementById('undoToast'); if(toast){toast.style.opacity='0';toast.style.transform='translateX(-50%) translateY(14px)';setTimeout(()=>toast.style.display='none',180);}
+  try{ localStorage.setItem('t3_state_v1', JSON.stringify(state)); }
+  catch(e){ reportT3Error('save', e); }
 }
 function uid(){ return Math.random().toString(36).slice(2,9); }
 
@@ -1285,7 +1539,7 @@ function saveNewProject(){
   const name = document.getElementById('npName').value.trim();
   if(draftSubtasks.length===0){ showAlertModal('Add at least one task first.'); return; }
   state.projects.push({ id: uid(), name: name || null, tasks: draftSubtasks });
-  saveNoUndo(); renderProjects(); toggleNewProject();
+  save(); renderProjects(); toggleNewProject();
 }
 
 function renderProjects(){
@@ -1507,7 +1761,7 @@ function addDaily(){
     id: uid(), text, done:false,
     target, progress:0,
     colorIndex: state.daily.length % DAILY_COLOR_PALETTE.length,
-    lifespan, note:'', subtasks:[]
+    lifespan
   });
   input.value='';
   document.getElementById('dailyTargetInput').value='';
@@ -1587,21 +1841,32 @@ function renderDaily(){
       <div class="daily-item-row">
         <button class="check-btn ${complete?'checked':''}" onclick="onDailyCheckboxTap('${d.id}')">${complete?'✓':''}</button>
         <span class="color-dot" style="background:${color.dark};" onclick="openColorPicker('${d.id}')" title="Tap to choose a color"></span>
-        <span class="daily-text ${complete?'done':''}" onclick="openTaskDetails('daily','${d.id}')" style="cursor:pointer">${escapeHtml(d.text)}</span>
-        ${timerRecordBadge('daily', d.id)}
-        <span class="lifespan-badge">${lifespanBadgeText(d.lifespan)}</span>
-        ${hasTarget ? `
-          <button class="daily-count-btn" onclick="adjustDaily('${d.id}',-1)">−</button>
-          <span class="daily-tally ${complete?'complete':''}">${d.progress}/${d.target}</span>
-          <button class="daily-count-btn" onclick="adjustDaily('${d.id}',1)">+</button>
-        ` : ''}
-        <button class="edit-btn" onclick="openEditHabitModal('${d.id}')" title="Edit">✎</button>
-        <button class="rm-x" onclick="deleteDaily('${d.id}')">×</button>
+        <span class="daily-text ${complete?'done':''}">${escapeHtml(d.text)}</span>
+        <div class="daily-item-meta">
+          ${timerRecordBadge('daily', d.id)}
+          <span class="lifespan-badge">${lifespanBadgeText(d.lifespan)}</span>
+          ${hasTarget ? `
+            <button class="daily-count-btn" onclick="adjustDaily('${d.id}',-1)">−</button>
+            <span class="daily-tally ${complete?'complete':''}">${d.progress}/${d.target}</span>
+            <button class="daily-count-btn" onclick="adjustDaily('${d.id}',1)">+</button>
+          ` : ''}
+          <button class="edit-btn" onclick="openEditHabitModal('${d.id}')" title="Edit">✎</button>
+          <button class="rm-x" onclick="deleteDaily('${d.id}')">×</button>
+        </div>
       </div>
       ${dailyBarHtml(d)}
     </div>
   `;
   }).join('');
+}
+
+function deleteDaily(id){
+  const d = state.daily.find(d=>d.id===id);
+  if(!d) return;
+  showConfirmModal(`Remove "${d.text}"? This can't be undone.`, ()=>{
+    state.daily = state.daily.filter(item=>item.id!==id);
+    save(); renderDaily();
+  });
 }
 
 function onDailyCheckboxTap(id){
@@ -1648,11 +1913,6 @@ function openEditHabitModal(id){
     document.getElementById('confirmOverlay').classList.remove('open');
     editHabitId = null;
   };
-}
-
-function deleteDaily(id){
-  const d=state.daily.find(x=>x.id===id); if(!d)return;
-  showConfirmModal(`Remove "${escapeHtml(d.text)}"? This can't be undone.`,()=>{state.daily=state.daily.filter(x=>x.id!==id);save();renderDaily();});
 }
 
 // ---------- Weekly Routine ----------
@@ -1711,7 +1971,7 @@ function saveNewWeekly(){
     colorIndex: state.weekly.length % DAILY_COLOR_PALETTE.length,
     weekdays: weeklyDraftWeekdays.slice(), lifespan
   });
-  saveNoUndo(); toggleNewWeeklyForm(); renderWeekly();
+  save(); toggleNewWeeklyForm(); renderWeekly();
 }
 function isWeeklyDueToday(w){
   return w.weekdays.includes(new Date().getDay());
@@ -1741,7 +2001,7 @@ function renderWeekly(){
     return `
     <div class="daily-item">
       <div class="daily-item-row">
-        <button class="check-btn ${complete?'checked':''}" onclick="onWeeklyCheckboxTap('${w.id}')" ${dueToday?'':'disabled style="opacity:0.4;"'}>${complete?'✓':''}</button>
+        <button type="button" class="check-btn recurring-check ${complete?'checked':''} ${dueToday?'':'not-due'}" onclick="onWeeklyCheckboxTap('${w.id}')" aria-label="${complete?'Mark incomplete':'Complete'} ${escapeHtml(w.text)}" ${dueToday?'':'title="Not due today"'}>${complete?'✓':''}</button>
         <span class="color-dot" style="background:${color.dark};" onclick="openColorPickerFor('weekly','${w.id}')" title="Tap to choose a color"></span>
         <span class="daily-text ${complete?'done':''}" style="${dueToday?'':'color:var(--pencil);'}">${escapeHtml(w.text)}</span>
         <span class="past-date-tag" style="background:var(--paper-2); color:var(--pencil); border-color:rgba(34,40,59,0.15);">${weekdaysLabel(w.weekdays)}</span>
@@ -1760,11 +2020,17 @@ function renderWeekly(){
   }).join('');
 }
 function onWeeklyCheckboxTap(id){
-  const w = state.weekly.find(w=>w.id===id);
+  const w = state.weekly.find(item=>item.id===id);
   if(!w || !isWeeklyDueToday(w)) return;
-  if(w.target){ w.progress = Math.min(w.target, w.progress+1); }
-  else { w.done = !w.done; }
-  save(); renderWeekly();
+  // A recurring task checkbox is a completion control, not a hidden counter.
+  // For target-based tasks, tapping it toggles between complete and incomplete.
+  if(w.target){
+    w.progress = (w.progress >= w.target) ? 0 : w.target;
+  } else {
+    w.done = !w.done;
+  }
+  save();
+  renderWeekly();
 }
 function adjustWeekly(id, delta){
   const w = state.weekly.find(w=>w.id===id);
@@ -1772,7 +2038,14 @@ function adjustWeekly(id, delta){
   w.progress = Math.max(0, Math.min(w.target, w.progress+delta));
   save(); renderWeekly();
 }
-function deleteWeekly(id){ const w=state.weekly.find(x=>x.id===id); if(!w)return; showConfirmModal(`Remove \"${escapeHtml(w.text)}\"? This can't be undone.`,()=>{state.weekly=state.weekly.filter(x=>x.id!==id);save();renderWeekly();}); }
+function deleteWeekly(id){
+  const w = state.weekly.find(w=>w.id===id);
+  if(!w) return;
+  showConfirmModal(`Remove "${w.text}"? This can't be undone.`, ()=>{
+    state.weekly = state.weekly.filter(item=>item.id!==id);
+    save(); renderWeekly();
+  });
+}
 function openEditWeeklyModal(id){
   const w = state.weekly.find(w=>w.id===id);
   if(!w) return;
@@ -1924,7 +2197,14 @@ function renderDated(){
     </div>
   `).join('');
 }
-function deleteDated(id){ const d=state.dated.find(x=>x.id===id); if(!d)return; showConfirmModal(`Remove \"${escapeHtml(d.text)}\"? This can't be undone.`,()=>{state.dated=state.dated.filter(x=>x.id!==id);save();renderDated();}); }
+function deleteDated(id){
+  const d = state.dated.find(d=>d.id===id);
+  if(!d) return;
+  showConfirmModal(`Remove "${d.text}"? This can't be undone.`, ()=>{
+    state.dated = state.dated.filter(item=>item.id!==id);
+    save(); renderDated();
+  });
+}
 function openEditDatedModal(id){
   const d = state.dated.find(d=>d.id===id);
   if(!d) return;
@@ -1959,7 +2239,7 @@ function promoteDueDatedTasks(){
     if(d.lastPromotedKey === today) return;
     const due = d.recurrence==='monthly' ? d.dates.some(e=>e.day===day) : d.dates.some(e=>e.month===month && e.day===day);
     if(due){
-      state.special.push({id: uid(), text: d.text, done:false, addedToday: today, note:'', subtasks:[]});
+      state.special.push({id: uid(), text: d.text, done:false, addedToday: today});
       d.lastPromotedKey = today;
       if(d.lifespan.type==='occurrences'){ d.lifespan.remaining = Math.max(0, d.lifespan.remaining-1); }
       changed = true;
@@ -1973,9 +2253,9 @@ function addSpecial(){
   const input = document.getElementById('specialInput');
   const text = input.value.trim();
   if(!text) return;
-  state.special.push({id: uid(), text, done:false, addedToday: dayKey(), note:'', subtasks:[]});
+  state.special.push({id: uid(), text, done:false, addedToday: dayKey()});
   input.value='';
-  saveNoUndo(); renderSpecial();
+  save(); renderSpecial();
 }
 function renderSpecial(){
   const el = document.getElementById('specialList');
@@ -1984,7 +2264,7 @@ function renderSpecial(){
   el.innerHTML = todays.map(s => `
     <div class="special-item">
       <button class="check-btn ${s.done?'checked':''}" onclick="toggleSpecial('${s.id}')">${s.done?'✓':''}</button>
-      <span class="daily-text ${s.done?'done':''}" style="flex:1;cursor:pointer;" onclick="openTaskDetails('special','${s.id}')">${escapeHtml(s.text)}</span>
+      <span class="daily-text ${s.done?'done':''}" style="flex:1;">${escapeHtml(s.text)}</span>
       ${timerRecordBadge('special', s.id)}
       <button class="edit-btn" onclick="openEditSpecialModal('${s.id}')" title="Edit">✎</button>
       <button class="rm-x" onclick="deleteSpecial('${s.id}')">×</button>
@@ -1996,7 +2276,14 @@ function toggleSpecial(id){
   s.done = !s.done;
   save(); renderSpecial();
 }
-function deleteSpecial(id){ const s=state.special.find(x=>x.id===id); if(!s)return; showConfirmModal(`Remove \"${escapeHtml(s.text)}\"? This can't be undone.`,()=>{state.special=state.special.filter(x=>x.id!==id);save();renderSpecial();}); }
+function deleteSpecial(id){
+  const s = state.special.find(s=>s.id===id);
+  if(!s) return;
+  showConfirmModal(`Remove "${s.text}"? This can't be undone.`, ()=>{
+    state.special = state.special.filter(item=>item.id!==id);
+    save(); renderSpecial();
+  });
+}
 function openEditSpecialModal(id){
   const s = state.special.find(s=>s.id===id);
   if(!s) return;
@@ -2036,7 +2323,7 @@ function renderPastTasks(){
   el.innerHTML = state.pastTasks.map(p => `
     <div class="past-item">
       <button class="check-btn" onclick="completePastTask('${p.id}')"></button>
-      <span style="flex:1; font-size:14px; font-weight:500; cursor:pointer;" onclick="openTaskDetails('past','${p.id}')">${escapeHtml(p.text)}</span>
+      <span style="flex:1; font-size:14px; font-weight:500;">${escapeHtml(p.text)}</span>
       <span class="past-date-tag">${shortDateTag(p.originalDay)}</span>
       <button class="edit-btn" onclick="openEditPastTaskModal('${p.id}')" title="Edit">✎</button>
       <button class="reschedule-btn" onclick="openRescheduleModal('${p.id}')" title="Reschedule to a future date">📅</button>
@@ -2077,7 +2364,7 @@ function openRescheduleModal(id){
   document.getElementById('confirmMessage').innerHTML = `Reschedule "${escapeHtml(p.text)}" to:`;
   document.getElementById('confirmButtons').innerHTML = `
     <input type="date" id="rescheduleDateInput" style="width:100%; font-family:'Inter',sans-serif; font-size:14px;
-      padding:9px 10px; border:1px solid rgba(34,40,59,0.18); border-radius:6px; background:#fff;
+      padding:10px 12px; border:1px solid var(--input-border); border-radius:7px; background:var(--input-bg);
       color:var(--ink); box-sizing:border-box; margin-bottom:10px;">
     <button class="modal-btn" id="rescheduleConfirmBtn">Reschedule</button>
     <button class="btn subtle small" id="rescheduleCancelBtn" style="margin-top:8px;">Cancel</button>
@@ -2100,24 +2387,25 @@ function confirmReschedule(){
   if(!p){ document.getElementById('confirmOverlay').classList.remove('open'); return; }
   const [y,m,d] = val.split('-').map(Number);
   const target = new Date(y, m-1, d);
-  state.future.push({ id: uid(), text: p.text, dueKey: val, dueLabel: target.toLocaleDateString(undefined,{month:'short',day:'numeric'}), note:p.note||'', subtasks:p.subtasks||[] });
+  state.future.push({ id: uid(), text: p.text, dueKey: val, dueLabel: target.toLocaleDateString(undefined,{month:'short',day:'numeric'}) });
   state.pastTasks = state.pastTasks.filter(pt=>pt.id!==rescheduleTaskId);
   save(); renderPastTasks(); renderFuture();
   document.getElementById('confirmOverlay').classList.remove('open');
   rescheduleTaskId = null;
 }
 function completePastTask(id){
-  const p=state.pastTasks.find(x=>x.id===id); if(!p)return;
-  state.pastTasks=state.pastTasks.filter(x=>x.id!==id);
-  recordTaskHistory(p.text,'completed','past');
-  renderPastTasks();
-}
-function requestDeletePastTask(id){
-  // Immediate delete, no confirmation prompt: this only stops tracking the item
-  // going forward and never touches its original day's record either way, so
-  // it's low-stakes -- matches the "let it go" framing rather than adding friction.
+  // Finishing it here only removes it from the active Past Task list.
+  // Its original day in history/Calendar already recorded it as incomplete and stays that way.
   state.pastTasks = state.pastTasks.filter(p=>p.id!==id);
   save(); renderPastTasks();
+}
+function requestDeletePastTask(id){
+  const p = state.pastTasks.find(p=>p.id===id);
+  if(!p) return;
+  showConfirmModal(`Remove "${p.text}"? This can't be undone.`, ()=>{
+    state.pastTasks = state.pastTasks.filter(item=>item.id!==id);
+    save(); renderPastTasks();
+  });
 }
 
 function dayKey(d=new Date()){
@@ -2131,15 +2419,13 @@ function weekdayOfKey(key){
 // Snapshot yesterday's state into history, then reset daily-cycle items.
 // Runs once per load/interval check — only acts when the calendar day has actually changed.
 function checkDayRollover(){
-  const oldSuppress=v4UndoSuppress; v4UndoSuppress=true;
   const today = dayKey();
   if(state.lastSeenDay === null){
     state.lastSeenDay = today;
     save();
-    v4UndoSuppress=oldSuppress;
     return;
   }
-  if(state.lastSeenDay === today){ v4UndoSuppress=oldSuppress; return; } // same day, nothing to do
+  if(state.lastSeenDay === today) return; // same day, nothing to do
 
   const prevDay = state.lastSeenDay;
   const prevWeekday = weekdayOfKey(prevDay);
@@ -2167,11 +2453,6 @@ function checkDayRollover(){
     special: state.special.filter(s => s.addedToday === prevDay).map(s => ({ text: s.text, done: s.done }))
   };
 
-  // V4: every item entering the previous day's history becomes a one-month event record.
-  state.history[prevDay].projects.forEach(p=>p.tasks.forEach(t=>recordTaskHistory((p.name?p.name+' — ':'')+t.name,t.done?'completed':'uncompleted','project')));
-  state.history[prevDay].daily.forEach(d=>recordTaskHistory(d.text,d.done?'completed':'uncompleted','daily'));
-  state.history[prevDay].special.forEach(s=>recordTaskHistory(s.text,s.done?'completed':'uncompleted','special'));
-
   // Reset daily-cycle progress for the new day (projects & daily habits repeat each day)
   state.projects.forEach(p => p.tasks.forEach(t => { t.progress = 0; t.done = false; }));
   state.daily.forEach(d => { d.done = false; if(d.target) d.progress = 0; });
@@ -2192,7 +2473,7 @@ function checkDayRollover(){
   // later never rewrites what the Progress Tracker / Calendar already recorded for that day.
   const unfinished = state.special.filter(s => s.addedToday === prevDay && !s.done);
   unfinished.forEach(s => {
-    state.pastTasks.push({ id: uid(), text: s.text, originalDay: prevDay, note:s.note||'', subtasks:s.subtasks||[] });
+    state.pastTasks.push({ id: uid(), text: s.text, originalDay: prevDay });
   });
 
   // Drop special items from before today (history already has them archived,
@@ -2201,7 +2482,6 @@ function checkDayRollover(){
 
   state.lastSeenDay = today;
   save();
-  v4UndoSuppress=oldSuppress;
 }
 
 // ---------- Section 4: Future tasks ----------
@@ -2235,11 +2515,11 @@ function addFuture(){
     target = new Date();
     target.setDate(target.getDate() + selectedOffset);
   }
-  state.future.push({id: uid(), text, dueKey: dayKey(target), dueLabel: target.toLocaleDateString(undefined,{month:'short',day:'numeric'}), note:'', subtasks:[]});
+  state.future.push({id: uid(), text, dueKey: dayKey(target), dueLabel: target.toLocaleDateString(undefined,{month:'short',day:'numeric'})});
   input.value='';
   document.getElementById('futureDateInput').value='';
   pickedDate = null;
-  saveNoUndo(); renderFuture(); renderFutureChips();
+  save(); renderFuture(); renderFutureChips();
 }
 function renderFuture(){
   // Promote any future task whose due date is today OR earlier (dueKey <= today) into Today Special.
@@ -2249,7 +2529,7 @@ function renderFuture(){
   const due = state.future.filter(f=>f.dueKey<=today);
   if(due.length){
     due.forEach(f=>{
-      state.special.push({id: uid(), text: f.text, done:false, addedToday: today, note:f.note||'', subtasks:f.subtasks||[]});
+      state.special.push({id: uid(), text: f.text, done:false, addedToday: today});
     });
     state.future = state.future.filter(f=>f.dueKey>today);
     save();
@@ -2267,7 +2547,7 @@ function renderFuture(){
       <div class="future-group-label">${label}</div>
       ${items.map(f=>`
         <div class="future-item">
-          <span style="flex:1;cursor:pointer;" onclick="openTaskDetails('future','${f.id}')">${escapeHtml(f.text)}</span>
+          <span style="flex:1;">${escapeHtml(f.text)}</span>
           <button class="edit-btn" onclick="openEditFutureModal('${f.id}')" title="Edit">✎</button>
           <button class="rm-x" onclick="deleteFuture('${f.id}')">×</button>
         </div>
@@ -2275,7 +2555,14 @@ function renderFuture(){
     </div>
   `).join('');
 }
-function deleteFuture(id){ const f=state.future.find(x=>x.id===id); if(!f)return; showConfirmModal(`Remove \"${escapeHtml(f.text)}\"? This can't be undone.`,()=>{state.future=state.future.filter(x=>x.id!==id);save();renderFuture();}); }
+function deleteFuture(id){
+  const f = state.future.find(f=>f.id===id);
+  if(!f) return;
+  showConfirmModal(`Remove "${f.text}"? This can't be undone.`, ()=>{
+    state.future = state.future.filter(item=>item.id!==id);
+    save(); renderFuture();
+  });
+}
 function openEditFutureModal(id){
   const f = state.future.find(f=>f.id===id);
   if(!f) return;
@@ -2301,137 +2588,6 @@ function openEditFutureModal(id){
   document.getElementById('editFutureCancelBtn').onclick = ()=>{
     document.getElementById('confirmOverlay').classList.remove('open');
   };
-}
-
-
-// ---------- T3 V4 additions ----------
-let historyFilter='all';
-let currentDetailsRef=null;
-function toggleTheme(){
-  const next=!document.body.classList.contains('dark');
-  document.body.classList.toggle('dark',next);
-  localStorage.setItem('t3_theme',next?'dark':'light');
-  const b=document.getElementById('themeToggle'); if(b){b.classList.remove('spin'); requestAnimationFrame(()=>b.classList.add('spin')); setTimeout(()=>b.classList.remove('spin'),650);}
-}
-function loadTheme(){ document.body.classList.toggle('dark',localStorage.getItem('t3_theme')==='dark'); }
-function monthKeyFromDate(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); }
-function prettyMonth(mk){ const [y,m]=mk.split('-').map(Number); return new Date(y,m-1,1).toLocaleDateString(undefined,{month:'long',year:'numeric'}); }
-function recordTaskHistory(text,status,source='task'){
-  const when=dayKey();
-  state.taskHistory.push({id:uid(),text:String(text),status,historyDate:when,source});
-  rebuildMonthlySummary(when.slice(0,7));
-  save();
-}
-function rebuildMonthlySummary(mk){
-  const rows=state.taskHistory.filter(x=>x.historyDate && x.historyDate.slice(0,7)===mk);
-  const completed=rows.filter(x=>x.status==='completed').length;
-  const uncompleted=rows.filter(x=>x.status==='uncompleted').length;
-  if(rows.length) state.monthlySummaries[mk]={completed,uncompleted,total:completed+uncompleted};
-}
-function cleanupV4History(){
-  const today=new Date();
-  const cutoff=new Date(today.getFullYear(),today.getMonth(),today.getDate()-30);
-  state.taskHistory=state.taskHistory.filter(e=>{ const [y,m,d]=e.historyDate.split('-').map(Number); return new Date(y,m-1,d)>=cutoff; });
-  const cutoffMonth=new Date(today.getFullYear(),today.getMonth()-3,1);
-  Object.keys(state.monthlySummaries).forEach(mk=>{
-    const [y,m]=mk.split('-').map(Number); const dt=new Date(y,m-1,1);
-    if(dt<cutoffMonth) delete state.monthlySummaries[mk];
-  });
-  save();
-}
-function setHistoryFilter(f){historyFilter=f;document.querySelectorAll('#historyFilter button').forEach(b=>b.classList.toggle('active',b.dataset.filter===f));renderHistoryDrawer();}
-function openHistoryDrawer(){renderHistoryDrawer();document.getElementById('historyOverlay').classList.add('open');}
-function closeHistoryDrawer(){document.getElementById('historyOverlay').classList.remove('open');}
-function historyRows(){return state.taskHistory.slice().sort((a,b)=>b.historyDate.localeCompare(a.historyDate)||b.id.localeCompare(a.id));}
-function renderHistoryDrawer(){
-  const rows=historyRows().filter(x=>historyFilter==='all'||x.status===historyFilter);
-  const groups={}; rows.forEach(x=>(groups[x.historyDate.slice(0,7)]??=[]).push(x));
-  const months=Object.keys(groups).sort().reverse();
-  let html='';
-  if(!months.length){html='<div class="empty">No historical task records in the current window.</div>';}
-  months.forEach(mk=>{
-    const all=state.taskHistory.filter(x=>x.historyDate.slice(0,7)===mk);
-    const done=all.filter(x=>x.status==='completed').length, undone=all.filter(x=>x.status==='uncompleted').length, total=done+undone, pct=total?Math.round(done*100/total):0;
-    html+=`<div class="history-month"><div class="history-month-head"><span>${prettyMonth(mk)}</span><span>${pct}% completed</span></div><div class="history-bar"><div class="done" style="width:${pct}%"></div><div class="undone" style="width:${100-pct}%"></div></div><div class="history-meta"><span>${done} completed</span><span>${undone} uncompleted</span></div><div class="history-list">`;
-    rows.filter(x=>x.historyDate.slice(0,7)===mk).forEach(x=>html+=`<div class="history-entry"><span class="check-icon ${x.status==='completed'?'':'no'}">${x.status==='completed'?'✓':'○'}</span><span class="entry-name">${escapeHtml(x.text)}</span><span class="entry-date">${shortDateTag(x.historyDate)}</span></div>`);
-    html+='</div></div>';
-  });
-  html+=`<div class="danger-zone"><button class="danger-btn" onclick="manualDeleteHistory()">Delete historical records</button></div>`;
-  document.getElementById('historyDrawerContent').innerHTML=html;
-}
-function manualDeleteHistory(){
-  showConfirmModal('Delete all currently stored historical task records? Monthly summaries will also be removed for those records. This cannot be undone.',()=>{
-    const months=new Set(state.taskHistory.map(x=>x.historyDate.slice(0,7)));
-    state.taskHistory=[]; months.forEach(m=>delete state.monthlySummaries[m]); save(); renderHistoryDrawer(); renderCalendar(); renderProgressPage();
-  });
-}
-function ensureTaskMeta(t){ if(!Array.isArray(t.subtasks)) t.subtasks=[]; if(t.note===undefined)t.note=''; }
-function taskDetailsHtml(t, title, source, ref){
-  ensureTaskMeta(t);
-  let html=`<div class="details-grid"><div><div class="detail-label">Task</div><div class="detail-value">${escapeHtml(title)}</div></div>`;
-  if(t.note) html+=`<div><div class="detail-label">Note</div><div class="detail-value">${escapeHtml(t.note)}</div></div>`;
-  if(t.dueKey) html+=`<div><div class="detail-label">Date</div><div class="detail-value">${escapeHtml(t.dueKey)}</div></div>`;
-  html+=`</div><div class="subtask-section"><div class="detail-label">Sub-tasks</div>`;
-  if(!t.subtasks.length) html+='<div class="empty">No sub-tasks yet.</div>';
-  t.subtasks.forEach((st,i)=>{
-    if(!Array.isArray(st.miniTasks)) st.miniTasks=[];
-    html+=`<div class="subtask-item"><div class="subtask-head"><button class="check-btn ${st.done?'checked':''}" onclick="toggleSubtask('${source}','${ref}',${i})">${st.done?'✓':''}</button><span class="subtask-name">${escapeHtml(st.name)}</span></div>`;
-    if(st.date) html+=`<div style="margin:5px 0 0 34px;font:10px 'JetBrains Mono',monospace;color:var(--rule-strong);">${escapeHtml(st.date)}</div>`;
-    if(st.note) html+=`<div style="margin:4px 0 0 34px;font-size:11.5px;color:var(--pencil);">${escapeHtml(st.note)}</div>`;
-    if(st.miniTasks.length){
-      html+=`<button class="subtask-more" onclick="toggleMiniVisibility(this)">Show more · ${st.miniTasks.length} mini-task${st.miniTasks.length===1?'':'s'}</button><div class="mini-list" style="display:none">`;
-      st.miniTasks.forEach((m,j)=>html+=`<label class="mini-item"><input type="checkbox" ${m.done?'checked':''} onchange="toggleMiniTask('${source}','${ref}',${i},${j})">${escapeHtml(m.name)}${m.note?` <span style="color:var(--pencil);">— ${escapeHtml(m.note)}</span>`:''}</label>`);
-      html+='</div>';
-    }
-    html+=`</div>`;
-  });
-  html+=`<button class="btn small ghost" onclick="addSubtaskFromDetails('${source}','${ref}')">+ Add sub-task</button></div>`;
-  return html;
-}
-function resolveDetailsRef(source,ref){
-  if(source==='waiting') return state.waiting.find(x=>x.id===ref);
-  if(source==='special') return state.special.find(x=>x.id===ref);
-  if(source==='future') return state.future.find(x=>x.id===ref);
-  if(source==='past') return state.pastTasks.find(x=>x.id===ref);
-  if(source==='daily') return state.daily.find(x=>x.id===ref);
-  return null;
-}
-function openTaskDetails(source,ref){
-  const t=resolveDetailsRef(source,ref); if(!t)return; currentDetailsRef={source,ref};
-  const title=t.text||t.name; document.getElementById('detailsTitle').textContent=title; document.getElementById('detailsContent').innerHTML=taskDetailsHtml(t,title,source,ref); document.getElementById('detailsOverlay').classList.add('open');
-}
-function closeTaskDetails(){document.getElementById('detailsOverlay').classList.remove('open');currentDetailsRef=null;}
-function toggleMiniVisibility(btn){const el=btn.nextElementSibling;el.style.display=el.style.display==='none'?'grid':'none';btn.textContent=el.style.display==='none'?'Show more · '+el.children.length+' mini-tasks':'Hide mini-tasks';}
-function toggleSubtask(source,ref,i){const t=resolveDetailsRef(source,ref);if(!t)return;t.subtasks[i].done=!t.subtasks[i].done;save();openTaskDetails(source,ref);}
-function toggleMiniTask(source,ref,i,j){const t=resolveDetailsRef(source,ref);if(!t)return;t.subtasks[i].miniTasks[j].done=!t.subtasks[i].miniTasks[j].done;save();openTaskDetails(source,ref);}
-function addSubtaskFromDetails(source,ref){
-  const t=resolveDetailsRef(source,ref);if(!t)return;
-  const name=prompt('Sub-task name'); if(!name||!name.trim())return;
-  const date=prompt('Optional date (YYYY-MM-DD), leave blank for none')||'';
-  const note=prompt('Optional note')||'';
-  t.subtasks=t.subtasks||[]; t.subtasks.push({id:uid(),name:name.trim(),done:false,date:date.trim(),note:note.trim(),miniTasks:[]});save();openTaskDetails(source,ref);
-}
-function openQuickAdd(){renderWaitingList();document.getElementById('quickAddOverlay').classList.add('open');setTimeout(()=>document.getElementById('waitingInput').focus(),50);}
-function closeQuickAdd(){document.getElementById('quickAddOverlay').classList.remove('open');}
-function addWaitingTask(){const el=document.getElementById('waitingInput');const text=el.value.trim();if(!text)return;state.waiting.push({id:uid(),text,note:'',subtasks:[],createdAt:new Date().toISOString()});el.value='';saveNoUndo();renderWaitingList();}
-function deleteWaiting(id){showConfirmModal('Remove this waiting-list task? This cannot be undone.',()=>{state.waiting=state.waiting.filter(x=>x.id!==id);save();renderWaitingList();});}
-function editWaiting(id){const t=state.waiting.find(x=>x.id===id);if(!t)return;const name=prompt('Task name',t.text);if(name&&name.trim()){t.text=name.trim();save();renderWaitingList();}}
-function renderWaitingList(){const el=document.getElementById('waitingList');if(!state.waiting.length){el.innerHTML='<div class="empty">Nothing is waiting.</div>';return;}el.innerHTML=state.waiting.map(t=>{ensureTaskMeta(t);return `<div class="task-row"><button class="check-btn" onclick="moveWaitingToToday('${t.id}')"></button><span class="task-name" onclick="openTaskDetails('waiting','${t.id}')" style="cursor:pointer">${escapeHtml(t.text)}</span><button class="edit-btn" onclick="editWaiting('${t.id}')" title="Edit">✎</button><button class="rm-x" onclick="deleteWaiting('${t.id}')">×</button></div>`}).join('');}
-function moveWaitingToToday(id){const t=state.waiting.find(x=>x.id===id);if(!t)return;state.special.push({id:uid(),text:t.text,done:false,addedToday:dayKey(),note:t.note,subtasks:t.subtasks||[]});state.waiting=state.waiting.filter(x=>x.id!==id);save();renderWaitingList();renderSpecial();}
-
-// Add dated sub-tasks to Today's Special when their date arrives.
-function promoteDatedSubtasks(){
-  const today=dayKey();
-  const sources=[...state.special,...state.future,...state.waiting,...state.daily];
-  sources.forEach(parent=>{
-    (parent.subtasks||[]).forEach(st=>{
-      if(st.date===today && !st._promotedToday){
-        state.special.push({id:uid(),text:st.name,done:!!st.done,addedToday:today,sourceSubtaskId:st.id,sourceParentId:parent.id});
-        st._promotedToday=today;
-      }
-    });
-  });
-  save();
 }
 
 // ---------- utils ----------
@@ -2623,7 +2779,7 @@ function renderFutureHistoryTab(){
   el.innerHTML = `<div class="card">` + sorted.map(f=>`
     <div class="task-line">
       <span class="future-date">${f.dueLabel}</span>
-      <span style="flex:1;cursor:pointer;" onclick="openTaskDetails('future','${f.id}')">${escapeHtml(f.text)}</span>
+      <span style="flex:1;">${escapeHtml(f.text)}</span>
     </div>
   `).join('') + `</div>`;
 }
@@ -3014,15 +3170,6 @@ function dayHasAnyActivity(act){
 
 let calSelectedKey = null;
 
-function renderCalendarHistorySummary(){
-  const el=document.getElementById('calendarHistorySummary'); if(!el)return;
-  const mk=String(calViewYear)+'-'+String(calViewMonth+1).padStart(2,'0');
-  const sum=state.monthlySummaries[mk];
-  if(!sum){el.innerHTML='<div class="empty">No retained history summary for this month.</div>';return;}
-  const pct=sum.total?Math.round(sum.completed*100/sum.total):0;
-  el.innerHTML=`<div class="history-month-head"><span>${prettyMonth(mk)}</span><span>${pct}% completed</span></div><div class="history-bar"><div class="done" style="width:${pct}%"></div><div class="undone" style="width:${100-pct}%"></div></div><div class="history-meta"><span>${sum.completed} completed</span><span>${sum.uncompleted} uncompleted</span></div>`;
-}
-
 function renderCalendar(){
   if(calViewYear===undefined){
     const now = new Date();
@@ -3034,7 +3181,6 @@ function renderCalendar(){
   const daysInMonth = new Date(calViewYear, calViewMonth+1, 0).getDate();
   const monthLabel = first.toLocaleDateString(undefined,{month:'long', year:'numeric'});
   document.getElementById('calMonthLabel').textContent = monthLabel;
-  renderCalendarHistorySummary();
 
   const today = dayKey();
   let cellsHtml = '';
@@ -3081,7 +3227,7 @@ function renderCalDayDetail(key){
       <textarea id="calNoteInput" data-day-key="${key}" placeholder="No note for this day — optional."
         oninput="onCalNoteInput('${key}')"
         style="width:100%; font-family:'Inter',sans-serif; font-size:13px; line-height:1.5; padding:8px 10px;
-        border:1px solid rgba(34,40,59,0.18); border-radius:6px; background:var(--input-bg); color:var(--ink);
+        border:1px solid var(--input-border); border-radius:7px; background:var(--input-bg); color:var(--ink);
         resize:vertical; box-sizing:border-box;" rows="3">${escapeHtml(act.note||'')}</textarea>
       <span id="calNoteStatus" style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--pencil);"></span>
     </div>
@@ -3146,9 +3292,9 @@ function buildIcsDataUrl(key, dateLabel, act){
   act.timers.forEach(t=>descLines.push(`Timer: ${t.label} (${t.duration})`));
 
   const ics = [
-    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//T3 Task Time Tracker//EN',
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Task Time Tracker (T3)//EN',
     'BEGIN:VEVENT',
-    `UID:${dateStr}-ledger-${Math.random().toString(36).slice(2)}@t3`,
+    `UID:${dateStr}-t3-${Math.random().toString(36).slice(2)}@t3`,
     `DTSTAMP:${dateStr}T000000Z`,
     `DTSTART;VALUE=DATE:${dateStr}`,
     `SUMMARY:${icsEscape(summary)}`,
@@ -3161,7 +3307,7 @@ function buildIcsDataUrlForItem(label, key){
   const [y,m,d] = key.split('-').map(Number);
   const dateStr = `${y}${String(m).padStart(2,'0')}${String(d).padStart(2,'0')}`;
   const ics = [
-    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//T3 Task Time Tracker//EN',
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Task Time Tracker (T3)//EN',
     'BEGIN:VEVENT',
     `UID:${dateStr}-${Math.random().toString(36).slice(2)}@t3`,
     `DTSTAMP:${dateStr}T000000Z`,
@@ -3172,13 +3318,26 @@ function buildIcsDataUrlForItem(label, key){
   return 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
 }
 
+// ---------- Theme ----------
+function applyTheme(theme){
+  const dark = theme === 'dark';
+  document.body.classList.toggle('dark', dark);
+  const btn = document.getElementById('themeToggle');
+  if(btn){
+    btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+    btn.title = dark ? 'Switch to light mode' : 'Switch to dark mode';
+    btn.dataset.mode = dark ? 'dark' : 'light';
+  }
+}
+function toggleTheme(){
+  const next = document.body.classList.contains('dark') ? 'light' : 'dark';
+  localStorage.setItem('t3_theme_v1', next);
+  applyTheme(next);
+}
+applyTheme(localStorage.getItem('t3_theme_v1') || 'light');
+
 // ---------- init ----------
-v4UndoSuppress=true;
 load();
-loadTheme();
-cleanupV4History();
-promoteDatedSubtasks();
-v4UndoSuppress=false;
 
 // Seed example data on first-ever load, so the prototype is immediately testable
 if(state.projects.length===0 && state.daily.length===0 && state.lastSeenDay===null){
@@ -3197,9 +3356,7 @@ if(state.projects.length===0 && state.daily.length===0 && state.lastSeenDay===nu
 
 checkDayRollover();
 promoteDueDatedTasks();
-promoteDatedSubtasks();
 renderStamp();
-renderWaitingList();
 renderProjects();
 renderDaily();
 renderWeekly();
@@ -3213,9 +3370,7 @@ loadManuscriptForToday();
 // re-check rollover periodically in case the tab stays open past midnight
 setInterval(()=>{
   checkDayRollover();
-  cleanupV4History();
   promoteDueDatedTasks();
-  promoteDatedSubtasks();
   renderProjects(); renderDaily(); renderWeekly(); renderDated(); renderSpecial(); renderFuture(); renderPastTasks(); renderStamp(); loadManuscriptForToday();
 }, 5*60000);
 
@@ -3226,36 +3381,103 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     const swUrl = new URL('sw.js', window.location.href).href;
     navigator.serviceWorker.register(swUrl, { scope: './' })
-      .catch(err => console.warn('Service worker registration failed:', err));
+      .catch(err => reportT3Error('service-worker', err));
   });
 }
 
 // ---------- PWA: install button ----------
-// The button stays hidden unless the browser actually offers an install prompt
-// (Chrome/Edge/Android fire 'beforeinstallprompt'; iOS Safari and already-installed
-// apps never do, so the button correctly disappears in those cases rather than
-// sitting there doing nothing).
+// The IN button is intentionally always visible while T3 is running in a normal
+// browser. A native prompt is used when Chromium supplies beforeinstallprompt;
+// otherwise the button opens a clear fallback instead of silently doing nothing.
 let deferredInstallPrompt = null;
+const installBtn = () => document.getElementById('installBtn');
+
+function isStandaloneMode(){
+  return !!((window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true);
+}
+
+function syncInstallButton(){
+  const btn = installBtn();
+  if(!btn) return;
+  if(isStandaloneMode()){
+    btn.style.display='none';
+  }else{
+    btn.style.display='flex';
+    btn.removeAttribute('aria-busy');
+  }
+}
+
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredInstallPrompt = e;
-  const btn = document.getElementById('installBtn');
-  if(btn) btn.style.display = 'flex';
+  syncInstallButton();
 });
-function triggerInstall(){
-  if(!deferredInstallPrompt) return;
-  deferredInstallPrompt.prompt();
-  deferredInstallPrompt.userChoice.finally(() => {
-    deferredInstallPrompt = null;
-    const btn = document.getElementById('installBtn');
-    if(btn) btn.style.display = 'none';
-  });
+
+function openInstallHelp(message){
+  const overlay = document.getElementById('installOverlay');
+  const msg = document.getElementById('installMessage');
+  if(msg && message) msg.textContent = message;
+  if(overlay){
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden','false');
+  }
 }
+function closeInstallHelp(){
+  const overlay = document.getElementById('installOverlay');
+  if(overlay){
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden','true');
+  }
+}
+
+async function triggerInstall(){
+  const btn = installBtn();
+  if(isStandaloneMode()){
+    syncInstallButton();
+    return;
+  }
+  if(btn) btn.setAttribute('aria-busy','true');
+
+  if(deferredInstallPrompt){
+    try{
+      await deferredInstallPrompt.prompt();
+      const choice = await deferredInstallPrompt.userChoice;
+      deferredInstallPrompt = null;
+      if(choice && choice.outcome === 'accepted'){
+        if(btn) btn.style.display='none';
+      }else if(btn){
+        btn.removeAttribute('aria-busy');
+      }
+    }catch(err){
+      reportT3Error('install-prompt', err);
+      deferredInstallPrompt = null;
+      if(btn) btn.removeAttribute('aria-busy');
+      openInstallHelp('The automatic install prompt could not be opened. Use your browser menu and choose “Install app” or “Add to Home screen”.');
+    }
+    return;
+  }
+
+  if(btn) btn.removeAttribute('aria-busy');
+  const protocol = window.location.protocol;
+  const hostname = window.location.hostname;
+  if(protocol === 'file:'){
+    openInstallHelp('T3 is being opened directly as a file. A PWA cannot install from a ZIP or file:// page. Serve T3 from HTTPS (or localhost), then tap IN again.');
+  }else if(protocol !== 'https:' && hostname !== 'localhost' && hostname !== '127.0.0.1'){
+    openInstallHelp('T3 needs a secure HTTPS connection for installation. Open the HTTPS version, then tap IN again.');
+  }else if(/iPhone|iPad|iPod/i.test(navigator.userAgent)){
+    openInstallHelp('On iPhone or iPad, use your browser’s Share menu and choose “Add to Home Screen”.');
+  }else{
+    openInstallHelp('Your browser has not supplied the automatic install prompt yet. Open the browser menu and choose “Install app” or “Add to Home screen”. If that option is missing, make sure T3 is running over HTTPS and is not already installed.');
+  }
+}
+
 window.addEventListener('appinstalled', () => {
-  const btn = document.getElementById('installBtn');
-  if(btn) btn.style.display = 'none';
   deferredInstallPrompt = null;
+  syncInstallButton();
 });
+
+window.addEventListener('load', syncInstallButton);
+
 </script>
 </body>
 </html>

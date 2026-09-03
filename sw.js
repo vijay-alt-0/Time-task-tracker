@@ -1,15 +1,14 @@
 // IMPORTANT: bump this version string every time you deploy changes.
-// This is the exact bug that caused stale-caching problems on VideoShelf —
-// if this string doesn't change, installed users keep seeing the OLD app
-// even after you push new code.
-const CACHE_NAME = 't3-v4';
+// T3 uses a versioned app-shell cache so installed users receive the current build.
+const CACHE_NAME = 't3-v3';
 
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './manifest.json',
   './icon-192.png',
-  './icon-512.png'
+  './icon-512.png',
+  './t3-logo.svg'
 ];
 
 // Install: pre-cache the app shell

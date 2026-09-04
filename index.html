@@ -7,7 +7,7 @@
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#B74C46">
+<meta name="theme-color" content="#B4443E">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -32,9 +32,9 @@
     --amber:#D9A441;
     --amber-bg:#F6E9D0;
     --card:#FBF8F1;
-    --input-bg:#FFFFFF;
-    --input-border:rgba(34,40,59,0.18);
-    --shadow: 0 1px 0 rgba(34,40,59,0.06);
+    --shadow: 0 8px 24px rgba(34,40,59,0.06);
+    --input-bg:#FFFDF8;
+    --muted-bg:#F5F0E6;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -51,10 +51,11 @@
     min-height:100vh;
     padding-bottom:80px;
   }
+  .margin-rule{display:none;}
   .wrap{
     max-width:640px;
     margin:0 auto;
-    padding:22px 20px 20px 56px;
+    padding:24px 20px 20px;
     position:relative;
     z-index:1;
   }
@@ -71,28 +72,20 @@
     line-height:1.6;
   }
   .install-btn{
-    position:absolute; top:52px; right:16px; z-index:40;
-    display:flex; align-items:center; justify-content:center;
-    width:34px; height:30px; box-sizing:border-box;
+    position:absolute; top:52px; right:16px;
+    display:flex; align-items:center; gap:2px;
     font-family:'JetBrains Mono',monospace;
-    font-size:9px; font-weight:800; letter-spacing:.04em;
+    font-size:9px; font-weight:700;
     color:var(--rule-strong);
     border:1px solid var(--rule);
-    border-radius:10px;
-    padding:0;
+    border-radius:12px;
+    padding:3px 8px 3px 6px;
     background:var(--amber-bg);
     cursor:pointer;
     line-height:1;
-    touch-action:manipulation;
-    -webkit-tap-highlight-color:transparent;
-    user-select:none;
   }
   .install-btn-icon{ font-size:11px; }
   .install-btn:active{ transform:scale(0.94); }
-  .install-btn:focus-visible{outline:2px solid var(--rule-strong);outline-offset:2px;}
-  .install-btn[aria-busy="true"]{cursor:wait;}
-  .install-btn[aria-busy="true"]{opacity:.65;pointer-events:none;}
-  #installOverlay{z-index:1000;}
   header.top{
     padding-top:6px;
     margin-bottom:6px;
@@ -113,13 +106,13 @@
     letter-spacing:-0.01em;
   }
   .section{
-    margin-top:46px;
+    margin-top:34px;
   }
   .section-head{
     display:flex;
     align-items:baseline;
     gap:10px;
-    margin-bottom:16px;
+    margin-bottom:12px;
   }
   .section-num{
     font-family:'JetBrains Mono',monospace;
@@ -139,11 +132,11 @@
     letter-spacing:.04em;
   }
   .subsection{
-    margin-top:30px;
-    padding-top:22px;
+    margin-top:22px;
+    padding-top:18px;
     border-top:1px dashed rgba(34,40,59,0.14);
   }
-  .subsection:first-of-type{ margin-top:12px; }
+  .subsection:first-of-type{ margin-top:8px; }
   .subsection-head{
     display:flex; align-items:center; gap:8px; margin-bottom:6px;
   }
@@ -163,8 +156,8 @@
     border:1px solid rgba(34,40,59,0.10);
     border-radius:8px;
     box-shadow:var(--shadow);
-    padding:18px 18px;
-    margin-bottom:18px;
+    padding:14px 14px;
+    margin-bottom:12px;
   }
 
   /* Section 1: projects */
@@ -189,7 +182,7 @@
     display:flex;
     align-items:center;
     gap:10px;
-    padding:13px 4px;
+    padding:9px 4px;
     border-top:1px dashed rgba(34,40,59,0.12);
   }
   .task-row:first-of-type{border-top:none;}
@@ -241,20 +234,18 @@
     border-color:var(--green);
     color:var(--green);
   }
-  .recurring-check{position:relative;z-index:3;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
-  .recurring-check.not-due{opacity:.42;}
 
   .add-row{
     display:flex;
-    gap:10px;
-    margin-top:14px;
+    gap:8px;
+    margin-top:10px;
   }
   input[type=text], input[type=number]{
     font-family:'Inter',sans-serif;
     font-size:13.5px;
-    padding:10px 12px;
-    border:1px solid var(--input-border);
-    border-radius:7px;
+    padding:8px 10px;
+    border:1px solid rgba(34,40,59,0.18);
+    border-radius:6px;
     background:var(--input-bg);
     color:var(--ink);
     flex:1;
@@ -346,17 +337,12 @@
   /* Section 2: daily tasks */
   .daily-item{
     display:flex; flex-direction:column; gap:8px;
-    padding:14px 4px;
+    padding:10px 4px;
     border-top:1px dashed rgba(34,40,59,0.12);
   }
   .daily-item:first-of-type{border-top:none;}
-  .daily-item-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
-  .daily-text{flex:1; min-width:110px; font-size:14px; font-weight:500;}
-  .daily-item-meta{display:flex; align-items:center; justify-content:flex-end; gap:8px; flex-wrap:wrap; margin-left:auto;}
-  .daily-item-meta .lifespan-badge{margin-left:2px;}
-  @media (max-width:420px){
-    .daily-item-meta{width:100%; margin-left:36px; justify-content:flex-start; padding-left:0;}
-  }
+  .daily-item-row{ display:flex; align-items:center; gap:8px; }
+  .daily-text{flex:1; font-size:14px; font-weight:500;}
   .daily-text.done{color:var(--green); text-decoration:line-through; text-decoration-color:rgba(76,122,94,0.5);}
   .color-dot{
     width:9px; height:9px; border-radius:50%; flex-shrink:0; cursor:pointer;
@@ -397,7 +383,7 @@
   /* Section: past task */
   .past-item{
     display:flex; align-items:center; gap:10px;
-    padding:13px 4px;
+    padding:9px 4px;
     border-top:1px dashed rgba(34,40,59,0.12);
   }
   .past-item:first-of-type{border-top:none;}
@@ -441,13 +427,13 @@
   /* Section 3: today special */
   .special-item{
     display:flex; align-items:center; gap:10px;
-    padding:14px 4px;
+    padding:10px 4px;
     border-top:1px dashed rgba(34,40,59,0.12);
   }
   .special-item:first-of-type{border-top:none;}
 
   /* Section 4: future */
-  .future-group{margin-bottom:20px;}
+  .future-group{margin-bottom:16px;}
   .future-group-label{
     font-family:'JetBrains Mono',monospace;
     font-size:11px; color:var(--rule-strong); font-weight:700;
@@ -456,13 +442,13 @@
   }
   .future-item{
     display:flex; align-items:center; gap:10px;
-    padding:12px 4px;
+    padding:8px 4px;
     border-top:1px dashed rgba(34,40,59,0.12);
     font-size:13.5px;
   }
   .future-item:first-of-type{border-top:none;}
   .future-offset-row{
-    display:flex; gap:8px; margin-top:14px; flex-wrap:wrap;
+    display:flex; gap:6px; margin-top:10px; flex-wrap:wrap;
   }
   .chip{
     font-family:'JetBrains Mono',monospace;
@@ -486,13 +472,13 @@
   }
 
   footer.note{
-    max-width:640px; margin:40px auto 0; padding:0 20px 0 56px;
+    max-width:640px; margin:40px auto 0; padding:0 20px;
     font-size:11.5px; color:var(--pencil); line-height:1.6;
   }
 
   @media (max-width:420px){
-    .wrap{padding-left:44px;}
-    footer.note{padding-left:44px;}
+    .wrap{padding-left:18px; padding-right:18px;}
+    footer.note{padding-left:18px; padding-right:18px;}
     h1{font-size:23px;}
   }
 
@@ -643,351 +629,144 @@
     text-decoration:none; display:inline-block;
   }
 
-  /* ---- T3 theme toggle ---- */
-  .theme-toggle{
-    position:static;
-    width:32px; height:32px;
-    display:flex; align-items:center; justify-content:center;
-    padding:0; border:1px solid var(--rule); border-radius:50%;
-    background:var(--card); color:var(--ink-soft);
-    font-size:15px; line-height:1; cursor:pointer;
-    box-shadow:var(--shadow);
-    z-index:3;
-    transition:transform .12s ease, background .15s ease, color .15s ease;
+  /* ===== T3 V4 visual system ===== */
+  :root{
+    --accent:#9F3D38;
+    --accent-soft:#F3D8D4;
+    --surface:#FFFDF8;
+    --surface-2:#F7F1E6;
+    --line:rgba(34,40,59,.10);
+    --radius:12px;
   }
-  .theme-toggle:active{transform:scale(.92);}
-  .theme-toggle:focus-visible{outline:2px solid var(--rule-strong); outline-offset:2px;}
-  .brand-row{display:flex; align-items:center; gap:10px; margin-bottom:2px;}
-
+  body{background:var(--paper);}
   body.dark{
-    --paper:#17191F;
-    --paper-2:#20232B;
-    --ink:#F1F0EA;
-    --ink-soft:#C4C7D0;
-    --rule:#75636A;
-    --rule-strong:#D66A63;
-    --pencil:#A7A39A;
-    --green:#78A889;
-    --green-bg:#24352C;
-    --amber:#D9A441;
-    --amber-bg:#3A3020;
-    --card:#202229;
-    --input-bg:#292C34;
-    --input-border:rgba(241,240,234,0.20);
-    --shadow:0 1px 0 rgba(0,0,0,0.30), 0 4px 14px rgba(0,0,0,0.10);
+    --paper:#151B2A; --paper-2:#20283A; --ink:#F2EEE5; --ink-soft:#C7C9D1;
+    --rule:#59647C; --rule-strong:#E0A39D; --pencil:#9BA3B5;
+    --green:#82B394; --green-bg:#24382B; --amber:#E0B35C; --amber-bg:#3A3020;
+    --card:#1D2535; --shadow:0 10px 28px rgba(0,0,0,.18); --input-bg:#222B3C; --muted-bg:#252E40;
+    --accent:#E0A39D; --accent-soft:#392A2B; --surface:#1D2535; --surface-2:#222B3C; --line:rgba(242,238,229,.10);
   }
-  body.dark .theme-toggle{background:var(--paper-2); color:#F1D27A;}
-  body.dark input, body.dark select, body.dark textarea{color-scheme:dark;}
-  body.dark .daily-bar-seg, body.dark .daily-bar-gradient{background:#343740;}
-
-/* ================================================================
-   T3 V2 — VISUAL IDENTITY / MOBILE-FIRST REDESIGN
-   ================================================================ */
-:root{
-  --paper:#EEE9DE;
-  --paper-2:#E3DCCF;
-  --ink:#202638;
-  --ink-soft:#4A5063;
-  --rule:#C8A7A0;
-  --rule-strong:#B74C46;
-  --pencil:#817D73;
-  --green:#4F7E62;
-  --green-bg:#DFE9E1;
-  --amber:#C99634;
-  --amber-bg:#F4E8CF;
-  --card:#FAF7F0;
-  --card-strong:#FFFDF8;
-  --input-bg:#FFFDF9;
-  --input-border:rgba(32,38,56,.16);
-  --shadow:0 8px 24px rgba(45,42,35,.055),0 1px 1px rgba(45,42,35,.08);
-  --shadow-hover:0 12px 30px rgba(45,42,35,.09),0 2px 2px rgba(45,42,35,.08);
-  --radius:16px;
-}
-html{scroll-behavior:smooth;}
-body{
-  background:
-    radial-gradient(circle at 90% 0%, rgba(183,76,70,.055), transparent 30%),
-    repeating-linear-gradient(to bottom,transparent 0,transparent 39px,rgba(183,76,70,.065) 39px,rgba(183,76,70,.065) 40px),
-    var(--paper);
-  line-height:1.45;
-  padding-bottom:96px;
-  transition:background-color .25s ease,color .25s ease;
-}
-body::before{
-  content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
-  background:linear-gradient(115deg,rgba(255,255,255,.18),transparent 36%);
-  opacity:.7;
-}
-.wrap{max-width:760px;width:min(100%,760px);margin:0 auto;padding:24px 22px 30px;}
-header.top{padding:4px 0 18px;margin-bottom:6px;position:relative;}
-.header-tools{position:absolute;top:0;right:0;display:flex;align-items:flex-start;gap:8px;z-index:30;}
-.brand-row{display:flex;align-items:center;gap:12px;margin-bottom:4px;}
-.brand-lockup{display:flex;flex-direction:column;gap:2px;min-width:0;}
-.kicker{font-size:10px;letter-spacing:.18em;color:var(--rule-strong);font-weight:800;}
-.brand-caption{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.09em;color:var(--pencil);}
-.brand-title{font-size:34px;line-height:1;margin:8px 0 0;letter-spacing:-.04em;color:var(--ink);}
-.stamp{top:8px;right:4px;border:1px solid var(--rule);border-radius:12px;padding:8px 11px;background:rgba(250,247,240,.72);font-size:9px;backdrop-filter:blur(8px);}
-.install-btn{position:static;width:36px;height:32px;padding:0;border-radius:10px;background:var(--amber-bg);font-size:9px;box-shadow:0 2px 8px rgba(0,0,0,.04);}
-.theme-toggle{
-  position:relative; width:42px;height:42px;border-radius:13px;padding:6px;
-  border:1px solid rgba(183,76,70,.34);background:var(--card-strong);color:var(--ink);
-  box-shadow:0 4px 14px rgba(45,42,35,.08);overflow:hidden;
-  transition:transform .18s ease,box-shadow .18s ease,background .25s ease,border-color .25s ease;
-}
-.theme-toggle:hover{transform:translateY(-1px);box-shadow:0 7px 18px rgba(45,42,35,.11);}
-.theme-toggle:active{transform:scale(.94);}
-.theme-logo{width:100%;height:100%;display:block;object-fit:contain;transition:filter .25s ease,transform .3s ease;}
-body.dark .theme-logo{filter:invert(1) brightness(1.55) saturate(.7);transform:rotate(180deg);}
-
-.page-tabs{
-  position:sticky;top:8px;z-index:20;display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;
-  padding:6px;background:rgba(238,233,222,.86);backdrop-filter:blur(14px);
-  border:1px solid rgba(32,38,56,.08);border-radius:15px;margin:4px 0 30px;
-  box-shadow:0 6px 18px rgba(45,42,35,.06);
-}
-.page-tabs::-webkit-scrollbar{display:none;}
-.page-tab{
-  flex:0 0 auto;border:0;border-radius:10px;margin:0;padding:9px 12px;
-  font-size:11px;letter-spacing:.015em;color:var(--pencil);transition:all .18s ease;
-}
-.page-tab.active{color:var(--card-strong);background:var(--rule-strong);box-shadow:0 3px 10px rgba(183,76,70,.22);}
-.page-tab:active{transform:scale(.97);}
-
-.section{margin-top:52px;scroll-margin-top:76px;animation:t3Rise .45s ease both;}
-.section:first-child{margin-top:0;}
-.section-head{gap:10px;margin-bottom:8px;align-items:center;}
-.section-num{font-size:10px;border-radius:8px;padding:4px 7px;background:var(--amber-bg);box-shadow:inset 0 0 0 1px rgba(183,76,70,.08);}
-.section-title{font-size:15px;letter-spacing:.065em;line-height:1.2;}
-.section-sub{font-size:12px;line-height:1.55;color:var(--pencil);margin:0 0 16px;max-width:58ch;}
-.subsection{margin-top:36px;padding-top:26px;border-top:1px dashed rgba(32,38,56,.13);}
-.subsection:first-of-type{margin-top:20px;}
-.subsection-head{margin-bottom:8px;}
-.subsection-title{font-size:12px;letter-spacing:.075em;}
-
-.card,.timer-card,.stat{
-  background:var(--card);border:1px solid rgba(32,38,56,.09);border-radius:var(--radius);
-  box-shadow:var(--shadow);transition:box-shadow .2s ease,transform .2s ease,background .25s ease,border-color .25s ease;
-}
-.card{padding:18px 18px;margin-bottom:16px;}
-.card:hover{box-shadow:var(--shadow-hover);}
-.project{padding:6px 14px 10px;margin-bottom:14px;}
-.project-head{padding:8px 2px 10px;margin-bottom:0;}
-.project-name{font-size:13px;letter-spacing:.02em;}
-.project-actions button{font-size:10px;}
-.task-row{gap:11px;padding:14px 2px;border-top:1px dashed rgba(32,38,56,.11);min-height:54px;}
-.task-name{font-size:13.5px;line-height:1.4;}
-.check-btn{width:30px;height:30px;border-radius:9px;}
-.counter-btn{width:32px;height:32px;border-radius:9px;}
-.tally{font-size:11px;min-width:52px;}
-.add-row{gap:9px;margin-top:14px;}
-input[type=text],input[type=number],select,input[type=date],textarea{
-  min-height:44px;padding:11px 13px;border-radius:11px;background:var(--input-bg);border:1px solid var(--input-border);
-  outline:none;transition:border-color .18s ease,box-shadow .18s ease,background .25s ease;
-}
-textarea{min-height:150px;}
-input:focus,select:focus,textarea:focus{border-color:rgba(183,76,70,.55);box-shadow:0 0 0 3px rgba(183,76,70,.10);}
-input::placeholder,textarea::placeholder{color:#AAA497;}
-.btn{min-height:42px;padding:9px 14px;border-radius:10px;font-size:11px;box-shadow:0 3px 8px rgba(183,76,70,.14);transition:transform .15s ease,box-shadow .15s ease,filter .15s ease;}
-.btn:hover{filter:brightness(1.02);box-shadow:0 5px 12px rgba(183,76,70,.18);}
-.btn:active,.chip:active,.show-all-toggle:active,.weekday-btn:active{transform:scale(.96);}
-.btn.ghost{box-shadow:none;}
-.btn.subtle{box-shadow:none;}
-.new-project-toggle{font-size:11px;padding:7px 0;letter-spacing:.02em;}
-.new-project-form{gap:10px;margin-top:12px;padding:14px;border-radius:12px;background:var(--paper-2);border-color:rgba(183,76,70,.24);}
-.subtask-list{gap:8px;}
-.subtask-input-row{gap:8px;}
-
-.daily-item{gap:10px;padding:17px 2px;}
-.daily-item-row{gap:9px;align-items:center;}
-.daily-text{font-size:13.5px;line-height:1.35;}
-.daily-item-meta{gap:7px;}
-.lifespan-badge,.timer-link-tag{padding:4px 8px;border-radius:9px;font-size:8.5px;}
-.daily-count-btn{width:28px;height:28px;border-radius:8px;}
-.daily-tally{min-width:36px;font-size:10.5px;}
-.daily-bar-segments,.daily-bar-gradient{margin-top:2px;}
-.daily-bar-seg,.daily-bar-gradient{height:7px;}
-.past-item,.special-item,.future-item{padding:15px 2px;min-height:54px;}
-.past-item{gap:9px;}
-.future-group{margin-bottom:22px;}
-.future-group-label{font-size:10px;margin-bottom:7px;letter-spacing:.09em;}
-.future-offset-row{gap:7px;margin-top:12px;}
-.chip{padding:8px 12px;border-radius:11px;font-size:10.5px;transition:transform .15s ease,background .18s ease;}
-.show-all-toggle{padding:6px 10px;border-radius:10px;font-size:9.5px;}
-.edit-btn,.rm-x{width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;border-radius:9px;transition:background .15s ease,color .15s ease,transform .15s ease;}
-.edit-btn:hover,.rm-x:hover{background:var(--paper-2);color:var(--ink);}
-.rm-x:hover{color:var(--rule-strong);}
-
-/* Make utility controls read as a single system. */
-.weekday-picker{gap:5px;}
-.weekday-btn{min-height:38px;border-radius:9px;padding:7px 2px;}
-.palette-grid{gap:8px;}
-
-/* Timer / calendar get the same visual language. */
-.timer-card{padding:18px;margin-bottom:14px;}
-.timer-display{font-size:38px;letter-spacing:.035em;margin:18px 0;}
-.timer-controls{gap:9px;}
-.timer-controls button{min-height:42px;border-radius:10px;transition:transform .15s ease;}
-.summary-row{gap:9px;margin-bottom:16px;}
-.stat{padding:15px;border-radius:14px;}
-.stat .num{font-size:21px;}
-.tabs{gap:6px;margin-bottom:16px;padding-bottom:10px;}
-.tab{padding:8px 12px;border-radius:10px;font-size:10.5px;}
-.cal-grid{
-  width:100%;
-  min-width:0;
-  display:grid;
-  grid-template-columns:repeat(7,minmax(0,1fr));
-  grid-auto-flow:row;
-  grid-auto-rows:minmax(42px,auto);
-  gap:6px;
-}
-.cal-weekdays{
-  width:100%;
-  min-width:0;
-  grid-template-columns:repeat(7,minmax(0,1fr));
-}
-.cal-weekdays span{min-width:0;overflow:hidden;text-align:center;}
-.cal-cell{
-  width:100%;
-  min-width:0;
-  min-height:42px;
-  height:clamp(42px,10vw,58px);
-  aspect-ratio:auto;
-  overflow:hidden;
-  border-radius:10px;
-  transition:transform .15s ease,background .18s ease;
-}
-.cal-cell:hover{transform:translateY(-1px);}
-.cal-cell .cal-daynum{line-height:1;}
-.cal-cell .cal-dots{max-width:100%;min-width:0;overflow:hidden;}
-.cal-nav{margin-bottom:14px;}
-.cal-nav-btn{width:36px;height:36px;border-radius:10px;}
-.cal-legend{gap:9px;margin-top:16px;padding-top:12px;}
- .cal-grid, .cal-weekdays{box-sizing:border-box;overflow:hidden;}
-.cal-grid{grid-template-columns:repeat(7,minmax(0,1fr));grid-auto-rows:1fr;}
-.cal-cell{box-sizing:border-box;min-width:0;max-width:100%;width:100%;height:auto;min-height:0;aspect-ratio:1 / 1;padding:3px;overflow:hidden;}
-.cal-cell .cal-daynum{min-width:0;max-width:100%;overflow:hidden;}
-.cal-cell .cal-dots{width:100%;max-width:100%;min-width:0;overflow:hidden;}
-
-/* Modal hierarchy */
-.modal-overlay{background:rgba(22,25,34,.48);backdrop-filter:blur(5px);}
-.modal{max-width:360px;border-radius:18px;padding:22px;box-shadow:0 22px 60px rgba(0,0,0,.22);animation:t3Modal .2s ease both;}
-.modal h3{font-size:14px;}
-.modal p{line-height:1.55;}
-.modal-btn{min-height:44px;border-radius:10px;}
-
-/* Footer becomes quiet secondary information. */
-footer.note{max-width:760px;margin:54px auto 0;padding:0 22px;font-size:10.5px;line-height:1.7;opacity:.78;}
-
-/* Dark theme: calm, ink-on-paper rather than pure black. */
-body.dark{
-  --paper:#15171D;--paper-2:#1D2027;--ink:#F0EEE7;--ink-soft:#C3C6D0;
-  --rule:#66565D;--rule-strong:#D86A62;--pencil:#A29E95;--green:#7BA98A;--green-bg:#24362D;
-  --amber:#D5A64A;--amber-bg:#342C20;--card:#1D2027;--card-strong:#242831;--input-bg:#262A32;
-  --input-border:rgba(240,238,231,.16);--shadow:0 10px 26px rgba(0,0,0,.22),0 1px 1px rgba(0,0,0,.25);--shadow-hover:0 14px 34px rgba(0,0,0,.28);
-}
-body.dark::before{background:linear-gradient(115deg,rgba(255,255,255,.025),transparent 36%);}
-body.dark .page-tabs{background:rgba(21,23,29,.84);border-color:rgba(240,238,231,.08);}
-body.dark .stamp{background:rgba(29,32,39,.78);}
-body.dark .theme-toggle{background:#292D36;border-color:rgba(216,106,98,.48);}
-body.dark .new-project-form{background:#20242B;}
-body.dark .card,body.dark .timer-card,body.dark .stat{border-color:rgba(240,238,231,.07);}
-
-@keyframes t3Rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-@keyframes t3Modal{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
-@media (max-width:520px){
-  .wrap{width:100%;padding:20px 15px 26px;}
-  .header-tools{right:0;gap:7px;}
-  .stamp{font-size:8px;padding:7px 9px;}
-  .install-btn{width:38px;height:34px;}
-  .brand-title{font-size:31px;}
-  .page-tabs{top:5px;margin-bottom:26px;}
-  .page-tab{padding:9px 11px;font-size:10.5px;}
-  .section{margin-top:46px;}
-  .card{padding:16px 14px;border-radius:15px;}
-  .task-row{gap:8px;padding:14px 0;}
-  .daily-item{padding:16px 0;}
-  .daily-item-meta{width:auto;margin-left:auto;}
-  .daily-text{min-width:100px;}
-  .future-offset-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));}
-  .future-offset-row .chip{width:100%;}
-  .add-row{align-items:stretch;}
-  .add-row .btn{flex:0 0 auto;}
-  footer.note{padding:0 15px;}
-}
-@media (max-width:390px){
-  .header-tools{right:0;gap:5px;}
-  .stamp{font-size:7.5px;padding:6px 8px;}
-  .install-btn{width:36px;height:32px;}
-  .theme-toggle{width:38px;height:38px;border-radius:11px;}
-  .brand-caption{font-size:7.5px;}
-  .brand-title{font-size:28px;}
-  .section-title{font-size:14px;}
-  .daily-item-row{align-items:flex-start;}
-  .daily-item-meta{width:100%;margin-left:0;justify-content:flex-start;}
-  .daily-text{padding-top:3px;}
-  footer.note{padding:0;}
-}
-@media (max-width:520px){
-  .cal-grid{grid-auto-rows:44px;gap:5px;}
-  .cal-cell{height:44px;min-height:44px;padding:2px;}
-  .cal-cell .cal-daynum{font-size:11px;}
-}
-@media (max-width:390px){
-  .cal-grid{grid-auto-rows:40px;gap:4px;}
-  .cal-cell{height:40px;min-height:40px;border-radius:8px;}
-  .cal-cell .cal-dots{display:none;}
-}
-
- .error-indicator{position:fixed;right:16px;bottom:16px;z-index:2000;border:1px solid rgba(183,76,70,.65);background:var(--card);color:var(--rule-strong);border-radius:999px;padding:8px 10px;font:800 9px 'JetBrains Mono',monospace;letter-spacing:.08em;box-shadow:0 8px 22px rgba(0,0,0,.14);cursor:pointer;}
-.error-panel{position:fixed;inset:0;z-index:2100;display:none;align-items:flex-end;justify-content:center;background:rgba(22,25,34,.38);backdrop-filter:blur(4px);padding:18px;}
-.error-panel.open{display:flex;}
-.error-panel-inner{width:min(100%,560px);max-height:min(78vh,620px);overflow:auto;background:var(--card);border:1px solid rgba(183,76,70,.28);border-radius:18px;padding:18px;box-shadow:0 22px 60px rgba(0,0,0,.22);}
-.error-panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
-.error-panel h3{margin:7px 0 0;font:800 16px 'JetBrains Mono',monospace;color:var(--ink);}
-.error-badge{display:inline-block;border:1px solid rgba(183,76,70,.4);border-radius:999px;padding:4px 7px;color:var(--rule-strong);font:800 8px 'JetBrains Mono',monospace;letter-spacing:.08em;}
-.error-close{border:0;background:transparent;color:var(--pencil);font-size:24px;line-height:1;cursor:pointer;padding:2px 5px;}
-.error-intro{font-size:12px;color:var(--pencil);line-height:1.5;margin:12px 0;}
-.error-list{display:flex;flex-direction:column;gap:9px;}
-.error-item{border:1px solid rgba(183,76,70,.2);border-radius:11px;padding:10px;background:var(--paper-2);font-size:11px;}
-.error-item strong{display:block;color:var(--rule-strong);font:700 10px 'JetBrains Mono',monospace;margin-bottom:4px;}
-.error-item code{display:block;white-space:pre-wrap;word-break:break-word;color:var(--ink);font:10px/1.5 'JetBrains Mono',monospace;}
-.error-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
-body.dark .error-panel-inner{background:var(--card);}
-body.dark .error-item{background:var(--paper-2);}
-@media (max-width:520px){.error-panel{padding:12px;}.error-panel-inner{padding:15px;max-height:82vh;}.error-indicator{right:12px;bottom:12px;}}
-
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;transition-duration:.001ms!important;}
-}
+  body{transition:background-color .35s ease,color .35s ease;}
+  .wrap{max-width:700px;}
+  .top{position:relative;}
+  .kicker{letter-spacing:.06em; opacity:1; font-size:15px; font-weight:800;}
+  h1{font-size:32px; letter-spacing:-.04em; margin-bottom:20px;}
+  .page-tabs{gap:2px; margin:18px 0 26px; padding:6px; border:1px solid var(--line); border-radius:18px;}
+  .page-tab{padding:10px 8px; border-radius:13px; font-size:12px;}
+  .page-tab.active{background:var(--rule-strong); color:#1C2130; border-bottom-color:transparent;}
+  .section{margin-top:42px;}
+  .section-head{margin-bottom:14px;}
+  .section-num{border-radius:7px; padding:3px 8px;}
+  .section-title{font-size:15px;}
+  .section-sub{line-height:1.55; max-width:58ch;}
+  .card{border-radius:var(--radius); padding:16px; margin-bottom:14px; border-color:var(--line);}
+  .task-row,.daily-item,.special-item,.past-item,.future-item{padding:12px 5px; gap:11px;}
+  .task-row{min-height:48px;}
+  .task-name,.daily-text{font-size:14px;}
+  .edit-btn,.rm-x,.reschedule-btn{min-width:30px; min-height:30px; display:flex; align-items:center; justify-content:center; border-radius:7px;}
+  .edit-btn:hover,.rm-x:hover,.reschedule-btn:hover{background:var(--muted-bg);}
+  .check-btn{width:25px;height:25px;border-radius:7px;}
+  .stamp{top:10px; right:10px; cursor:pointer; transition:transform .2s ease, box-shadow .2s ease; user-select:none;}
+  .stamp:hover{transform:translateY(-1px); box-shadow:0 4px 14px rgba(34,40,59,.10);}
+  .install-btn{top:66px; right:10px; z-index:4;}
+  .theme-toggle{position:fixed;right:14px;bottom:18px;width:48px;height:48px;border-radius:15px;border:1px solid var(--rule);background:transparent;padding:0;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:30;box-shadow:0 8px 24px rgba(34,40,59,.12);overflow:hidden;}
+  .toggle-inner{position:relative;display:block;width:48px;height:48px;transition:transform .6s cubic-bezier(.2,.8,.2,1);}
+  .toggle-icon{position:absolute;inset:0;width:48px;height:48px;display:block;}
+  .toggle-icon.icon-dark{opacity:0;}
+  .toggle-icon.icon-light{opacity:1;}
+  body.dark .toggle-icon.icon-dark{opacity:1;}
+  body.dark .toggle-icon.icon-light{opacity:0;}
+  .brand-logo{height:34px;width:auto;display:block;fill:var(--ink);}
+  .brand-row{display:flex;align-items:center;gap:13px;margin-bottom:12px;}
+  .brand-badge{width:56px;height:56px;border-radius:16px;border:1.5px solid var(--rule-strong);background:var(--card,#EFE7D8);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .brand-badge-tile{width:40px;height:40px;border-radius:10px;background:#F2EEE5;display:flex;align-items:center;justify-content:center;}
+  .brand-badge-tile .brand-logo{height:22px;width:auto;fill:#1C2130;}
+  .brand-copy{display:flex;flex-direction:column;gap:3px;}
+  .brand-sub{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--pencil);}
+  .brand-title{font-size:40px;font-weight:800;letter-spacing:-.03em;margin:0 0 20px;color:var(--ink);}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+  .floating-add{position:fixed;left:16px;bottom:18px;width:48px;height:48px;border-radius:15px;border:1px solid var(--rule-strong);background:var(--rule-strong);color:#fff;font-size:24px;line-height:1;cursor:pointer;z-index:30;box-shadow:0 8px 24px rgba(34,40,59,.16);}
+  .floating-add:active{transform:scale(.95);}
+  .drawer-overlay{position:fixed;inset:0;background:rgba(10,14,23,.42);z-index:60;display:none;align-items:flex-end;justify-content:center;padding:0;}
+  .drawer-overlay.open{display:flex;}
+  .drawer{width:min(700px,100%);max-height:82vh;overflow:auto;background:var(--card);border:1px solid var(--line);border-bottom:none;border-radius:20px 20px 0 0;padding:18px 18px 28px;box-shadow:0 -14px 40px rgba(0,0,0,.18);animation:drawerIn .25s ease-out;}
+  @keyframes drawerIn{from{transform:translateY(20px);opacity:.7}to{transform:none;opacity:1}}
+  .drawer-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;}
+  .drawer-title{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:15px;}
+  .drawer-close{border:0;background:var(--muted-bg);color:var(--ink);border-radius:9px;width:32px;height:32px;cursor:pointer;}
+  .history-filter{display:flex;gap:6px;margin:0 0 16px;}
+  .history-filter button{flex:1;border:1px solid var(--rule);background:transparent;color:var(--rule-strong);padding:8px 6px;border-radius:9px;font:700 11px 'JetBrains Mono',monospace;cursor:pointer;}
+  .history-filter button.active{background:var(--rule-strong);color:#fff;}
+  .history-month{margin-top:18px;}
+  .history-month-head{font:800 13px 'JetBrains Mono',monospace;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
+  .history-bar{height:12px;border-radius:8px;overflow:hidden;background:var(--muted-bg);display:flex;border:1px solid var(--line);margin:7px 0 10px;}
+  .history-bar .done{background:var(--green);height:100%;}
+  .history-bar .undone{background:var(--amber);height:100%;}
+  .history-meta{font:10.5px 'JetBrains Mono',monospace;color:var(--pencil);display:flex;justify-content:space-between;}
+  .history-list{border-top:1px dashed var(--line);margin-top:10px;}
+  .history-entry{display:flex;gap:9px;align-items:center;padding:10px 3px;border-bottom:1px dashed var(--line);font-size:13px;}
+  .history-entry .entry-name{flex:1;min-width:0;}
+  .history-entry .entry-date{font:10px 'JetBrains Mono',monospace;color:var(--pencil);}
+  .danger-zone{margin-top:22px;padding-top:14px;border-top:1px solid var(--line);text-align:right;}
+  .danger-btn{font:700 9.5px 'JetBrains Mono',monospace;padding:5px 8px;border:1px solid rgba(180,68,62,.45);background:transparent;color:var(--rule-strong);border-radius:7px;cursor:pointer;}
+  .details-grid{display:grid;gap:12px;}
+  .detail-label{font:700 10px 'JetBrains Mono',monospace;color:var(--pencil);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;}
+  .detail-value{font-size:14px;line-height:1.5;}
+  .subtask-section{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);}
+  .subtask-item{padding:10px 0;border-bottom:1px dashed var(--line);}
+  .subtask-head{display:flex;align-items:center;gap:9px;}
+  .subtask-head .subtask-name{flex:1;font-size:13.5px;}
+  .mini-list{margin:7px 0 0 34px;display:grid;gap:6px;}
+  .mini-item{font-size:12.5px;display:flex;gap:7px;align-items:center;}
+  .mini-item input{margin:0;}
+  .subtask-more{margin:7px 0 0 34px;border:0;background:transparent;color:var(--rule-strong);font:700 10.5px 'JetBrains Mono',monospace;cursor:pointer;padding:3px 0;}
+  .add-subtask-form{display:none;margin-top:10px;padding:10px;background:var(--muted-bg);border-radius:9px;}
+  .add-subtask-form.open{display:block;}
+  .history-open-btn{border:0;background:transparent;color:inherit;padding:0;cursor:pointer;}
+  @media (max-width:420px){.wrap{padding-left:14px;padding-right:14px}.theme-toggle{right:10px}.floating-add{left:10px}.stamp{right:4px}.install-btn{right:4px}}
 
 </style>
 </head>
 <body>
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false">
+<symbol id="t3-mark" viewBox="0 0 393.2 518.9">
+<path fill-rule="evenodd" d="M 16.29,106.11 C 13.71,107.92 15.36,116.05 15.17,121.14 C 14.99,126.22 15.17,131.48 15.17,136.64 C 15.17,141.79 15.17,146.93 15.17,152.08 C 15.17,157.22 15.17,162.38 15.17,167.53 C 15.17,172.68 15.17,177.83 15.17,182.99 C 15.17,188.14 15.17,193.29 15.17,198.44 C 15.17,203.59 15.17,208.75 15.17,213.90 C 15.17,219.05 15.17,224.20 15.17,229.35 C 15.17,234.50 15.17,239.65 15.17,244.80 C 15.17,249.96 15.17,255.11 15.17,260.26 C 15.17,265.41 15.17,270.56 15.17,275.71 C 15.17,280.86 15.17,286.01 15.17,291.16 C 15.17,296.31 15.18,301.46 15.18,306.62 C 15.18,311.77 15.18,316.92 15.18,322.07 C 15.18,327.22 15.18,332.37 15.18,337.52 C 15.17,342.68 15.17,347.83 15.17,352.98 C 15.17,358.13 15.16,363.29 15.16,368.44 C 15.16,373.59 15.16,378.74 15.15,383.89 C 15.15,389.05 15.15,394.20 15.16,399.35 C 15.16,404.50 15.16,409.65 15.17,414.80 C 15.18,419.94 15.19,425.09 15.20,430.24 C 15.20,435.39 15.21,440.54 15.20,445.69 C 15.20,450.84 15.18,456.00 15.15,461.16 C 15.12,466.33 13.61,472.50 15.02,476.67 C 16.43,480.84 19.70,483.98 23.60,486.18 C 27.49,488.38 33.41,488.85 38.39,489.87 C 43.37,490.88 48.44,491.45 53.46,492.27 C 58.48,493.08 63.48,494.03 68.51,494.78 C 73.53,495.53 78.60,496.08 83.64,496.77 C 88.68,497.46 93.69,498.32 98.74,498.91 C 103.80,499.51 108.90,499.83 113.96,500.36 C 119.02,500.88 125.41,503.46 129.10,502.06 C 132.79,500.66 134.92,496.19 136.10,491.95 C 137.28,487.70 136.17,481.73 136.18,476.59 C 136.19,471.46 136.17,466.27 136.16,461.12 C 136.16,455.96 136.17,450.82 136.17,445.67 C 136.17,440.52 136.17,435.37 136.17,430.22 C 136.17,425.07 136.17,419.92 136.17,414.77 C 136.17,409.62 136.17,404.46 136.17,399.31 C 136.17,394.16 136.17,389.01 136.17,383.86 C 136.17,378.70 136.17,373.55 136.17,368.40 C 136.17,363.25 136.17,358.10 136.17,352.95 C 136.17,347.80 136.17,342.64 136.17,337.49 C 136.17,332.34 136.17,327.19 136.17,322.04 C 136.17,316.89 136.17,311.74 136.17,306.59 C 136.17,301.44 136.17,296.28 136.17,291.13 C 136.17,285.98 136.17,280.83 136.17,275.68 C 136.17,270.53 136.17,265.38 136.17,260.23 C 136.17,255.07 136.17,249.92 136.17,244.77 C 136.17,239.62 136.17,234.47 136.17,229.32 C 136.17,224.17 136.17,219.01 136.17,213.86 C 136.17,208.71 136.17,203.56 136.17,198.41 C 136.16,193.26 136.16,188.11 136.16,182.96 C 136.17,177.81 136.19,172.65 136.19,167.50 C 136.18,162.35 136.41,157.12 136.12,152.06 C 135.83,146.99 137.24,140.07 134.46,137.08 C 131.69,134.10 124.48,135.03 119.47,134.16 C 114.46,133.29 109.38,132.92 104.40,131.87 C 99.41,130.82 94.53,129.14 89.59,127.85 C 84.65,126.57 79.68,125.45 74.74,124.16 C 69.80,122.87 64.83,121.62 59.93,120.12 C 55.02,118.63 50.19,116.84 45.31,115.20 C 40.43,113.56 35.49,111.78 30.66,110.27 C 25.82,108.75 18.87,104.30 16.29,106.11 Z M 56.30,164.13 C 58.10,162.51 62.79,163.66 66.02,164.11 C 69.25,164.56 72.43,166.02 75.67,166.84 C 78.90,167.65 82.25,167.98 85.43,169.00 C 88.61,170.03 92.96,170.68 94.76,172.98 C 96.55,175.28 95.95,179.46 96.19,182.79 C 96.44,186.11 96.25,189.56 96.24,192.94 C 96.23,196.33 96.16,199.71 96.14,203.10 C 96.12,206.48 96.14,209.87 96.14,213.25 C 96.14,216.64 96.15,220.02 96.16,223.41 C 96.16,226.79 96.17,230.18 96.17,233.56 C 96.18,236.95 96.18,240.33 96.18,243.72 C 96.18,247.10 96.18,250.48 96.18,253.87 C 96.18,257.25 96.18,260.64 96.18,264.02 C 96.18,267.41 96.18,270.79 96.18,274.18 C 96.18,277.56 96.17,280.95 96.17,284.33 C 96.17,287.71 96.17,291.10 96.17,294.48 C 96.17,297.87 96.17,301.26 96.17,304.64 C 96.16,308.03 96.16,311.41 96.16,314.80 C 96.16,318.18 96.16,321.57 96.16,324.95 C 96.16,328.34 96.16,331.72 96.16,335.11 C 96.16,338.49 96.17,341.88 96.17,345.27 C 96.17,348.65 96.17,352.03 96.17,355.42 C 96.17,358.80 96.17,362.19 96.17,365.57 C 96.17,368.96 96.17,372.34 96.18,375.72 C 96.18,379.11 96.18,382.49 96.18,385.87 C 96.18,389.25 96.18,392.64 96.18,396.02 C 96.18,399.41 96.18,402.79 96.17,406.18 C 96.17,409.57 96.16,412.96 96.16,416.35 C 96.15,419.74 96.13,423.15 96.14,426.53 C 96.15,429.91 96.18,433.25 96.19,436.63 C 96.20,440.00 96.73,443.59 96.19,446.79 C 95.65,449.99 95.16,454.31 92.96,455.85 C 90.76,457.39 86.29,456.31 82.98,456.05 C 79.67,455.80 76.42,454.82 73.11,454.35 C 69.81,453.88 66.12,454.30 63.16,453.23 C 60.20,452.17 56.69,450.52 55.36,447.95 C 54.02,445.38 55.18,441.21 55.15,437.83 C 55.12,434.45 55.17,431.05 55.18,427.66 C 55.18,424.27 55.18,420.88 55.18,417.50 C 55.18,414.11 55.18,410.73 55.17,407.35 C 55.17,403.96 55.17,400.58 55.17,397.20 C 55.17,393.81 55.17,390.43 55.17,387.04 C 55.17,383.66 55.17,380.28 55.17,376.89 C 55.17,373.51 55.17,370.12 55.17,366.74 C 55.17,363.35 55.17,359.97 55.17,356.58 C 55.17,353.20 55.17,349.81 55.17,346.43 C 55.17,343.04 55.17,339.66 55.17,336.27 C 55.17,332.89 55.17,329.50 55.17,326.12 C 55.17,322.73 55.17,319.35 55.17,315.96 C 55.17,312.58 55.17,309.19 55.17,305.81 C 55.17,302.42 55.17,299.03 55.17,295.65 C 55.17,292.26 55.17,288.88 55.17,285.49 C 55.17,282.11 55.17,278.72 55.17,275.34 C 55.17,271.95 55.17,268.57 55.17,265.19 C 55.17,261.80 55.17,258.42 55.17,255.03 C 55.17,251.65 55.17,248.27 55.17,244.88 C 55.17,241.50 55.17,238.12 55.17,234.73 C 55.18,231.35 55.18,227.97 55.18,224.58 C 55.18,221.20 55.18,217.81 55.18,214.42 C 55.17,211.04 55.17,207.65 55.17,204.25 C 55.16,200.86 55.14,197.46 55.15,194.07 C 55.15,190.69 55.17,187.33 55.18,183.96 C 55.19,180.59 55.02,177.17 55.20,173.87 C 55.39,170.56 54.50,165.76 56.30,164.13 Z M 373.20,103.90 C 369.99,102.91 363.63,107.67 358.87,109.58 C 354.10,111.50 349.43,113.60 344.61,115.39 C 339.79,117.19 334.87,118.92 329.94,120.37 C 325.01,121.83 320.01,122.82 315.06,124.12 C 310.11,125.41 305.19,126.96 300.22,128.15 C 295.25,129.34 290.24,130.23 285.24,131.24 C 280.24,132.26 274.87,132.89 270.22,134.26 C 265.58,135.62 259.56,136.00 257.38,139.45 C 255.20,142.89 257.17,149.75 257.14,154.91 C 257.11,160.08 257.18,165.25 257.19,170.42 C 257.20,175.58 257.19,180.75 257.19,185.91 C 257.19,191.07 257.18,196.23 257.18,201.39 C 257.17,206.56 257.16,211.72 257.16,216.88 C 257.16,222.04 257.16,227.20 257.16,232.37 C 257.16,237.53 257.16,242.69 257.16,247.86 C 257.16,253.02 257.17,258.19 257.17,263.35 C 257.17,268.51 257.17,273.68 257.17,278.84 C 257.17,284.00 257.18,289.17 257.18,294.33 C 257.18,299.49 257.18,304.66 257.17,309.82 C 257.17,314.98 257.17,320.15 257.17,325.31 C 257.17,330.47 257.17,335.63 257.17,340.80 C 257.17,345.96 257.17,351.12 257.17,356.29 C 257.17,361.45 257.17,366.61 257.17,371.78 C 257.17,376.94 257.17,382.10 257.17,387.26 C 257.17,392.43 257.17,397.59 257.17,402.75 C 257.17,407.92 257.17,413.08 257.17,418.24 C 257.17,423.41 257.17,428.57 257.17,433.73 C 257.17,438.90 257.17,444.06 257.17,449.22 C 257.17,454.39 257.16,459.56 257.16,464.72 C 257.16,469.88 257.19,475.03 257.18,480.19 C 257.17,485.36 255.33,492.29 257.09,495.72 C 258.84,499.15 263.38,500.11 267.70,500.78 C 272.02,501.46 277.93,500.26 283.01,499.77 C 288.09,499.27 293.12,498.43 298.18,497.82 C 303.25,497.21 308.34,496.80 313.40,496.11 C 318.45,495.43 323.48,494.59 328.50,493.71 C 333.52,492.83 338.51,491.76 343.52,490.83 C 348.53,489.90 353.53,489.10 358.56,488.12 C 363.59,487.15 370.44,487.71 373.70,484.99 C 376.97,482.27 377.41,476.57 378.16,471.79 C 378.90,467.01 378.16,461.47 378.16,456.31 C 378.16,451.14 378.16,445.98 378.17,440.82 C 378.17,435.66 378.17,430.49 378.17,425.33 C 378.17,420.17 378.17,415.00 378.17,409.84 C 378.17,404.68 378.17,399.51 378.17,394.35 C 378.17,389.19 378.17,384.02 378.17,378.86 C 378.17,373.70 378.17,368.53 378.17,363.37 C 378.17,358.21 378.17,353.04 378.17,347.88 C 378.17,342.72 378.17,337.56 378.17,332.39 C 378.17,327.23 378.17,322.07 378.17,316.90 C 378.17,311.74 378.17,306.58 378.17,301.41 C 378.17,296.25 378.17,291.09 378.17,285.92 C 378.17,280.76 378.17,275.60 378.17,270.44 C 378.17,265.27 378.17,260.11 378.17,254.95 C 378.17,249.78 378.17,244.62 378.17,239.46 C 378.17,234.29 378.17,229.13 378.17,223.97 C 378.17,218.80 378.17,213.64 378.17,208.48 C 378.17,203.31 378.17,198.15 378.17,192.99 C 378.17,187.82 378.17,182.66 378.17,177.50 C 378.17,172.33 378.17,167.17 378.17,162.01 C 378.17,156.85 378.17,151.69 378.17,146.52 C 378.17,141.36 378.17,136.19 378.17,131.03 C 378.17,125.87 378.99,120.07 378.16,115.55 C 377.34,111.03 376.42,104.90 373.20,103.90 Z M 330.11,162.69 C 333.06,162.90 336.64,163.76 337.99,166.03 C 339.34,168.31 338.18,172.94 338.21,176.34 C 338.23,179.75 338.16,183.09 338.16,186.48 C 338.15,189.86 338.16,193.26 338.16,196.66 C 338.16,200.05 338.17,203.45 338.17,206.85 C 338.17,210.24 338.17,213.64 338.17,217.03 C 338.18,220.43 338.18,223.82 338.18,227.21 C 338.18,230.60 338.18,234.00 338.18,237.39 C 338.18,240.78 338.18,244.18 338.17,247.57 C 338.17,250.96 338.17,254.35 338.17,257.75 C 338.17,261.14 338.17,264.53 338.17,267.92 C 338.17,271.32 338.17,274.71 338.17,278.10 C 338.17,281.50 338.16,284.89 338.16,288.28 C 338.16,291.67 338.16,295.07 338.16,298.46 C 338.16,301.85 338.16,305.25 338.16,308.64 C 338.16,312.03 338.16,315.43 338.16,318.82 C 338.17,322.22 338.17,325.61 338.17,329.00 C 338.17,332.40 338.17,335.79 338.17,339.18 C 338.18,342.58 338.18,345.97 338.18,349.37 C 338.18,352.76 338.18,356.15 338.18,359.55 C 338.18,362.94 338.18,366.33 338.18,369.73 C 338.18,373.12 338.18,376.51 338.18,379.90 C 338.18,383.30 338.18,386.69 338.17,390.08 C 338.17,393.47 338.16,396.86 338.16,400.25 C 338.15,403.64 338.14,407.03 338.14,410.43 C 338.13,413.82 338.13,417.21 338.14,420.61 C 338.15,424.00 338.16,427.40 338.18,430.80 C 338.21,434.21 338.67,437.79 338.31,441.03 C 337.95,444.28 338.04,448.29 336.03,450.27 C 334.02,452.24 329.55,452.20 326.26,452.87 C 322.98,453.54 319.61,453.78 316.33,454.27 C 313.04,454.75 309.65,455.89 306.54,455.79 C 303.42,455.68 299.18,455.71 297.61,453.63 C 296.04,451.55 297.18,446.72 297.11,443.31 C 297.04,439.91 297.18,436.58 297.19,433.20 C 297.20,429.81 297.19,426.41 297.19,423.02 C 297.18,419.62 297.17,416.22 297.17,412.83 C 297.16,409.43 297.16,406.03 297.16,402.64 C 297.16,399.25 297.16,395.85 297.16,392.46 C 297.16,389.07 297.17,385.67 297.17,382.28 C 297.17,378.89 297.17,375.50 297.17,372.10 C 297.17,368.71 297.17,365.32 297.17,361.93 C 297.17,358.53 297.17,355.14 297.17,351.75 C 297.17,348.36 297.17,344.96 297.17,341.57 C 297.17,338.18 297.17,334.79 297.17,331.39 C 297.17,328.00 297.17,324.61 297.17,321.21 C 297.17,317.82 297.17,314.43 297.17,311.03 C 297.17,307.64 297.17,304.25 297.17,300.85 C 297.17,297.46 297.17,294.06 297.17,290.67 C 297.17,287.28 297.17,283.88 297.17,280.49 C 297.17,277.09 297.17,273.70 297.17,270.31 C 297.17,266.91 297.17,263.52 297.17,260.12 C 297.17,256.73 297.17,253.34 297.17,249.94 C 297.17,246.55 297.17,243.16 297.17,239.77 C 297.17,236.37 297.17,232.98 297.17,229.59 C 297.17,226.20 297.17,222.81 297.17,219.42 C 297.17,216.03 297.17,212.64 297.17,209.25 C 297.16,205.86 297.16,202.47 297.16,199.07 C 297.16,195.67 297.16,192.28 297.17,188.87 C 297.17,185.46 296.59,181.73 297.18,178.63 C 297.76,175.53 298.44,172.17 300.66,170.25 C 302.88,168.33 307.21,168.03 310.49,167.11 C 313.76,166.20 317.02,165.50 320.29,164.76 C 323.56,164.03 327.16,162.48 330.11,162.69 Z M 372.11,15.00 C 367.33,13.65 357.20,22.93 349.51,26.48 C 341.82,30.02 333.96,33.29 325.98,36.28 C 318.00,39.27 309.78,41.96 301.62,44.42 C 293.46,46.88 285.28,49.26 277.01,51.04 C 268.74,52.82 260.36,53.91 252.00,55.12 C 243.63,56.32 235.26,57.49 226.83,58.28 C 218.40,59.08 209.90,59.78 201.42,59.87 C 192.93,59.97 184.39,59.31 175.90,58.85 C 167.42,58.38 158.93,57.97 150.51,57.09 C 142.09,56.22 133.71,55.13 125.40,53.60 C 117.09,52.08 108.86,50.05 100.64,47.93 C 92.43,45.80 84.12,43.62 76.11,40.86 C 68.09,38.09 60.39,34.56 52.54,31.34 C 44.69,28.11 35.22,22.11 29.00,21.50 C 22.78,20.90 17.54,22.37 15.21,27.68 C 12.87,32.99 11.94,46.63 15.00,53.37 C 18.06,60.10 26.48,64.17 33.57,68.10 C 40.67,72.04 49.50,74.19 57.57,76.97 C 65.63,79.74 73.79,82.42 81.97,84.75 C 90.15,87.07 98.36,89.24 106.65,90.92 C 114.93,92.61 123.32,93.65 131.69,94.86 C 140.05,96.07 149.38,95.95 156.82,98.16 C 164.26,100.37 173.10,102.17 176.33,108.12 C 179.56,114.06 176.21,125.28 176.18,133.84 C 176.15,142.41 176.18,150.96 176.18,159.52 C 176.17,168.08 176.17,176.64 176.17,185.20 C 176.17,193.76 176.17,202.32 176.17,210.88 C 176.17,219.44 176.17,228.00 176.17,236.56 C 176.17,245.12 176.17,253.68 176.17,262.24 C 176.17,270.80 176.17,279.36 176.17,287.91 C 176.17,296.47 176.17,305.03 176.17,313.59 C 176.17,322.15 176.17,330.71 176.17,339.27 C 176.17,347.83 176.17,356.39 176.17,364.95 C 176.17,373.51 176.17,382.06 176.16,390.62 C 176.16,399.18 176.16,407.74 176.17,416.30 C 176.17,424.86 176.17,433.42 176.18,441.98 C 176.18,450.54 176.18,459.10 176.18,467.66 C 176.18,476.22 173.38,487.31 176.17,493.34 C 178.97,499.38 186.28,502.74 192.97,503.86 C 199.65,504.98 212.42,505.00 216.29,500.07 C 220.15,495.15 216.19,482.89 216.17,474.32 C 216.15,465.75 216.17,457.20 216.17,448.64 C 216.17,440.08 216.17,431.52 216.17,422.96 C 216.17,414.41 216.17,405.85 216.17,397.29 C 216.17,388.73 216.17,380.17 216.17,371.61 C 216.17,363.05 216.17,354.49 216.17,345.93 C 216.17,337.37 216.17,328.81 216.17,320.25 C 216.17,311.69 216.17,303.13 216.17,294.57 C 216.17,286.02 216.17,277.46 216.17,268.90 C 216.17,260.34 216.17,251.78 216.17,243.22 C 216.17,234.66 216.17,226.10 216.17,217.54 C 216.17,208.98 216.17,200.42 216.17,191.86 C 216.17,183.30 216.17,174.74 216.17,166.18 C 216.17,157.63 216.16,149.07 216.16,140.51 C 216.17,131.95 214.07,121.73 216.21,114.81 C 218.34,107.89 222.66,102.10 229.00,99.00 C 235.33,95.90 245.85,97.41 254.21,96.20 C 262.57,95.00 270.90,93.54 279.17,91.77 C 287.44,90.01 295.65,87.83 303.85,85.61 C 312.04,83.39 320.28,81.14 328.35,78.45 C 336.43,75.76 344.44,72.75 352.30,69.48 C 360.16,66.22 371.21,64.68 375.53,58.85 C 379.84,53.03 378.75,41.85 378.18,34.54 C 377.61,27.23 376.89,16.34 372.11,15.00 Z"/>
+</symbol>
+</svg>
+<div class="margin-rule"></div>
 <div class="wrap">
+  <button class="stamp" id="stamp" onclick="openHistoryDrawer()" aria-label="Open task history">PAGE 01<br>DATE: --</button>
+  <button id="installBtn" class="install-btn" onclick="triggerInstall()" title="Install app" style="display:none;">IN</button>
+  <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle light and dark mode">
+    <span class="toggle-inner">
+      <svg class="toggle-icon icon-light" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+        <rect width="48" height="48" rx="15" fill="#EFE7D8"/>
+        <svg x="9" y="4.5" width="30" height="39.6" viewBox="0 0 393.2 518.9"><use href="#t3-mark" fill="#1C2638"/></svg>
+      </svg>
+      <svg class="toggle-icon icon-dark" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+        <rect width="48" height="48" rx="15" fill="#202B43"/>
+        <svg x="9" y="4.5" width="30" height="39.6" viewBox="0 0 393.2 518.9"><use href="#t3-mark" fill="#F1ECE1"/></svg>
+      </svg>
+    </span>
+  </button>
+  <button class="floating-add" onclick="openQuickAdd()" aria-label="Add task">+</button>
   <header class="top">
-    <div class="header-tools" aria-label="App controls">
-      <div class="stamp" id="stamp">PAGE 01<br>DATE: --</div>
-      <button id="installBtn" class="install-btn" type="button" onclick="triggerInstall()" title="Install T3" aria-label="Install T3">IN</button>
-    </div>
     <div class="brand-row">
-      <button id="themeToggle" class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Switch to dark mode" title="Switch to dark mode">
-        <img src="t3-logo.svg" alt="T3 theme toggle" class="theme-logo">
-      </button>
-      <div class="brand-lockup">
-        <div class="kicker">TASK TIME TRACKER</div>
-        <div class="brand-caption">T3 / PERSONAL WORKSPACE</div>
+      <div class="brand-badge"><div class="brand-badge-tile"><svg class="brand-logo" viewBox="0 0 393.2 518.9" aria-hidden="true" focusable="false"><use href="#t3-mark"/></svg></div></div>
+      <div class="brand-copy">
+        <div class="kicker">Task Time Tracker</div>
+        <div class="brand-sub">T3 / Personal Workspace</div>
       </div>
     </div>
     <h1 class="brand-title">T3</h1>
   </header>
 
-  <nav class="page-tabs" aria-label="Main navigation">
+  <div class="page-tabs">
     <button class="page-tab active" data-page="today" onclick="switchPage('today')">Today</button>
     <button class="page-tab" data-page="timer" onclick="switchPage('timer')">Timer</button>
     <button class="page-tab" data-page="calendar" onclick="switchPage('calendar')">Calendar</button>
     <button class="page-tab" data-page="progress" onclick="switchPage('progress')">Progress Tracker</button>
-  </nav>
+  </div>
 
   <div class="page active" id="page-today">
   <!-- SECTION 1 -->
@@ -1189,7 +968,7 @@ body.dark .error-item{background:var(--paper-2);}
     <div class="card">
       <textarea id="manuscriptInput" placeholder="Nothing written yet — totally optional." rows="4"
         style="width:100%; font-family:'Inter',sans-serif; font-size:13.5px; line-height:1.5; padding:10px 12px;
-        border:1px solid var(--input-border); border-radius:7px; background:var(--input-bg); color:var(--ink);
+        border:1px solid rgba(34,40,59,0.18); border-radius:6px; background:var(--input-bg); color:var(--ink);
         resize:vertical; box-sizing:border-box;" oninput="onManuscriptInput()"></textarea>
       <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
         <span id="manuscriptStatus" style="font-family:'JetBrains Mono',monospace; font-size:10.5px; color:var(--pencil);"></span>
@@ -1218,7 +997,7 @@ body.dark .error-item{background:var(--paper-2);}
       </div>
       <div style="margin-bottom:10px;">
         <label style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--pencil); display:block; margin-bottom:6px;">Link to a task (optional)</label>
-        <select id="timerLinkSelect" style="width:100%; font-family:'Inter',sans-serif; font-size:13.5px; padding:8px 10px; border:1px solid var(--input-border); border-radius:7px; background:var(--input-bg); color:var(--ink);">
+        <select id="timerLinkSelect" style="width:100%; font-family:'Inter',sans-serif; font-size:13.5px; padding:8px 10px; border:1px solid rgba(34,40,59,0.18); border-radius:6px; background:var(--input-bg); color:var(--ink);">
           <option value="">No linked task</option>
         </select>
       </div>
@@ -1263,6 +1042,8 @@ body.dark .error-item{background:var(--paper-2);}
       </div>
     </div>
 
+    <div class="card" id="calendarHistorySummary"><div class="empty">Monthly history summary appears here after a month is archived.</div></div>
+
     <div class="card" id="calDayDetail">
       <div class="empty">Tap a day above to see its activity.</div>
     </div>
@@ -1293,13 +1074,60 @@ body.dark .error-item{background:var(--paper-2);}
     <div class="tab-panel" id="tabpanel-ptab-future">
       <div id="futureHistoryList"></div>
     </div>
+  <div class="card" style="margin-top:20px;">
+    <div class="detail-label">Data safety</div>
+    <div style="font-size:12px;color:var(--pencil);line-height:1.5;margin-bottom:10px;">Export a complete T3 backup or restore one. Restoring existing data always asks whether to merge or replace.</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn small ghost" onclick="exportT3Backup()">Backup T3</button>
+      <button class="btn small ghost" onclick="document.getElementById('restoreFile').click()">Restore T3</button>
+      <input id="restoreFile" type="file" accept="application/json" style="display:none" onchange="handleRestoreFile(event)">
+    </div>
+  </div>
   </div><!-- /page-progress -->
 </div>
 
 <footer class="note">
-  Stored locally in this browser only — data won't sync across devices and clears if site data is cleared. Numeric-limit tasks ask "Full" or a specific number when you check them off. Reminders shown here are in-app only while this page is open (no OS push notifications from a browser prototype).
+  T3 stores data locally in this browser only — data won't sync across devices and clears if site data is cleared. Numeric-limit tasks ask "Full" or a specific number when you check them off. Reminders shown here are in-app only while this page is open (no OS push notifications from a browser prototype).
 </footer>
 
+
+<!-- T3 V4: Waiting List quick capture drawer -->
+<div class="drawer-overlay" id="quickAddOverlay" onclick="if(event.target===this)closeQuickAdd()">
+  <div class="drawer" role="dialog" aria-modal="true" aria-labelledby="quickAddTitle">
+    <div class="drawer-head"><div class="drawer-title" id="quickAddTitle">Waiting List</div><button class="drawer-close" onclick="closeQuickAdd()">×</button></div>
+    <div class="section-sub">Capture it now. Schedule or move it later.</div>
+    <div id="waitingList"></div>
+    <div class="add-row" style="margin-top:12px;">
+      <input type="text" id="waitingInput" placeholder="What do you want to remember?" onkeydown="if(event.key==='Enter')addWaitingTask()">
+      <button class="btn" onclick="addWaitingTask()">Add</button>
+    </div>
+  </div>
+</div>
+
+<!-- T3 V4: History drawer -->
+<div class="drawer-overlay" id="historyOverlay" onclick="if(event.target===this)closeHistoryDrawer()">
+  <div class="drawer" role="dialog" aria-modal="true" aria-labelledby="historyTitle">
+    <div class="drawer-head"><div class="drawer-title" id="historyTitle">Task History</div><button class="drawer-close" onclick="closeHistoryDrawer()">×</button></div>
+    <div class="history-filter" id="historyFilter">
+      <button class="active" data-filter="all" onclick="setHistoryFilter('all')">All</button>
+      <button data-filter="completed" onclick="setHistoryFilter('completed')">Completed</button>
+      <button data-filter="uncompleted" onclick="setHistoryFilter('uncompleted')">Uncompleted</button>
+    </div>
+    <div id="historyDrawerContent"></div>
+  </div>
+</div>
+
+<!-- T3 V4: task details -->
+<div class="drawer-overlay" id="detailsOverlay" onclick="if(event.target===this)closeTaskDetails()">
+  <div class="drawer" role="dialog" aria-modal="true" aria-labelledby="detailsTitle">
+    <div class="drawer-head"><div class="drawer-title" id="detailsTitle">Task Details</div><button class="drawer-close" onclick="closeTaskDetails()">×</button></div>
+    <div id="detailsContent"></div>
+  </div>
+</div>
+
+<div id="undoToast" style="position:fixed;left:50%;bottom:82px;transform:translateX(-50%) translateY(14px);z-index:90;display:none;align-items:center;gap:12px;background:var(--ink);color:var(--paper);padding:9px 12px 9px 14px;border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,.18);font:11px 'JetBrains Mono',monospace;opacity:0;transition:opacity .18s ease,transform .18s ease;max-width:calc(100vw - 32px);">
+  <span id="undoText">Action completed</span><button id="undoBtn" onclick="performUndo()" style="border:0;background:var(--rule-strong);color:#fff;border-radius:7px;padding:6px 9px;font:700 10px 'JetBrains Mono',monospace;cursor:pointer;">Undo</button>
+</div>
 <!-- Modal: how much completed -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
@@ -1325,16 +1153,6 @@ body.dark .error-item{background:var(--paper-2);}
 </div>
 
 <!-- Timer finished -> what to do with linked task -->
-<div class="modal-overlay" id="installOverlay" aria-hidden="true">
-  <div class="modal">
-    <h3 id="installTitle">Install T3</h3>
-    <p id="installMessage">T3 can be installed from your browser menu. If the Install option is missing, open this page in Chrome or another supported browser over HTTPS (or localhost).</p>
-    <div class="modal-btn-row">
-      <button class="modal-btn" onclick="closeInstallHelp()">Got it</button>
-    </div>
-  </div>
-</div>
-
 <div class="modal-overlay" id="timerDoneOverlay">
   <div class="modal">
     <h3 id="timerDoneTitle">Timer finished</h3>
@@ -1343,73 +1161,7 @@ body.dark .error-item{background:var(--paper-2);}
   </div>
 </div>
 
-<!-- Runtime error monitor: hidden until T3 detects a real JavaScript/runtime error. -->
-<div id="errorIndicator" class="error-indicator" hidden>ERR</div>
-<div class="error-panel" id="errorPanel" aria-hidden="true">
-  <div class="error-panel-inner">
-    <div class="error-panel-head">
-      <div><span class="error-badge">T3 ERROR</span><h3>Something went wrong</h3></div>
-      <button type="button" class="error-close" id="errorCloseBtn" aria-label="Close error details">×</button>
-    </div>
-    <p class="error-intro">T3 caught an error so you can report the exact problem instead of getting a silent failure.</p>
-    <div class="error-list" id="errorList"></div>
-    <div class="error-actions">
-      <button type="button" class="btn small" id="errorCopyBtn">Copy error details</button>
-      <button type="button" class="btn subtle small" id="errorClearBtn">Clear log</button>
-    </div>
-  </div>
-</div>
-
 <script>
-// ---------- Runtime error monitor ----------
-// Errors are surfaced visibly instead of failing silently. This is intentionally
-// lightweight and only appears when a runtime error actually occurs.
-const T3_ERROR_KEY = 't3_error_log_v1';
-function getT3ErrorLog(){
-  try { return JSON.parse(localStorage.getItem(T3_ERROR_KEY) || '[]'); } catch(e){ return []; }
-}
-function saveT3ErrorLog(log){
-  try { localStorage.setItem(T3_ERROR_KEY, JSON.stringify(log.slice(-12))); } catch(e){}
-}
-function formatT3Error(error){
-  if(error instanceof Error) return error.stack || `${error.name}: ${error.message}`;
-  return String(error);
-}
-function reportT3Error(source, error, extra=''){
-  const entry={time:new Date().toLocaleString(),source,message:formatT3Error(error),extra};
-  const log=getT3ErrorLog(); log.push(entry); saveT3ErrorLog(log);
-  console.error(`[T3 ${source}]`, error, extra);
-  const indicator=document.getElementById('errorIndicator');
-  if(indicator){ indicator.hidden=false; indicator.textContent=`ERR ${log.length}`; indicator.onclick=openT3ErrorPanel; }
-  renderT3ErrorLog();
-}
-function renderT3ErrorLog(){
-  const box=document.getElementById('errorList'); if(!box) return;
-  const log=getT3ErrorLog();
-  box.innerHTML=log.length ? log.slice().reverse().map((e,i)=>`<div class="error-item"><strong>${escapeHtml(e.time)} · ${escapeHtml(e.source)}</strong><code>${escapeHtml(e.message)}${e.extra?'\n'+escapeHtml(e.extra):''}</code></div>`).join('') : '<div class="error-item"><code>No errors recorded.</code></div>';
-}
-function openT3ErrorPanel(){
-  renderT3ErrorLog();
-  const panel=document.getElementById('errorPanel'); if(panel){panel.classList.add('open');panel.setAttribute('aria-hidden','false');}
-}
-function closeT3ErrorPanel(){
-  const panel=document.getElementById('errorPanel'); if(panel){panel.classList.remove('open');panel.setAttribute('aria-hidden','true');}
-}
-window.addEventListener('error',(event)=>{
-  reportT3Error('window.error', event.error || event.message, `${event.filename||''}:${event.lineno||''}:${event.colno||''}`);
-});
-window.addEventListener('unhandledrejection',(event)=>{ reportT3Error('unhandledrejection', event.reason); });
-document.addEventListener('DOMContentLoaded',()=>{
-  document.getElementById('errorIndicator')?.addEventListener('click',openT3ErrorPanel);
-  document.getElementById('errorCloseBtn')?.addEventListener('click',closeT3ErrorPanel);
-  document.getElementById('errorClearBtn')?.addEventListener('click',()=>{localStorage.removeItem(T3_ERROR_KEY);renderT3ErrorLog();document.getElementById('errorIndicator').hidden=true;});
-  document.getElementById('errorCopyBtn')?.addEventListener('click',async()=>{
-    const text=getT3ErrorLog().map(e=>`[${e.time}] ${e.source}\n${e.message}\n${e.extra||''}`).join('\n\n');
-    try{ await navigator.clipboard.writeText(text || 'No T3 errors recorded.'); }catch(e){ reportT3Error('error-copy',e); }
-  });
-  const log=getT3ErrorLog(); if(log.length){const i=document.getElementById('errorIndicator');i.hidden=false;i.textContent=`ERR ${log.length}`;}
-});
-
 // ---------- State ----------
 let state = JSON.parse(JSON.stringify({
   projects: [],
@@ -1423,18 +1175,21 @@ let state = JSON.parse(JSON.stringify({
   notes: {},          // dayKey -> free text note for that day (optional, one per day)
   pastTasks: [],        // unfinished Today Special items carried over from a prior day: {id, text, originalDay}
   weekly: [],          // Weekly Routine tasks: {id, text, target, progress, done, colorIndex, weekdays:[0-6], lifespan}
-  dated: []            // Recurring Dates tasks: {id, text, recurrence:'monthly'|'yearly', dates:[{month,day}], lifespan, lastPromotedKey}
+  dated: [],            // Recurring Dates tasks
+  waiting: [],          // V4 unscheduled capture list
+  taskHistory: [],      // V4 event history: {id,text,status,historyDate,source}
+  monthlySummaries: {}  // V4 monthKey -> {completed,uncompleted,total}
 }));
 
 function load(){
   try{
-    const raw = localStorage.getItem('t3_state_v1') || localStorage.getItem('ledger_state_v1');
+    const raw = localStorage.getItem('t3_state_v4') || localStorage.getItem('ledger_state_v1');
     if(raw){
       const saved = JSON.parse(raw);
       // Merge onto defaults so older saved data (from before history tracking existed)
       // doesn't wipe out fields it never had, like history/lastSeenDay.
       state = Object.assign({
-        projects: [], daily: [], special: [], future: [], history: {}, lastSeenDay: null, timers: [], timerLog: [], notes: {}, pastTasks: [], weekly: [], dated: []
+        projects: [], daily: [], special: [], future: [], history: {}, lastSeenDay: null, timers: [], timerLog: [], notes: {}, pastTasks: [], weekly: [], dated: [], waiting: [], taskHistory: [], monthlySummaries: {}
       }, saved);
       if(!state.history || typeof state.history !== 'object') state.history = {};
       if(!state.notes || typeof state.notes !== 'object') state.notes = {};
@@ -1447,6 +1202,10 @@ function load(){
       if(!Array.isArray(state.pastTasks)) state.pastTasks = [];
       if(!Array.isArray(state.weekly)) state.weekly = [];
       if(!Array.isArray(state.dated)) state.dated = [];
+      if(!Array.isArray(state.waiting)) state.waiting = [];
+      if(!Array.isArray(state.taskHistory)) state.taskHistory = [];
+      if(!state.monthlySummaries || typeof state.monthlySummaries !== 'object') state.monthlySummaries = {};
+      state.waiting.forEach(w=>{ if(!Array.isArray(w.subtasks)) w.subtasks=[]; });
       // Older saved daily-habit entries predate the lifespan field -- default them to
       // Forever so they keep behaving exactly as they did before this update.
       state.daily.forEach(d => { if(!d.lifespan) d.lifespan = {type:'forever'}; });
@@ -1454,13 +1213,105 @@ function load(){
       // so any timer that was running gets paused on load rather than silently losing time.
       state.timers.forEach(t => { t.running = false; });
     }
-  }catch(e){ reportT3Error('load', e); }
+  }catch(e){ console.warn('load failed', e); }
 }
+let v4UndoSnapshot=null, v4UndoTimer=null, v4UndoSuppress=false, v4SkipNextUndo=false;
 function save(){
-  try{ localStorage.setItem('t3_state_v1', JSON.stringify(state)); }
-  catch(e){ reportT3Error('save', e); }
+  try{
+    if(!v4UndoSuppress && !v4SkipNextUndo){
+      const raw=localStorage.getItem('t3_state_v4');
+      if(raw){ v4UndoSnapshot=JSON.parse(raw); showUndoToast('Action changed'); }
+    }
+    v4SkipNextUndo=false;
+    localStorage.setItem('t3_state_v4', JSON.stringify(state));
+  } catch(e){ console.warn('save failed', e); }
+}
+function saveNoUndo(){ v4SkipNextUndo=true; save(); }
+function showUndoToast(label){
+  const toast=document.getElementById('undoToast'); if(!toast)return;
+  document.getElementById('undoText').textContent=label+' · 10s';
+  toast.style.display='flex'; requestAnimationFrame(()=>{toast.style.opacity='1';toast.style.transform='translateX(-50%) translateY(0)';});
+  clearTimeout(v4UndoTimer); v4UndoTimer=setTimeout(()=>{v4UndoSnapshot=null;toast.style.opacity='0';toast.style.transform='translateX(-50%) translateY(14px)';setTimeout(()=>{if(!v4UndoSnapshot)toast.style.display='none';},180);},10000);
+}
+function performUndo(){
+  if(!v4UndoSnapshot)return;
+  const snapshot=v4UndoSnapshot; v4UndoSnapshot=null; clearTimeout(v4UndoTimer);
+  v4UndoSuppress=true; state=snapshot; localStorage.setItem('t3_state_v4',JSON.stringify(state)); v4UndoSuppress=false;
+  renderProjects();renderDaily();renderWeekly();renderDated();renderSpecial();renderFuture();renderPastTasks();renderWaitingList();renderProgressPage();renderCalendar();
+  const toast=document.getElementById('undoToast'); if(toast){toast.style.opacity='0';toast.style.transform='translateX(-50%) translateY(14px)';setTimeout(()=>toast.style.display='none',180);}
 }
 function uid(){ return Math.random().toString(36).slice(2,9); }
+
+// ---------- T3 V5: Backup & Restore ----------
+function exportT3Backup(){
+  const payload = { t3Backup:true, exportedAt:new Date().toISOString(), state:state };
+  const blob = new Blob([JSON.stringify(payload,null,2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 't3-backup-'+dayKey()+'.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+function handleRestoreFile(event){
+  const file = event.target.files && event.target.files[0];
+  event.target.value = '';
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    let parsed;
+    try{ parsed = JSON.parse(reader.result); }
+    catch(e){ showAlertModal("That file isn't a valid T3 backup (couldn't be read as JSON)."); return; }
+    const incoming = (parsed && parsed.t3Backup && parsed.state) ? parsed.state : parsed;
+    if(!incoming || typeof incoming !== 'object'){ showAlertModal("That file isn't a valid T3 backup."); return; }
+    promptRestoreChoice(incoming);
+  };
+  reader.onerror = () => showAlertModal('Could not read that file.');
+  reader.readAsText(file);
+}
+function promptRestoreChoice(incoming){
+  document.getElementById('confirmMessage').innerHTML = 'Restore backup — replace all current T3 data, or merge the backup into what you already have?';
+  document.getElementById('confirmButtons').innerHTML = `
+    <button class="modal-btn" id="restoreReplaceBtn">Replace existing data</button>
+    <button class="btn subtle small" id="restoreMergeBtn" style="margin-top:8px;">Merge with existing data</button>
+    <button class="btn subtle small" id="restoreCancelBtn" style="margin-top:8px;">Cancel</button>
+  `;
+  document.getElementById('confirmOverlay').classList.add('open');
+  document.getElementById('restoreReplaceBtn').onclick = ()=>{ document.getElementById('confirmOverlay').classList.remove('open'); confirmRestoreReplace(incoming); };
+  document.getElementById('restoreMergeBtn').onclick = ()=>{ document.getElementById('confirmOverlay').classList.remove('open'); doRestoreMerge(incoming); };
+  document.getElementById('restoreCancelBtn').onclick = ()=>{ document.getElementById('confirmOverlay').classList.remove('open'); };
+}
+function confirmRestoreReplace(incoming){
+  showConfirmModal('Replace ALL current T3 data with this backup? This cannot be undone after 10 seconds.', ()=>doRestoreReplace(incoming));
+}
+function doRestoreReplace(incoming){
+  state = Object.assign({
+    projects: [], daily: [], special: [], future: [], history: {}, lastSeenDay: null, timers: [], timerLog: [], notes: {}, pastTasks: [], weekly: [], dated: [], waiting: [], taskHistory: [], monthlySummaries: {}
+  }, incoming);
+  if(!Array.isArray(state.timers)) state.timers=[];
+  state.timers.forEach(t=>{ t.running=false; });
+  save(); rerenderEverything();
+  showAlertModal('Backup restored — all T3 data was replaced.');
+}
+function doRestoreMerge(incoming){
+  const arrayFields=['projects','daily','special','future','pastTasks','weekly','dated','waiting','taskHistory','timers','timerLog'];
+  arrayFields.forEach(f=>{
+    if(!Array.isArray(incoming[f])) return;
+    if(!Array.isArray(state[f])) state[f]=[];
+    const existingIds=new Set(state[f].map(x=>x && x.id));
+    incoming[f].forEach(item=>{ if(!item || existingIds.has(item.id)) return; state[f].push(item); });
+  });
+  const dictFields=['history','notes','monthlySummaries'];
+  dictFields.forEach(f=>{
+    if(!incoming[f] || typeof incoming[f]!=='object') return;
+    if(!state[f] || typeof state[f]!=='object') state[f]={};
+    Object.keys(incoming[f]).forEach(k=>{ if(!(k in state[f])) state[f][k]=incoming[f][k]; });
+  });
+  save(); rerenderEverything();
+  showAlertModal('Backup merged into your existing T3 data.');
+}
+function rerenderEverything(){
+  renderProjects();renderDaily();renderWeekly();renderDated();renderSpecial();renderFuture();renderPastTasks();renderWaitingList();renderProgressPage();renderCalendar();renderStamp();
+}
 
 // ---------- Generic confirm/alert modal (replaces native confirm()/alert()) ----------
 function showConfirmModal(message, onConfirm){
@@ -1539,7 +1390,7 @@ function saveNewProject(){
   const name = document.getElementById('npName').value.trim();
   if(draftSubtasks.length===0){ showAlertModal('Add at least one task first.'); return; }
   state.projects.push({ id: uid(), name: name || null, tasks: draftSubtasks });
-  save(); renderProjects(); toggleNewProject();
+  saveNoUndo(); renderProjects(); toggleNewProject();
 }
 
 function renderProjects(){
@@ -1761,12 +1612,12 @@ function addDaily(){
     id: uid(), text, done:false,
     target, progress:0,
     colorIndex: state.daily.length % DAILY_COLOR_PALETTE.length,
-    lifespan
+    lifespan, note:'', subtasks:[]
   });
   input.value='';
   document.getElementById('dailyTargetInput').value='';
   setHabitLifespanMode('forever');
-  save(); renderDaily();
+  saveNoUndo(); renderDaily();
 }
 
 // Returns true once a task's lifespan has run out. Expired tasks are hidden from view
@@ -1841,32 +1692,21 @@ function renderDaily(){
       <div class="daily-item-row">
         <button class="check-btn ${complete?'checked':''}" onclick="onDailyCheckboxTap('${d.id}')">${complete?'✓':''}</button>
         <span class="color-dot" style="background:${color.dark};" onclick="openColorPicker('${d.id}')" title="Tap to choose a color"></span>
-        <span class="daily-text ${complete?'done':''}">${escapeHtml(d.text)}</span>
-        <div class="daily-item-meta">
-          ${timerRecordBadge('daily', d.id)}
-          <span class="lifespan-badge">${lifespanBadgeText(d.lifespan)}</span>
-          ${hasTarget ? `
-            <button class="daily-count-btn" onclick="adjustDaily('${d.id}',-1)">−</button>
-            <span class="daily-tally ${complete?'complete':''}">${d.progress}/${d.target}</span>
-            <button class="daily-count-btn" onclick="adjustDaily('${d.id}',1)">+</button>
-          ` : ''}
-          <button class="edit-btn" onclick="openEditHabitModal('${d.id}')" title="Edit">✎</button>
-          <button class="rm-x" onclick="deleteDaily('${d.id}')">×</button>
-        </div>
+        <span class="daily-text ${complete?'done':''}" onclick="openTaskDetails('daily','${d.id}')" style="cursor:pointer">${escapeHtml(d.text)}</span>
+        ${timerRecordBadge('daily', d.id)}
+        <span class="lifespan-badge">${lifespanBadgeText(d.lifespan)}</span>
+        ${hasTarget ? `
+          <button class="daily-count-btn" onclick="adjustDaily('${d.id}',-1)">−</button>
+          <span class="daily-tally ${complete?'complete':''}">${d.progress}/${d.target}</span>
+          <button class="daily-count-btn" onclick="adjustDaily('${d.id}',1)">+</button>
+        ` : ''}
+        <button class="edit-btn" onclick="openEditHabitModal('${d.id}')" title="Edit">✎</button>
+        <button class="rm-x" onclick="deleteDaily('${d.id}')">×</button>
       </div>
       ${dailyBarHtml(d)}
     </div>
   `;
   }).join('');
-}
-
-function deleteDaily(id){
-  const d = state.daily.find(d=>d.id===id);
-  if(!d) return;
-  showConfirmModal(`Remove "${d.text}"? This can't be undone.`, ()=>{
-    state.daily = state.daily.filter(item=>item.id!==id);
-    save(); renderDaily();
-  });
 }
 
 function onDailyCheckboxTap(id){
@@ -1913,6 +1753,11 @@ function openEditHabitModal(id){
     document.getElementById('confirmOverlay').classList.remove('open');
     editHabitId = null;
   };
+}
+
+function deleteDaily(id){
+  const d=state.daily.find(x=>x.id===id); if(!d)return;
+  showConfirmModal(`Remove "${escapeHtml(d.text)}"? This can't be undone.`,()=>{state.daily=state.daily.filter(x=>x.id!==id);save();renderDaily();});
 }
 
 // ---------- Weekly Routine ----------
@@ -1971,7 +1816,7 @@ function saveNewWeekly(){
     colorIndex: state.weekly.length % DAILY_COLOR_PALETTE.length,
     weekdays: weeklyDraftWeekdays.slice(), lifespan
   });
-  save(); toggleNewWeeklyForm(); renderWeekly();
+  saveNoUndo(); toggleNewWeeklyForm(); renderWeekly();
 }
 function isWeeklyDueToday(w){
   return w.weekdays.includes(new Date().getDay());
@@ -2001,7 +1846,7 @@ function renderWeekly(){
     return `
     <div class="daily-item">
       <div class="daily-item-row">
-        <button type="button" class="check-btn recurring-check ${complete?'checked':''} ${dueToday?'':'not-due'}" onclick="onWeeklyCheckboxTap('${w.id}')" aria-label="${complete?'Mark incomplete':'Complete'} ${escapeHtml(w.text)}" ${dueToday?'':'title="Not due today"'}>${complete?'✓':''}</button>
+        <button class="check-btn ${complete?'checked':''}" onclick="onWeeklyCheckboxTap('${w.id}')" ${dueToday?'':'disabled style="opacity:0.4;"'}>${complete?'✓':''}</button>
         <span class="color-dot" style="background:${color.dark};" onclick="openColorPickerFor('weekly','${w.id}')" title="Tap to choose a color"></span>
         <span class="daily-text ${complete?'done':''}" style="${dueToday?'':'color:var(--pencil);'}">${escapeHtml(w.text)}</span>
         <span class="past-date-tag" style="background:var(--paper-2); color:var(--pencil); border-color:rgba(34,40,59,0.15);">${weekdaysLabel(w.weekdays)}</span>
@@ -2020,17 +1865,11 @@ function renderWeekly(){
   }).join('');
 }
 function onWeeklyCheckboxTap(id){
-  const w = state.weekly.find(item=>item.id===id);
+  const w = state.weekly.find(w=>w.id===id);
   if(!w || !isWeeklyDueToday(w)) return;
-  // A recurring task checkbox is a completion control, not a hidden counter.
-  // For target-based tasks, tapping it toggles between complete and incomplete.
-  if(w.target){
-    w.progress = (w.progress >= w.target) ? 0 : w.target;
-  } else {
-    w.done = !w.done;
-  }
-  save();
-  renderWeekly();
+  if(w.target){ w.progress = Math.min(w.target, w.progress+1); }
+  else { w.done = !w.done; }
+  save(); renderWeekly();
 }
 function adjustWeekly(id, delta){
   const w = state.weekly.find(w=>w.id===id);
@@ -2038,14 +1877,7 @@ function adjustWeekly(id, delta){
   w.progress = Math.max(0, Math.min(w.target, w.progress+delta));
   save(); renderWeekly();
 }
-function deleteWeekly(id){
-  const w = state.weekly.find(w=>w.id===id);
-  if(!w) return;
-  showConfirmModal(`Remove "${w.text}"? This can't be undone.`, ()=>{
-    state.weekly = state.weekly.filter(item=>item.id!==id);
-    save(); renderWeekly();
-  });
-}
+function deleteWeekly(id){ const w=state.weekly.find(x=>x.id===id); if(!w)return; showConfirmModal(`Remove \"${escapeHtml(w.text)}\"? This can't be undone.`,()=>{state.weekly=state.weekly.filter(x=>x.id!==id);save();renderWeekly();}); }
 function openEditWeeklyModal(id){
   const w = state.weekly.find(w=>w.id===id);
   if(!w) return;
@@ -2163,7 +1995,7 @@ function saveNewDated(){
     dates: datedDraftDates.slice(), lifespan,
     lastPromotedKey: null
   });
-  save(); toggleNewDatedForm(); renderDated();
+  saveNoUndo(); toggleNewDatedForm(); renderDated();
 }
 function toggleDatedShowAll(){
   datedShowAll = !datedShowAll;
@@ -2197,14 +2029,7 @@ function renderDated(){
     </div>
   `).join('');
 }
-function deleteDated(id){
-  const d = state.dated.find(d=>d.id===id);
-  if(!d) return;
-  showConfirmModal(`Remove "${d.text}"? This can't be undone.`, ()=>{
-    state.dated = state.dated.filter(item=>item.id!==id);
-    save(); renderDated();
-  });
-}
+function deleteDated(id){ const d=state.dated.find(x=>x.id===id); if(!d)return; showConfirmModal(`Remove \"${escapeHtml(d.text)}\"? This can't be undone.`,()=>{state.dated=state.dated.filter(x=>x.id!==id);save();renderDated();}); }
 function openEditDatedModal(id){
   const d = state.dated.find(d=>d.id===id);
   if(!d) return;
@@ -2239,7 +2064,7 @@ function promoteDueDatedTasks(){
     if(d.lastPromotedKey === today) return;
     const due = d.recurrence==='monthly' ? d.dates.some(e=>e.day===day) : d.dates.some(e=>e.month===month && e.day===day);
     if(due){
-      state.special.push({id: uid(), text: d.text, done:false, addedToday: today});
+      state.special.push({id: uid(), text: d.text, done:false, addedToday: today, note:'', subtasks:[]});
       d.lastPromotedKey = today;
       if(d.lifespan.type==='occurrences'){ d.lifespan.remaining = Math.max(0, d.lifespan.remaining-1); }
       changed = true;
@@ -2253,9 +2078,9 @@ function addSpecial(){
   const input = document.getElementById('specialInput');
   const text = input.value.trim();
   if(!text) return;
-  state.special.push({id: uid(), text, done:false, addedToday: dayKey()});
+  state.special.push({id: uid(), text, done:false, addedToday: dayKey(), note:'', subtasks:[]});
   input.value='';
-  save(); renderSpecial();
+  saveNoUndo(); renderSpecial();
 }
 function renderSpecial(){
   const el = document.getElementById('specialList');
@@ -2264,7 +2089,7 @@ function renderSpecial(){
   el.innerHTML = todays.map(s => `
     <div class="special-item">
       <button class="check-btn ${s.done?'checked':''}" onclick="toggleSpecial('${s.id}')">${s.done?'✓':''}</button>
-      <span class="daily-text ${s.done?'done':''}" style="flex:1;">${escapeHtml(s.text)}</span>
+      <span class="daily-text ${s.done?'done':''}" style="flex:1;cursor:pointer;" onclick="openTaskDetails('special','${s.id}')">${escapeHtml(s.text)}</span>
       ${timerRecordBadge('special', s.id)}
       <button class="edit-btn" onclick="openEditSpecialModal('${s.id}')" title="Edit">✎</button>
       <button class="rm-x" onclick="deleteSpecial('${s.id}')">×</button>
@@ -2276,24 +2101,42 @@ function toggleSpecial(id){
   s.done = !s.done;
   save(); renderSpecial();
 }
-function deleteSpecial(id){
-  const s = state.special.find(s=>s.id===id);
-  if(!s) return;
-  showConfirmModal(`Remove "${s.text}"? This can't be undone.`, ()=>{
-    state.special = state.special.filter(item=>item.id!==id);
-    save(); renderSpecial();
-  });
-}
+function deleteSpecial(id){ const s=state.special.find(x=>x.id===id); if(!s)return; showConfirmModal(`Remove \"${escapeHtml(s.text)}\"? This can't be undone.`,()=>{state.special=state.special.filter(x=>x.id!==id);save();renderSpecial();}); }
 function openEditSpecialModal(id){
   const s = state.special.find(s=>s.id===id);
   if(!s) return;
   document.getElementById('confirmMessage').innerHTML = 'Edit task';
   document.getElementById('confirmButtons').innerHTML = `
     <input type="text" id="editSpecialName" value="${escapeHtml(s.text)}" style="width:100%; box-sizing:border-box; font-family:'Inter',sans-serif; font-size:13.5px; padding:8px 10px; border:1px solid rgba(34,40,59,0.18); border-radius:6px; margin-bottom:10px;">
+    <div class="detail-label" style="margin-bottom:6px;">Move this task</div>
+    <div style="display:flex;gap:6px;margin-bottom:8px;">
+      <input type="date" id="specialMoveDate" style="flex:1; min-width:0; box-sizing:border-box; font-family:'Inter',sans-serif; font-size:12.5px; padding:8px 8px; border:1px solid rgba(34,40,59,0.18); border-radius:6px;">
+      <button class="btn subtle small" id="specialMoveFutureBtn">Move to Future</button>
+    </div>
+    <button class="btn subtle small" id="specialMovePastBtn" style="margin-bottom:12px;">Move to Past</button>
     <button class="modal-btn" id="editSpecialSaveBtn">Save</button>
     <button class="btn subtle small" id="editSpecialCancelBtn" style="margin-top:8px;">Cancel</button>
   `;
   document.getElementById('confirmOverlay').classList.add('open');
+  const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate()+1);
+  document.getElementById('specialMoveDate').min = dayKey(tomorrow);
+  document.getElementById('specialMoveDate').value = dayKey(tomorrow);
+  document.getElementById('specialMoveFutureBtn').onclick = ()=>{
+    const val = document.getElementById('specialMoveDate').value;
+    if(!val) return;
+    const [y,m,d] = val.split('-').map(Number);
+    const target = new Date(y,m-1,d);
+    state.future.push({id: uid(), text:s.text, dueKey:val, dueLabel: target.toLocaleDateString(undefined,{month:'short',day:'numeric'}), note:s.note||'', subtasks:s.subtasks||[]});
+    state.special = state.special.filter(x=>x.id!==id);
+    save(); renderSpecial(); renderFuture();
+    document.getElementById('confirmOverlay').classList.remove('open');
+  };
+  document.getElementById('specialMovePastBtn').onclick = ()=>{
+    state.pastTasks.push({id: uid(), text:s.text, originalDay: s.addedToday||dayKey(), note:s.note||'', subtasks:s.subtasks||[]});
+    state.special = state.special.filter(x=>x.id!==id);
+    save(); renderSpecial(); renderPastTasks();
+    document.getElementById('confirmOverlay').classList.remove('open');
+  };
   document.getElementById('editSpecialSaveBtn').onclick = ()=>{
     const name = document.getElementById('editSpecialName').value.trim();
     if(!name) return;
@@ -2323,7 +2166,7 @@ function renderPastTasks(){
   el.innerHTML = state.pastTasks.map(p => `
     <div class="past-item">
       <button class="check-btn" onclick="completePastTask('${p.id}')"></button>
-      <span style="flex:1; font-size:14px; font-weight:500;">${escapeHtml(p.text)}</span>
+      <span style="flex:1; font-size:14px; font-weight:500; cursor:pointer;" onclick="openTaskDetails('past','${p.id}')">${escapeHtml(p.text)}</span>
       <span class="past-date-tag">${shortDateTag(p.originalDay)}</span>
       <button class="edit-btn" onclick="openEditPastTaskModal('${p.id}')" title="Edit">✎</button>
       <button class="reschedule-btn" onclick="openRescheduleModal('${p.id}')" title="Reschedule to a future date">📅</button>
@@ -2364,7 +2207,7 @@ function openRescheduleModal(id){
   document.getElementById('confirmMessage').innerHTML = `Reschedule "${escapeHtml(p.text)}" to:`;
   document.getElementById('confirmButtons').innerHTML = `
     <input type="date" id="rescheduleDateInput" style="width:100%; font-family:'Inter',sans-serif; font-size:14px;
-      padding:10px 12px; border:1px solid var(--input-border); border-radius:7px; background:var(--input-bg);
+      padding:9px 10px; border:1px solid rgba(34,40,59,0.18); border-radius:6px; background:#fff;
       color:var(--ink); box-sizing:border-box; margin-bottom:10px;">
     <button class="modal-btn" id="rescheduleConfirmBtn">Reschedule</button>
     <button class="btn subtle small" id="rescheduleCancelBtn" style="margin-top:8px;">Cancel</button>
@@ -2387,25 +2230,24 @@ function confirmReschedule(){
   if(!p){ document.getElementById('confirmOverlay').classList.remove('open'); return; }
   const [y,m,d] = val.split('-').map(Number);
   const target = new Date(y, m-1, d);
-  state.future.push({ id: uid(), text: p.text, dueKey: val, dueLabel: target.toLocaleDateString(undefined,{month:'short',day:'numeric'}) });
+  state.future.push({ id: uid(), text: p.text, dueKey: val, dueLabel: target.toLocaleDateString(undefined,{month:'short',day:'numeric'}), note:p.note||'', subtasks:p.subtasks||[] });
   state.pastTasks = state.pastTasks.filter(pt=>pt.id!==rescheduleTaskId);
   save(); renderPastTasks(); renderFuture();
   document.getElementById('confirmOverlay').classList.remove('open');
   rescheduleTaskId = null;
 }
 function completePastTask(id){
-  // Finishing it here only removes it from the active Past Task list.
-  // Its original day in history/Calendar already recorded it as incomplete and stays that way.
-  state.pastTasks = state.pastTasks.filter(p=>p.id!==id);
-  save(); renderPastTasks();
+  const p=state.pastTasks.find(x=>x.id===id); if(!p)return;
+  state.pastTasks=state.pastTasks.filter(x=>x.id!==id);
+  recordTaskHistory(p.text,'completed','past');
+  renderPastTasks();
 }
 function requestDeletePastTask(id){
-  const p = state.pastTasks.find(p=>p.id===id);
-  if(!p) return;
-  showConfirmModal(`Remove "${p.text}"? This can't be undone.`, ()=>{
-    state.pastTasks = state.pastTasks.filter(item=>item.id!==id);
-    save(); renderPastTasks();
-  });
+  // Immediate delete, no confirmation prompt: this only stops tracking the item
+  // going forward and never touches its original day's record either way, so
+  // it's low-stakes -- matches the "let it go" framing rather than adding friction.
+  state.pastTasks = state.pastTasks.filter(p=>p.id!==id);
+  save(); renderPastTasks();
 }
 
 function dayKey(d=new Date()){
@@ -2419,13 +2261,15 @@ function weekdayOfKey(key){
 // Snapshot yesterday's state into history, then reset daily-cycle items.
 // Runs once per load/interval check — only acts when the calendar day has actually changed.
 function checkDayRollover(){
+  const oldSuppress=v4UndoSuppress; v4UndoSuppress=true;
   const today = dayKey();
   if(state.lastSeenDay === null){
     state.lastSeenDay = today;
     save();
+    v4UndoSuppress=oldSuppress;
     return;
   }
-  if(state.lastSeenDay === today) return; // same day, nothing to do
+  if(state.lastSeenDay === today){ v4UndoSuppress=oldSuppress; return; } // same day, nothing to do
 
   const prevDay = state.lastSeenDay;
   const prevWeekday = weekdayOfKey(prevDay);
@@ -2453,6 +2297,11 @@ function checkDayRollover(){
     special: state.special.filter(s => s.addedToday === prevDay).map(s => ({ text: s.text, done: s.done }))
   };
 
+  // V4: every item entering the previous day's history becomes a one-month event record.
+  state.history[prevDay].projects.forEach(p=>p.tasks.forEach(t=>recordTaskHistory((p.name?p.name+' — ':'')+t.name,t.done?'completed':'uncompleted','project')));
+  state.history[prevDay].daily.forEach(d=>recordTaskHistory(d.text,d.done?'completed':'uncompleted','daily'));
+  state.history[prevDay].special.forEach(s=>recordTaskHistory(s.text,s.done?'completed':'uncompleted','special'));
+
   // Reset daily-cycle progress for the new day (projects & daily habits repeat each day)
   state.projects.forEach(p => p.tasks.forEach(t => { t.progress = 0; t.done = false; }));
   state.daily.forEach(d => { d.done = false; if(d.target) d.progress = 0; });
@@ -2473,7 +2322,7 @@ function checkDayRollover(){
   // later never rewrites what the Progress Tracker / Calendar already recorded for that day.
   const unfinished = state.special.filter(s => s.addedToday === prevDay && !s.done);
   unfinished.forEach(s => {
-    state.pastTasks.push({ id: uid(), text: s.text, originalDay: prevDay });
+    state.pastTasks.push({ id: uid(), text: s.text, originalDay: prevDay, note:s.note||'', subtasks:s.subtasks||[] });
   });
 
   // Drop special items from before today (history already has them archived,
@@ -2482,6 +2331,7 @@ function checkDayRollover(){
 
   state.lastSeenDay = today;
   save();
+  v4UndoSuppress=oldSuppress;
 }
 
 // ---------- Section 4: Future tasks ----------
@@ -2515,11 +2365,11 @@ function addFuture(){
     target = new Date();
     target.setDate(target.getDate() + selectedOffset);
   }
-  state.future.push({id: uid(), text, dueKey: dayKey(target), dueLabel: target.toLocaleDateString(undefined,{month:'short',day:'numeric'})});
+  state.future.push({id: uid(), text, dueKey: dayKey(target), dueLabel: target.toLocaleDateString(undefined,{month:'short',day:'numeric'}), note:'', subtasks:[]});
   input.value='';
   document.getElementById('futureDateInput').value='';
   pickedDate = null;
-  save(); renderFuture(); renderFutureChips();
+  saveNoUndo(); renderFuture(); renderFutureChips();
 }
 function renderFuture(){
   // Promote any future task whose due date is today OR earlier (dueKey <= today) into Today Special.
@@ -2529,7 +2379,7 @@ function renderFuture(){
   const due = state.future.filter(f=>f.dueKey<=today);
   if(due.length){
     due.forEach(f=>{
-      state.special.push({id: uid(), text: f.text, done:false, addedToday: today});
+      state.special.push({id: uid(), text: f.text, done:false, addedToday: today, note:f.note||'', subtasks:f.subtasks||[]});
     });
     state.future = state.future.filter(f=>f.dueKey>today);
     save();
@@ -2547,7 +2397,7 @@ function renderFuture(){
       <div class="future-group-label">${label}</div>
       ${items.map(f=>`
         <div class="future-item">
-          <span style="flex:1;">${escapeHtml(f.text)}</span>
+          <span style="flex:1;cursor:pointer;" onclick="openTaskDetails('future','${f.id}')">${escapeHtml(f.text)}</span>
           <button class="edit-btn" onclick="openEditFutureModal('${f.id}')" title="Edit">✎</button>
           <button class="rm-x" onclick="deleteFuture('${f.id}')">×</button>
         </div>
@@ -2555,14 +2405,7 @@ function renderFuture(){
     </div>
   `).join('');
 }
-function deleteFuture(id){
-  const f = state.future.find(f=>f.id===id);
-  if(!f) return;
-  showConfirmModal(`Remove "${f.text}"? This can't be undone.`, ()=>{
-    state.future = state.future.filter(item=>item.id!==id);
-    save(); renderFuture();
-  });
-}
+function deleteFuture(id){ const f=state.future.find(x=>x.id===id); if(!f)return; showConfirmModal(`Remove \"${escapeHtml(f.text)}\"? This can't be undone.`,()=>{state.future=state.future.filter(x=>x.id!==id);save();renderFuture();}); }
 function openEditFutureModal(id){
   const f = state.future.find(f=>f.id===id);
   if(!f) return;
@@ -2570,10 +2413,17 @@ function openEditFutureModal(id){
   document.getElementById('confirmButtons').innerHTML = `
     <input type="text" id="editFutureName" value="${escapeHtml(f.text)}" style="width:100%; box-sizing:border-box; font-family:'Inter',sans-serif; font-size:13.5px; padding:8px 10px; border:1px solid rgba(34,40,59,0.18); border-radius:6px; margin-bottom:8px;">
     <input type="date" id="editFutureDate" value="${f.dueKey}" style="width:100%; box-sizing:border-box; font-family:'Inter',sans-serif; font-size:13.5px; padding:8px 10px; border:1px solid rgba(34,40,59,0.18); border-radius:6px; margin-bottom:10px;">
+    <button class="btn subtle small" id="futureMoveTodayBtn" style="margin-bottom:12px;">Move to Today</button>
     <button class="modal-btn" id="editFutureSaveBtn">Save</button>
     <button class="btn subtle small" id="editFutureCancelBtn" style="margin-top:8px;">Cancel</button>
   `;
   document.getElementById('confirmOverlay').classList.add('open');
+  document.getElementById('futureMoveTodayBtn').onclick = ()=>{
+    state.special.push({id: uid(), text:f.text, done:false, addedToday: dayKey(), note:f.note||'', subtasks:f.subtasks||[]});
+    state.future = state.future.filter(x=>x.id!==id);
+    save(); renderFuture(); renderSpecial();
+    document.getElementById('confirmOverlay').classList.remove('open');
+  };
   document.getElementById('editFutureSaveBtn').onclick = ()=>{
     const name = document.getElementById('editFutureName').value.trim();
     const dateVal = document.getElementById('editFutureDate').value;
@@ -2588,6 +2438,143 @@ function openEditFutureModal(id){
   document.getElementById('editFutureCancelBtn').onclick = ()=>{
     document.getElementById('confirmOverlay').classList.remove('open');
   };
+}
+
+
+// ---------- T3 V4 additions ----------
+let historyFilter='all';
+let currentDetailsRef=null;
+let toggleTurns=0;
+function toggleTheme(){
+  const next=!document.body.classList.contains('dark');
+  const inner=document.querySelector('#themeToggle .toggle-inner');
+  toggleTurns+=360;
+  if(inner) inner.style.transform='rotate('+toggleTurns+'deg)';
+  // Swap the theme (and the toggle icon, via CSS) at the midpoint of the 360deg spin.
+  setTimeout(()=>{
+    document.body.classList.toggle('dark',next);
+    localStorage.setItem('t3_theme',next?'dark':'light');
+  },300);
+}
+function loadTheme(){ document.body.classList.toggle('dark',localStorage.getItem('t3_theme')==='dark'); }
+function monthKeyFromDate(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); }
+function prettyMonth(mk){ const [y,m]=mk.split('-').map(Number); return new Date(y,m-1,1).toLocaleDateString(undefined,{month:'long',year:'numeric'}); }
+function recordTaskHistory(text,status,source='task'){
+  const when=dayKey();
+  state.taskHistory.push({id:uid(),text:String(text),status,historyDate:when,source});
+  rebuildMonthlySummary(when.slice(0,7));
+  save();
+}
+function rebuildMonthlySummary(mk){
+  const rows=state.taskHistory.filter(x=>x.historyDate && x.historyDate.slice(0,7)===mk);
+  const completed=rows.filter(x=>x.status==='completed').length;
+  const uncompleted=rows.filter(x=>x.status==='uncompleted').length;
+  if(rows.length) state.monthlySummaries[mk]={completed,uncompleted,total:completed+uncompleted};
+}
+function cleanupV4History(){
+  const today=new Date();
+  const cutoff=new Date(today.getFullYear(),today.getMonth(),today.getDate()-30);
+  state.taskHistory=state.taskHistory.filter(e=>{ const [y,m,d]=e.historyDate.split('-').map(Number); return new Date(y,m-1,d)>=cutoff; });
+  const cutoffMonth=new Date(today.getFullYear(),today.getMonth()-3,1);
+  Object.keys(state.monthlySummaries).forEach(mk=>{
+    const [y,m]=mk.split('-').map(Number); const dt=new Date(y,m-1,1);
+    if(dt<cutoffMonth) delete state.monthlySummaries[mk];
+  });
+  save();
+}
+function setHistoryFilter(f){historyFilter=f;document.querySelectorAll('#historyFilter button').forEach(b=>b.classList.toggle('active',b.dataset.filter===f));renderHistoryDrawer();}
+function openHistoryDrawer(){renderHistoryDrawer();document.getElementById('historyOverlay').classList.add('open');}
+function closeHistoryDrawer(){document.getElementById('historyOverlay').classList.remove('open');}
+function historyRows(){return state.taskHistory.slice().sort((a,b)=>b.historyDate.localeCompare(a.historyDate)||b.id.localeCompare(a.id));}
+function renderHistoryDrawer(){
+  const rows=historyRows().filter(x=>historyFilter==='all'||x.status===historyFilter);
+  const groups={}; rows.forEach(x=>(groups[x.historyDate.slice(0,7)]??=[]).push(x));
+  const months=Object.keys(groups).sort().reverse();
+  let html='';
+  if(!months.length){html='<div class="empty">No historical task records in the current window.</div>';}
+  months.forEach(mk=>{
+    const all=state.taskHistory.filter(x=>x.historyDate.slice(0,7)===mk);
+    const done=all.filter(x=>x.status==='completed').length, undone=all.filter(x=>x.status==='uncompleted').length, total=done+undone, pct=total?Math.round(done*100/total):0;
+    html+=`<div class="history-month"><div class="history-month-head"><span>${prettyMonth(mk)}</span><span>${pct}% completed</span></div><div class="history-bar"><div class="done" style="width:${pct}%"></div><div class="undone" style="width:${100-pct}%"></div></div><div class="history-meta"><span>${done} completed</span><span>${undone} uncompleted</span></div><div class="history-list">`;
+    rows.filter(x=>x.historyDate.slice(0,7)===mk).forEach(x=>html+=`<div class="history-entry"><span class="check-icon ${x.status==='completed'?'':'no'}">${x.status==='completed'?'✓':'○'}</span><span class="entry-name">${escapeHtml(x.text)}</span><span class="entry-date">${shortDateTag(x.historyDate)}</span></div>`);
+    html+='</div></div>';
+  });
+  html+=`<div class="danger-zone"><button class="danger-btn" onclick="manualDeleteHistory()">Delete historical records</button></div>`;
+  document.getElementById('historyDrawerContent').innerHTML=html;
+}
+function manualDeleteHistory(){
+  showConfirmModal('Delete all currently stored historical task records? Monthly summaries will also be removed for those records. This cannot be undone.',()=>{
+    const months=new Set(state.taskHistory.map(x=>x.historyDate.slice(0,7)));
+    state.taskHistory=[]; months.forEach(m=>delete state.monthlySummaries[m]); save(); renderHistoryDrawer(); renderCalendar(); renderProgressPage();
+  });
+}
+function ensureTaskMeta(t){ if(!Array.isArray(t.subtasks)) t.subtasks=[]; if(t.note===undefined)t.note=''; }
+function taskDetailsHtml(t, title, source, ref){
+  ensureTaskMeta(t);
+  let html=`<div class="details-grid"><div><div class="detail-label">Task</div><div class="detail-value">${escapeHtml(title)}</div></div>`;
+  if(t.note) html+=`<div><div class="detail-label">Note</div><div class="detail-value">${escapeHtml(t.note)}</div></div>`;
+  if(t.dueKey) html+=`<div><div class="detail-label">Date</div><div class="detail-value">${escapeHtml(t.dueKey)}</div></div>`;
+  html+=`</div><div class="subtask-section"><div class="detail-label">Sub-tasks</div>`;
+  if(!t.subtasks.length) html+='<div class="empty">No sub-tasks yet.</div>';
+  t.subtasks.forEach((st,i)=>{
+    if(!Array.isArray(st.miniTasks)) st.miniTasks=[];
+    html+=`<div class="subtask-item"><div class="subtask-head"><button class="check-btn ${st.done?'checked':''}" onclick="toggleSubtask('${source}','${ref}',${i})">${st.done?'✓':''}</button><span class="subtask-name">${escapeHtml(st.name)}</span></div>`;
+    if(st.date) html+=`<div style="margin:5px 0 0 34px;font:10px 'JetBrains Mono',monospace;color:var(--rule-strong);">${escapeHtml(st.date)}</div>`;
+    if(st.note) html+=`<div style="margin:4px 0 0 34px;font-size:11.5px;color:var(--pencil);">${escapeHtml(st.note)}</div>`;
+    if(st.miniTasks.length){
+      html+=`<button class="subtask-more" onclick="toggleMiniVisibility(this)">Show more · ${st.miniTasks.length} mini-task${st.miniTasks.length===1?'':'s'}</button><div class="mini-list" style="display:none">`;
+      st.miniTasks.forEach((m,j)=>html+=`<label class="mini-item"><input type="checkbox" ${m.done?'checked':''} onchange="toggleMiniTask('${source}','${ref}',${i},${j})">${escapeHtml(m.name)}${m.note?` <span style="color:var(--pencil);">— ${escapeHtml(m.note)}</span>`:''}</label>`);
+      html+='</div>';
+    }
+    html+=`</div>`;
+  });
+  html+=`<button class="btn small ghost" onclick="addSubtaskFromDetails('${source}','${ref}')">+ Add sub-task</button></div>`;
+  return html;
+}
+function resolveDetailsRef(source,ref){
+  if(source==='waiting') return state.waiting.find(x=>x.id===ref);
+  if(source==='special') return state.special.find(x=>x.id===ref);
+  if(source==='future') return state.future.find(x=>x.id===ref);
+  if(source==='past') return state.pastTasks.find(x=>x.id===ref);
+  if(source==='daily') return state.daily.find(x=>x.id===ref);
+  return null;
+}
+function openTaskDetails(source,ref){
+  const t=resolveDetailsRef(source,ref); if(!t)return; currentDetailsRef={source,ref};
+  const title=t.text||t.name; document.getElementById('detailsTitle').textContent=title; document.getElementById('detailsContent').innerHTML=taskDetailsHtml(t,title,source,ref); document.getElementById('detailsOverlay').classList.add('open');
+}
+function closeTaskDetails(){document.getElementById('detailsOverlay').classList.remove('open');currentDetailsRef=null;}
+function toggleMiniVisibility(btn){const el=btn.nextElementSibling;el.style.display=el.style.display==='none'?'grid':'none';btn.textContent=el.style.display==='none'?'Show more · '+el.children.length+' mini-tasks':'Hide mini-tasks';}
+function toggleSubtask(source,ref,i){const t=resolveDetailsRef(source,ref);if(!t)return;t.subtasks[i].done=!t.subtasks[i].done;save();openTaskDetails(source,ref);}
+function toggleMiniTask(source,ref,i,j){const t=resolveDetailsRef(source,ref);if(!t)return;t.subtasks[i].miniTasks[j].done=!t.subtasks[i].miniTasks[j].done;save();openTaskDetails(source,ref);}
+function addSubtaskFromDetails(source,ref){
+  const t=resolveDetailsRef(source,ref);if(!t)return;
+  const name=prompt('Sub-task name'); if(!name||!name.trim())return;
+  const date=prompt('Optional date (YYYY-MM-DD), leave blank for none')||'';
+  const note=prompt('Optional note')||'';
+  t.subtasks=t.subtasks||[]; t.subtasks.push({id:uid(),name:name.trim(),done:false,date:date.trim(),note:note.trim(),miniTasks:[]});saveNoUndo();openTaskDetails(source,ref);
+}
+function openQuickAdd(){renderWaitingList();document.getElementById('quickAddOverlay').classList.add('open');setTimeout(()=>document.getElementById('waitingInput').focus(),50);}
+function closeQuickAdd(){document.getElementById('quickAddOverlay').classList.remove('open');}
+function addWaitingTask(){const el=document.getElementById('waitingInput');const text=el.value.trim();if(!text)return;state.waiting.push({id:uid(),text,note:'',subtasks:[],createdAt:new Date().toISOString()});el.value='';saveNoUndo();renderWaitingList();}
+function deleteWaiting(id){showConfirmModal('Remove this waiting-list task? This cannot be undone.',()=>{state.waiting=state.waiting.filter(x=>x.id!==id);save();renderWaitingList();});}
+function editWaiting(id){const t=state.waiting.find(x=>x.id===id);if(!t)return;const name=prompt('Task name',t.text);if(name&&name.trim()){t.text=name.trim();save();renderWaitingList();}}
+function renderWaitingList(){const el=document.getElementById('waitingList');if(!state.waiting.length){el.innerHTML='<div class="empty">Nothing is waiting.</div>';return;}el.innerHTML=state.waiting.map(t=>{ensureTaskMeta(t);return `<div class="task-row"><button class="check-btn" onclick="moveWaitingToToday('${t.id}')"></button><span class="task-name" onclick="openTaskDetails('waiting','${t.id}')" style="cursor:pointer">${escapeHtml(t.text)}</span><button class="edit-btn" onclick="editWaiting('${t.id}')" title="Edit">✎</button><button class="rm-x" onclick="deleteWaiting('${t.id}')">×</button></div>`}).join('');}
+function moveWaitingToToday(id){const t=state.waiting.find(x=>x.id===id);if(!t)return;state.special.push({id:uid(),text:t.text,done:false,addedToday:dayKey(),note:t.note,subtasks:t.subtasks||[]});state.waiting=state.waiting.filter(x=>x.id!==id);save();renderWaitingList();renderSpecial();}
+
+// Add dated sub-tasks to Today's Special when their date arrives.
+function promoteDatedSubtasks(){
+  const today=dayKey();
+  const sources=[...state.special,...state.future,...state.waiting,...state.daily];
+  sources.forEach(parent=>{
+    (parent.subtasks||[]).forEach(st=>{
+      if(st.date===today && !st._promotedToday){
+        state.special.push({id:uid(),text:st.name,done:!!st.done,addedToday:today,sourceSubtaskId:st.id,sourceParentId:parent.id});
+        st._promotedToday=today;
+      }
+    });
+  });
+  save();
 }
 
 // ---------- utils ----------
@@ -2779,7 +2766,7 @@ function renderFutureHistoryTab(){
   el.innerHTML = `<div class="card">` + sorted.map(f=>`
     <div class="task-line">
       <span class="future-date">${f.dueLabel}</span>
-      <span style="flex:1;">${escapeHtml(f.text)}</span>
+      <span style="flex:1;cursor:pointer;" onclick="openTaskDetails('future','${f.id}')">${escapeHtml(f.text)}</span>
     </div>
   `).join('') + `</div>`;
 }
@@ -3170,6 +3157,15 @@ function dayHasAnyActivity(act){
 
 let calSelectedKey = null;
 
+function renderCalendarHistorySummary(){
+  const el=document.getElementById('calendarHistorySummary'); if(!el)return;
+  const mk=String(calViewYear)+'-'+String(calViewMonth+1).padStart(2,'0');
+  const sum=state.monthlySummaries[mk];
+  if(!sum){el.innerHTML='<div class="empty">No retained history summary for this month.</div>';return;}
+  const pct=sum.total?Math.round(sum.completed*100/sum.total):0;
+  el.innerHTML=`<div class="history-month-head"><span>${prettyMonth(mk)}</span><span>${pct}% completed</span></div><div class="history-bar"><div class="done" style="width:${pct}%"></div><div class="undone" style="width:${100-pct}%"></div></div><div class="history-meta"><span>${sum.completed} completed</span><span>${sum.uncompleted} uncompleted</span></div>`;
+}
+
 function renderCalendar(){
   if(calViewYear===undefined){
     const now = new Date();
@@ -3181,6 +3177,7 @@ function renderCalendar(){
   const daysInMonth = new Date(calViewYear, calViewMonth+1, 0).getDate();
   const monthLabel = first.toLocaleDateString(undefined,{month:'long', year:'numeric'});
   document.getElementById('calMonthLabel').textContent = monthLabel;
+  renderCalendarHistorySummary();
 
   const today = dayKey();
   let cellsHtml = '';
@@ -3227,7 +3224,7 @@ function renderCalDayDetail(key){
       <textarea id="calNoteInput" data-day-key="${key}" placeholder="No note for this day — optional."
         oninput="onCalNoteInput('${key}')"
         style="width:100%; font-family:'Inter',sans-serif; font-size:13px; line-height:1.5; padding:8px 10px;
-        border:1px solid var(--input-border); border-radius:7px; background:var(--input-bg); color:var(--ink);
+        border:1px solid rgba(34,40,59,0.18); border-radius:6px; background:var(--input-bg); color:var(--ink);
         resize:vertical; box-sizing:border-box;" rows="3">${escapeHtml(act.note||'')}</textarea>
       <span id="calNoteStatus" style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--pencil);"></span>
     </div>
@@ -3292,9 +3289,9 @@ function buildIcsDataUrl(key, dateLabel, act){
   act.timers.forEach(t=>descLines.push(`Timer: ${t.label} (${t.duration})`));
 
   const ics = [
-    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Task Time Tracker (T3)//EN',
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//T3 Task Time Tracker//EN',
     'BEGIN:VEVENT',
-    `UID:${dateStr}-t3-${Math.random().toString(36).slice(2)}@t3`,
+    `UID:${dateStr}-ledger-${Math.random().toString(36).slice(2)}@t3`,
     `DTSTAMP:${dateStr}T000000Z`,
     `DTSTART;VALUE=DATE:${dateStr}`,
     `SUMMARY:${icsEscape(summary)}`,
@@ -3307,7 +3304,7 @@ function buildIcsDataUrlForItem(label, key){
   const [y,m,d] = key.split('-').map(Number);
   const dateStr = `${y}${String(m).padStart(2,'0')}${String(d).padStart(2,'0')}`;
   const ics = [
-    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Task Time Tracker (T3)//EN',
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//T3 Task Time Tracker//EN',
     'BEGIN:VEVENT',
     `UID:${dateStr}-${Math.random().toString(36).slice(2)}@t3`,
     `DTSTAMP:${dateStr}T000000Z`,
@@ -3318,26 +3315,13 @@ function buildIcsDataUrlForItem(label, key){
   return 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
 }
 
-// ---------- Theme ----------
-function applyTheme(theme){
-  const dark = theme === 'dark';
-  document.body.classList.toggle('dark', dark);
-  const btn = document.getElementById('themeToggle');
-  if(btn){
-    btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
-    btn.title = dark ? 'Switch to light mode' : 'Switch to dark mode';
-    btn.dataset.mode = dark ? 'dark' : 'light';
-  }
-}
-function toggleTheme(){
-  const next = document.body.classList.contains('dark') ? 'light' : 'dark';
-  localStorage.setItem('t3_theme_v1', next);
-  applyTheme(next);
-}
-applyTheme(localStorage.getItem('t3_theme_v1') || 'light');
-
 // ---------- init ----------
+v4UndoSuppress=true;
 load();
+loadTheme();
+cleanupV4History();
+promoteDatedSubtasks();
+v4UndoSuppress=false;
 
 // Seed example data on first-ever load, so the prototype is immediately testable
 if(state.projects.length===0 && state.daily.length===0 && state.lastSeenDay===null){
@@ -3356,7 +3340,9 @@ if(state.projects.length===0 && state.daily.length===0 && state.lastSeenDay===nu
 
 checkDayRollover();
 promoteDueDatedTasks();
+promoteDatedSubtasks();
 renderStamp();
+renderWaitingList();
 renderProjects();
 renderDaily();
 renderWeekly();
@@ -3370,7 +3356,9 @@ loadManuscriptForToday();
 // re-check rollover periodically in case the tab stays open past midnight
 setInterval(()=>{
   checkDayRollover();
+  cleanupV4History();
   promoteDueDatedTasks();
+  promoteDatedSubtasks();
   renderProjects(); renderDaily(); renderWeekly(); renderDated(); renderSpecial(); renderFuture(); renderPastTasks(); renderStamp(); loadManuscriptForToday();
 }, 5*60000);
 
@@ -3381,103 +3369,36 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     const swUrl = new URL('sw.js', window.location.href).href;
     navigator.serviceWorker.register(swUrl, { scope: './' })
-      .catch(err => reportT3Error('service-worker', err));
+      .catch(err => console.warn('Service worker registration failed:', err));
   });
 }
 
 // ---------- PWA: install button ----------
-// The IN button is intentionally always visible while T3 is running in a normal
-// browser. A native prompt is used when Chromium supplies beforeinstallprompt;
-// otherwise the button opens a clear fallback instead of silently doing nothing.
+// The button stays hidden unless the browser actually offers an install prompt
+// (Chrome/Edge/Android fire 'beforeinstallprompt'; iOS Safari and already-installed
+// apps never do, so the button correctly disappears in those cases rather than
+// sitting there doing nothing).
 let deferredInstallPrompt = null;
-const installBtn = () => document.getElementById('installBtn');
-
-function isStandaloneMode(){
-  return !!((window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true);
-}
-
-function syncInstallButton(){
-  const btn = installBtn();
-  if(!btn) return;
-  if(isStandaloneMode()){
-    btn.style.display='none';
-  }else{
-    btn.style.display='flex';
-    btn.removeAttribute('aria-busy');
-  }
-}
-
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredInstallPrompt = e;
-  syncInstallButton();
+  const btn = document.getElementById('installBtn');
+  if(btn) btn.style.display = 'flex';
 });
-
-function openInstallHelp(message){
-  const overlay = document.getElementById('installOverlay');
-  const msg = document.getElementById('installMessage');
-  if(msg && message) msg.textContent = message;
-  if(overlay){
-    overlay.classList.add('open');
-    overlay.setAttribute('aria-hidden','false');
-  }
+function triggerInstall(){
+  if(!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  deferredInstallPrompt.userChoice.finally(() => {
+    deferredInstallPrompt = null;
+    const btn = document.getElementById('installBtn');
+    if(btn) btn.style.display = 'none';
+  });
 }
-function closeInstallHelp(){
-  const overlay = document.getElementById('installOverlay');
-  if(overlay){
-    overlay.classList.remove('open');
-    overlay.setAttribute('aria-hidden','true');
-  }
-}
-
-async function triggerInstall(){
-  const btn = installBtn();
-  if(isStandaloneMode()){
-    syncInstallButton();
-    return;
-  }
-  if(btn) btn.setAttribute('aria-busy','true');
-
-  if(deferredInstallPrompt){
-    try{
-      await deferredInstallPrompt.prompt();
-      const choice = await deferredInstallPrompt.userChoice;
-      deferredInstallPrompt = null;
-      if(choice && choice.outcome === 'accepted'){
-        if(btn) btn.style.display='none';
-      }else if(btn){
-        btn.removeAttribute('aria-busy');
-      }
-    }catch(err){
-      reportT3Error('install-prompt', err);
-      deferredInstallPrompt = null;
-      if(btn) btn.removeAttribute('aria-busy');
-      openInstallHelp('The automatic install prompt could not be opened. Use your browser menu and choose “Install app” or “Add to Home screen”.');
-    }
-    return;
-  }
-
-  if(btn) btn.removeAttribute('aria-busy');
-  const protocol = window.location.protocol;
-  const hostname = window.location.hostname;
-  if(protocol === 'file:'){
-    openInstallHelp('T3 is being opened directly as a file. A PWA cannot install from a ZIP or file:// page. Serve T3 from HTTPS (or localhost), then tap IN again.');
-  }else if(protocol !== 'https:' && hostname !== 'localhost' && hostname !== '127.0.0.1'){
-    openInstallHelp('T3 needs a secure HTTPS connection for installation. Open the HTTPS version, then tap IN again.');
-  }else if(/iPhone|iPad|iPod/i.test(navigator.userAgent)){
-    openInstallHelp('On iPhone or iPad, use your browser’s Share menu and choose “Add to Home Screen”.');
-  }else{
-    openInstallHelp('Your browser has not supplied the automatic install prompt yet. Open the browser menu and choose “Install app” or “Add to Home screen”. If that option is missing, make sure T3 is running over HTTPS and is not already installed.');
-  }
-}
-
 window.addEventListener('appinstalled', () => {
+  const btn = document.getElementById('installBtn');
+  if(btn) btn.style.display = 'none';
   deferredInstallPrompt = null;
-  syncInstallButton();
 });
-
-window.addEventListener('load', syncInstallButton);
-
 </script>
 </body>
 </html>
